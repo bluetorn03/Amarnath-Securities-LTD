@@ -1,0 +1,6 @@
+{
+  "name": "Amarnath Securities Limited",
+  "description": "BSE-listed financial services company (Scrip Code 538465) specializing in strategic corporate finance, merchant banking, capital raising, and investor solutions since 1994.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
