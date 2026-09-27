@@ -50,7 +50,7 @@ export const ScrollReveal: React.FC<ScrollRevealProps> = ({
     <motion.div
       initial={initial}
       whileInView={{ opacity: 1, x: 0, y: 0, scale: 1 }}
-      viewport={{ once, margin: '-50px' }}
+      viewport={{ once, margin: '-10px', amount: 0.05 }}
       transition={{
         duration,
         delay,

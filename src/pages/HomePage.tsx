@@ -132,7 +132,7 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate, onOpenDocument }
           SECTION 1: HERO (WHITE BACKGROUND • FULL VIEWPORT HEIGHT)
           Two-column layout: Left = Brand Copy + Infinite Typewriter, Right = Verified Visual
          ========================================================================= */}
-      <section className="relative min-h-[100svh] flex items-center justify-center overflow-hidden bg-white px-4 sm:px-8 py-12 lg:py-16">
+      <section className="relative min-h-[100svh] flex items-center justify-center overflow-hidden bg-white px-4 sm:px-8 pt-6 pb-10 lg:pt-8 lg:pb-12">
         {/* Subtle Ambient Decorative Gradients */}
         <div className="absolute top-1/4 left-1/4 w-[500px] h-[300px] bg-[#0D9488]/4 rounded-full blur-3xl pointer-events-none" />
         <div className="absolute bottom-1/4 right-1/4 w-[400px] h-[300px] bg-[#9A7B38]/4 rounded-full blur-3xl pointer-events-none" />
