@@ -12,21 +12,128 @@ export const COMPANY_DETAILS = {
   shortName: 'Amarnath Securities',
   tagline: 'Capital. Strategy. Opportunity.',
   trustLine: 'BSE Listed • Since 1994 • Scrip Code 538465',
-  corePositioning: 'Financial Services, Strategic Advisory & Capital Solutions',
+  corePositioning: 'Corporate Evolution, Strategic Opportunities & Sustainable Growth',
   cin: 'L67120GJ1994PLC023254',
   bseScripCode: '538465',
   isin: 'INE745P01010',
   foundedYear: '1994',
   email: 'Amarnathsecurities@gmail.com',
-  phone: '+91 89280 80429',
+  phone: '+91 99309 82815',
   regOffice: '1/104, Sarthik Complex, Nr. Fun Republic, Satellite Road, Ahmedabad, Gujarat - 380015',
-  corpOffice: 'Office No. 402, 4th Floor, Fortune Business Center, Bandra Kurla Complex (BKC) Link Road, Mumbai, Maharashtra - 400051',
+  corpOffice: 'Office A9, Ground Floor, Ellora Park, Near Damani Zapa, Killa Pardi, Valsad, Pardi, Gujarat, India, 396125',
   rtaName: 'Purva Sharegistry (India) Pvt. Ltd.',
   rtaAddress: 'Unit No. 9, Shiv Shakti Industrial Estate, J. R. Boricha Marg, Lower Parel (East), Mumbai - 400011',
   rtaEmail: 'support@purvashare.com',
-  rtaPhone: '+91 22 2301 6761 / 8261',
+  rtaPhone: '+91 99309 82815',
   sebiScoresUrl: 'https://scores.sebi.gov.in',
   bsePortalUrl: 'https://www.bseindia.com/stock-share-price/amarnath-securities-ltd/amarnath/538465/'
+};
+
+export const ABOUT_OVERVIEW_CONTENT = {
+  title: 'About Amarnath Securities Limited',
+  paragraphs: [
+    'Amarnath Securities Limited is a publicly listed company incorporated in 1994, with its registered office in Ahmedabad, Gujarat, and its equity shares listed on BSE Limited.',
+    'Over the years, the Company has evolved in response to changing business opportunities and market conditions. Having historically operated in the financial services and NBFC space, the Company has undertaken a strategic transition towards exploring opportunities beyond its earlier business activities.',
+    'With a renewed focus on building sustainable businesses, the Company seeks to identify and develop opportunities across suitable sectors while maintaining a disciplined approach to governance, compliance and responsible management.'
+  ],
+  principlesTitle: 'Our approach is guided by three fundamental principles:',
+  principles: [
+    {
+      title: 'Integrity',
+      desc: 'conducting business with transparency and accountability.'
+    },
+    {
+      title: 'Sustainable Growth',
+      desc: 'identifying opportunities with a long-term perspective.'
+    },
+    {
+      title: 'Responsible Governance',
+      desc: 'maintaining appropriate standards of corporate governance, regulatory compliance and stakeholder accountability.'
+    }
+  ],
+  closing: 'As a listed company, Amarnath Securities Limited remains committed to transparent communication with its shareholders and other stakeholders while continuing to evaluate opportunities for the Company’s future growth.'
+};
+
+export const BUSINESS_ACTIVITIES_DATA = {
+  intro: 'Amarnath Securities Limited is focused on identifying and developing sustainable business opportunities across suitable sectors.\n\nThe Company has evolved from its historical presence in the financial services and NBFC sector and is now exploring opportunities beyond its earlier business activities.',
+  pillars: [
+    {
+      id: 'business-development',
+      pillarLetter: 'A',
+      title: 'BUSINESS DEVELOPMENT',
+      subtitle: 'Long-term value creation & commercial viability',
+      paragraphs: [
+        'Our focus is on evaluating businesses and opportunities that have the potential to create sustainable long-term value for the Company and its stakeholders.',
+        'This includes assessing opportunities based on their commercial viability, scalability, strategic relevance and long-term potential.'
+      ],
+      keyFactors: [
+        'Commercial Viability Assessment',
+        'Scalability & Operating Potential',
+        'Strategic Relevance Analysis',
+        'Long-Term Value Creation'
+      ]
+    },
+    {
+      id: 'mergers-acquisitions',
+      pillarLetter: 'B',
+      title: 'MERGERS & ACQUISITIONS',
+      subtitle: 'Strategic transactions, due diligence & diversification',
+      paragraphs: [
+        'The Company also evaluates and pursues suitable mergers, acquisitions, strategic investments and other corporate transactions that may support its growth and diversification objectives.',
+        'Our approach to mergers and acquisitions includes identifying businesses and assets with strategic potential, conducting appropriate financial, legal, operational and regulatory due diligence, and assessing opportunities for long-term value creation.',
+        'Any proposed transaction is evaluated based on its strategic fit, commercial viability, financial implications, regulatory requirements and potential benefits for the Company and its stakeholders. Mergers and acquisitions may be undertaken independently or in collaboration with strategic partners, subject to applicable laws, approvals and corporate governance requirements.'
+      ],
+      keyFactors: [
+        'Rigorous Financial, Legal & Operational Due Diligence',
+        'Strategic Fit & Diversification Alignment',
+        'Independent or Partnered Collaboration',
+        'Subject to Statutory Approvals & Governance'
+      ]
+    },
+    {
+      id: 'strategic-opportunities',
+      pillarLetter: 'C',
+      title: 'STRATEGIC OPPORTUNITIES',
+      subtitle: 'Broad sector openness & collaborative initiatives',
+      paragraphs: [
+        'The Company remains open to opportunities across suitable sectors where its resources, management capabilities and strategic approach can contribute to sustainable business development.',
+        'This may include organic growth initiatives, mergers and acquisitions, strategic investments, joint ventures, partnerships and other corporate development opportunities.'
+      ],
+      keyFactors: [
+        'Organic Growth Initiatives',
+        'Strategic Investments & Allocations',
+        'Joint Ventures & Corporate Partnerships',
+        'Cross-Sector Capability Deployment'
+      ]
+    },
+    {
+      id: 'responsible-growth',
+      pillarLetter: 'D',
+      title: 'RESPONSIBLE GROWTH',
+      subtitle: 'Statutory disclosures, legal compliance & transparency',
+      paragraphs: [
+        'Every opportunity is evaluated with consideration to applicable laws and regulations, financial viability, governance requirements and the interests of the Company’s stakeholders.',
+        'As the Company continues to evolve, details of its business activities, mergers and acquisitions and other material developments will be communicated through the Company’s statutory disclosures and regulatory filings.'
+      ],
+      keyFactors: [
+        'Applicable Laws & Regulatory Adherence',
+        'Financial Viability & Risk Governance',
+        'Protection of Stakeholder Interests',
+        'Timely BSE Statutory Disclosures'
+      ]
+    }
+  ]
+};
+
+export const DISCLOSURES_POLICIES_OVERVIEW = {
+  title: 'Disclosures & Policies',
+  statement: 'Amarnath Securities Limited is committed to maintaining transparency and providing timely information to its shareholders and stakeholders in accordance with applicable laws, regulations and listing requirements.',
+  frameworks: [
+    { title: 'SEBI (LODR) Regulations, 2015', desc: 'Continuous statutory compliance under Regulations 30, 31, 33, 44 & 46' },
+    { title: 'Companies Act, 2013 Compliance', desc: 'Secretarial adherence and corporate governance oversight' },
+    { title: 'SEBI (PIT) Insider Trading Norms', desc: 'Code of conduct and fair disclosure practices for designated persons' },
+    { title: 'Stakeholder Transparency', desc: 'Immediate dissemination of material events through BSE Limited' }
+  ]
 };
 
 export const MARKET_TICKER_DATA: MarketTickerData = {
@@ -43,89 +150,89 @@ export const MARKET_TICKER_DATA: MarketTickerData = {
   volume: '48,250',
   marketCap: '₹55.35 Cr',
   faceValue: 10.00,
-  industry: 'Financial Services / Other Financial Services'
+  industry: 'Public Listed Entity / Corporate Development'
 };
 
 export const CAPABILITIES: CapabilityItem[] = [
   {
     id: 'corporate-finance',
     title: 'Corporate Finance & Advisory',
-    shortDesc: 'Strategic capital advisory, balance sheet optimization, and corporate structuring for mid-market leaders.',
-    fullDesc: 'We assist corporations in navigating intricate financial lifecycles. Our corporate finance team structures bespoke solutions encompassing debt reorganization, capital recapitalization, strategic buyouts, and joint venture advisory, aligning financial mechanics with long-term growth visions.',
+    shortDesc: 'Historical foundation in balance sheet structuring, financial evaluation, and corporate advisory principles.',
+    fullDesc: 'Historically operating in corporate financial advisory, the Company developed foundational competencies in evaluating capital structures and corporate reorganization. As part of our strategic evolution, these advisory disciplines inform our evaluation of new corporate opportunities and long-term value generation.',
     route: 'capabilities/corporate-finance',
     iconName: 'Landmark',
     keyOfferings: [
-      'Balance Sheet Restructuring & Solvency Advisory',
-      'Capital Structure Optimization & Cost of Capital Rationalization',
-      'Special Situations Advisory & Turnaround Structuring',
-      'Cross-border Transaction Advisory & Regulatory Structuring'
+      'Historical Balance Sheet Evaluation Principles',
+      'Strategic Corporate Structure Assessment',
+      'Financial Viability & Risk Diagnostic Review',
+      'Governance Alignment & Compliance Frameworks'
     ],
-    clientFit: 'Mid-to-large corporates and promoter-driven enterprises seeking structural balance-sheet agility.',
-    stats: { label: 'Advisory Transactions Advised', value: '₹1,250+ Cr' }
+    clientFit: 'Earlier financial services focus; now strategically informing corporate evaluation.',
+    stats: { label: 'Disciplinary Context', value: 'Historical Advisory Background' }
   },
   {
     id: 'merchant-banking',
-    title: 'Merchant Banking',
-    shortDesc: 'Comprehensive issue management, valuation diligence, and regulatory interface for capital events.',
-    fullDesc: 'Providing specialized merchant banking services designed to guide public and pre-IPO enterprises through statutory frameworks. From equity rights issues and preferential allotments to takeovers and buyback management under SEBI mandates.',
+    title: 'Merchant Banking & Capital Markets',
+    shortDesc: 'Earlier experience in capital market interfaces, statutory issue compliance, and valuation diligence.',
+    fullDesc: 'Having historically engaged with Indian capital market frameworks and public issue compliance, the Company retains an institutional understanding of regulatory interfaces. Today, these insights support our governance discipline and transparent interaction with capital market stakeholders.',
     route: 'capabilities/merchant-banking',
     iconName: 'ShieldCheck',
     keyOfferings: [
-      'Rights Issues, Preferential Issues & QIP Management',
-      'Takeover Code Advisory & Open Offer Management',
-      'Fairness Opinions & Independent Business Valuations',
-      'SEBI LODR Compliance & Listed Entity Delisting / Advisory'
+      'Institutional Understanding of SEBI Guidelines',
+      'Valuation Diligence & Independent Due Diligence Oversight',
+      'Corporate Restructuring Evaluation',
+      'BSE Platform Listing Interface Understanding'
     ],
-    clientFit: 'Listed Indian entities and ambitious growth companies orchestrating market capital events.',
-    stats: { label: 'Statutory Issuances Facilitated', value: '45+' }
+    clientFit: 'Earlier capital market interface; supporting current governance rigor.',
+    stats: { label: 'Market Tenure', value: 'Since 1994' }
   },
   {
     id: 'investment-banking',
-    title: 'Investment Banking & Capital Raising',
-    shortDesc: 'Originating, syndicating, and executing institutional equity and structured debt capital rounds.',
-    fullDesc: 'We bridge growing enterprises with institutional pools of capital. Our investment banking syndicate originates and executes private placements, structured credit facilities, and promoter stake financing backed by rigorous market analysis.',
+    title: 'Strategic Transactions & Capital Sourcing',
+    shortDesc: 'Experience in corporate transaction analysis, strategic syndication, and long-term corporate evaluation.',
+    fullDesc: 'The Company draws upon earlier institutional interactions in structured transaction analysis. In our current strategic phase, transaction diligence is applied towards evaluating mergers, acquisitions, partnerships, and corporate development opportunities.',
     route: 'capabilities/investment-banking',
     iconName: 'TrendingUp',
     keyOfferings: [
-      'Private Equity & Institutional Growth Capital Syndication',
-      'Structured Credit Facilities & Mezzanine Financing',
-      'Promoter Financing & Loan Against Shares Advisory',
-      'Strategic M&A Sourcing and Deal Execution'
+      'Transaction Diligence & Strategic Fit Analysis',
+      'Corporate Development Evaluation',
+      'Partner Synergy & Joint Venture Assessment',
+      'Statutory & Regulatory Due Diligence'
     ],
-    clientFit: 'Enterprises requiring ₹25 Cr to ₹250 Cr growth or liquidity capital across diverse sectors.',
-    stats: { label: 'Institutional Network Reach', value: '180+ Funds' }
+    clientFit: 'Strategic evaluation for corporate growth and sustainable diversification.',
+    stats: { label: 'Strategic Orientation', value: 'Growth & Diversification' }
   },
   {
     id: 'securities-services',
-    title: 'Securities & Investment Services',
-    shortDesc: 'Institutional dealing, custody facilitation, and treasury yield management frameworks.',
-    fullDesc: 'Serving institutions, family offices, and corporate treasuries with disciplined securities execution, specialized treasury portfolio advisory, and capital market intelligence built on thirty years of continuous market presence.',
+    title: 'Securities Administration & Treasury Governance',
+    shortDesc: 'Long-standing market presence in securities compliance, depository coordination, and fiduciary administration.',
+    fullDesc: 'With continuous listing on the BSE since 1994, Amarnath Securities possesses comprehensive institutional experience in securities administration, electronic depository mechanics (NSDL & CDSL), and prudent treasury governance.',
     route: 'capabilities/securities-services',
     iconName: 'Layers',
     keyOfferings: [
-      'Corporate Treasury Yield Optimization',
-      'Block & Bulk Deal Facilitation on BSE Platform',
-      'Demat, Custody & Depository Interface Coordination',
-      'Market Liquidity Analysis & Risk Governance Models'
+      'Electronic Demat & Depository Connectivity (NSDL/CDSL)',
+      'Fiduciary Governance & Shareholder Record Administration',
+      'Capital Preservation & Treasury Oversight Guidelines',
+      'Statutory Listing Discipline on BSE Limited'
     ],
-    clientFit: 'Family offices, corporate treasuries, and high-net-worth market participants.',
-    stats: { label: 'Continuous Market Heritage', value: 'Since 1994' }
+    clientFit: 'Continuous corporate securities heritage and fiduciary stewardship.',
+    stats: { label: 'BSE Listing Status', value: 'Scrip: 538465' }
   },
   {
     id: 'corporate-lending',
-    title: 'Corporate Lending & Financial Solutions',
-    shortDesc: 'Custom liquidity facilities, bridge financing, and working capital advisory solutions.',
-    fullDesc: 'Amarnath Securities structures targeted financing solutions that address specialized liquidity requirements. We design secured short-term facilities, bridge capital, and customized credit agreements tailored to cash-flow profiles.',
+    title: 'Credit Assessment & Financial Evaluation',
+    shortDesc: 'Historical background in credit assessment, liquidity review, and structured cash-flow analysis.',
+    fullDesc: 'Having historically operated within the NBFC and lending space, the Company maintains foundational experience in credit risk evaluation and financial viability analysis. This analytical heritage serves as a prudent filter when evaluating new business initiatives.',
     route: 'capabilities/corporate-lending',
     iconName: 'Coins',
     keyOfferings: [
-      'Structured Secured Corporate Advances',
-      'Bridge Funding & Interim Liquidity Facilities',
-      'Supply Chain & Receivables Finance Advisory',
-      'Collateralized Term Credit Structuring'
+      'Historical Credit Evaluation Discipline',
+      'Cash Flow Sensitivity & Solvency Assessment',
+      'Risk-Weighted Commercial Appraisal',
+      'Prudent Governance and Solvency Filters'
     ],
-    clientFit: 'Operating enterprises experiencing seasonal credit spikes or transition periods.',
-    stats: { label: 'Average Turnaround Framework', value: '< 14 Days' }
+    clientFit: 'Earlier lending heritage; now providing analytical rigor for corporate opportunities.',
+    stats: { label: 'Operational Heritage', value: 'Earlier NBFC Experience' }
   }
 ];
 
@@ -430,6 +537,47 @@ export const INVESTOR_DOCUMENTS: InvestorDocument[] = [
     sebiReference: 'Reg 30 SEBI (LODR)'
   },
 
+  // Corporate Governance
+  {
+    id: 'doc-cg-q3-26',
+    title: 'Quarterly Corporate Governance Report for Quarter ended December 31, 2025',
+    category: 'Corporate Governance',
+    financialYear: 'FY 2025-26',
+    quarter: 'Q3',
+    filingDate: '15 Jan 2026',
+    bseAckNumber: 'BSE/LODR/20260115/104930',
+    fileSize: '650 KB',
+    fileType: 'PDF',
+    description: 'Compliance report on corporate governance pursuant to Regulation 27(2) of SEBI (LODR) Regulations, 2015 detailing board composition and committee meetings.',
+    sebiReference: 'Reg 27(2) SEBI (LODR)'
+  },
+  {
+    id: 'doc-cg-q2-26',
+    title: 'Quarterly Corporate Governance Report for Quarter ended September 30, 2025',
+    category: 'Corporate Governance',
+    financialYear: 'FY 2025-26',
+    quarter: 'Q2',
+    filingDate: '14 Oct 2025',
+    bseAckNumber: 'BSE/LODR/20251014/948210',
+    fileSize: '620 KB',
+    fileType: 'PDF',
+    description: 'Quarterly governance compliance report including composition of board, audit committee, and secretarial compliance.',
+    sebiReference: 'Reg 27(2) SEBI (LODR)'
+  },
+  {
+    id: 'doc-cg-sec-audit-25',
+    title: 'Secretarial Audit Report for Financial Year 2024-25 (Form MR-3)',
+    category: 'Corporate Governance',
+    financialYear: 'FY 2024-25',
+    quarter: 'Annual',
+    filingDate: '30 Aug 2025',
+    bseAckNumber: 'BSE/LODR/20250830/881204',
+    fileSize: '1.4 MB',
+    fileType: 'PDF',
+    description: 'Secretarial Audit Report issued by Practicing Company Secretary pursuant to Section 204(1) of the Companies Act, 2013 and Regulation 24A of SEBI LODR.',
+    sebiReference: 'Sec 204 Companies Act & Reg 24A'
+  },
+
   // Investor Grievance
   {
     id: 'doc-griev-q3-26',
@@ -510,17 +658,17 @@ export const LEADERSHIP_TEAM: LeaderProfile[] = [
 export const INSIGHTS: InsightArticle[] = [
   {
     id: 'insight-1',
-    title: 'Navigating India’s Mid-Market Capital Surge: The Role of Structured Financing in 2026',
-    category: 'Market Advisory',
+    title: 'Navigating India’s Mid-Market Capital Dynamics: Corporate Structuring in 2026',
+    category: 'Corporate Governance & Markets',
     date: 'February 2026',
     readTime: '5 min read',
-    author: 'Amarnath Securities Research Desk',
-    excerpt: 'How domestic capital markets and institutional syndicates are enabling mid-market Indian enterprises to access growth capital without diluting strategic promoter control.',
-    content: `As the Indian economy sustains its robust momentum in 2026, mid-market enterprises face unique capital structuring challenges. Traditional bank credit lines often impose restrictive collateral mandates, while full equity dilution through early public rounds may prematurely cap promoter upside.
+    author: 'Amarnath Securities Corporate Secretariat',
+    excerpt: 'An overview of how Indian mid-market enterprises evaluate capital structures, sustainable growth avenues, and strategic corporate transactions.',
+    content: `As the Indian economy sustains its robust momentum in 2026, mid-market enterprises face dynamic opportunities and operational considerations across varied sectors. Traditional bank credit lines, structured instruments, and equity transactions each present distinct governance and balance-sheet implications.
 
-Here, structured corporate financing emerges as an indispensable bridge. By deploying bespoke hybrid instruments, structured debentures, and mezzanine capital, enterprises can fund expansion, execute tuck-in acquisitions, and optimize balance sheet cost-of-capital.
+Corporate entities increasingly evaluate opportunities based on commercial viability, strategic alignment, and sustainable value creation. Careful assessment of capital structures and disciplined regulatory compliance remain central to long-term enterprise compounding.
 
-At Amarnath Securities Limited, our thirty-year market tenure equips us to navigate these nuances, aligning regulatory prudence under SEBI mandates with market liquidity.`
+Amarnath Securities Limited observes these broader market developments with a focus on sustainable long-term value creation, responsible governance, and statutory transparency.`
   },
   {
     id: 'insight-2',
@@ -536,15 +684,15 @@ For shareholders and institutional stakeholders, this translates into unpreceden
   },
   {
     id: 'insight-3',
-    title: 'Corporate Treasury Optimization in an Evolving Interest Rate Cycle',
-    category: 'Treasury & Securities',
+    title: 'Corporate Treasury & Balance Sheet Prudence in Dynamic Macroeconomic Cycles',
+    category: 'Corporate Strategy & Governance',
     date: 'December 2025',
     readTime: '4 min read',
-    author: 'Treasury Solutions Group',
-    excerpt: 'Balancing liquidity safety with alpha yields: Strategic liquidity frameworks for corporate treasuries and family offices.',
-    content: `Managing corporate liquidity requires a delicate equilibrium between capital preservation, regulatory compliance, and yield generation. In dynamic macroeconomic cycles, passive cash holdings erode value through inflation drag.
+    author: 'Corporate & Strategic Perspectives',
+    excerpt: 'Analyzing liquidity frameworks, capital preservation strategies, and governance standards across evolving economic environments.',
+    content: `Managing corporate balance sheets requires a disciplined balance between capital preservation, regulatory compliance, and operational liquidity. In dynamic macroeconomic cycles, entities prioritize solvency and prudent capital allocation.
 
-By structuring laddered liquidity solutions and accessing prime institutional money market instruments on BSE platforms, corporate treasuries can maintain day-one solvency while securing enhanced yield spreads.`
+Corporate entities and market participants increasingly evaluate balanced strategies to manage working capital and liquidity while adhering to statutory and prudential guidelines.`
   }
 ];
 
@@ -553,5 +701,5 @@ export const FINANCIAL_HIGHLIGHTS_SUMMARY = [
   { metric: 'Listing Status', value: 'BSE Listed (Scrip: 538465)', note: 'Continuous listing since 1994' },
   { metric: 'Demat Connectivity', value: 'NSDL & CDSL', note: 'ISIN: INE745P01010' },
   { metric: 'Corporate Identification', value: 'L67120GJ1994PLC023254', note: 'Registered with ROC Gujarat' },
-  { metric: 'Statutory Compliance Rating', value: '100% LODR Compliant', note: 'Zero pending investor complaints' },
+  { metric: 'Governance & Disclosures', value: 'SEBI LODR Framework', note: 'Timely statutory BSE filings & investor grievance monitoring' },
 ];

@@ -218,17 +218,17 @@ export const ContactPage: React.FC<ContactPageProps> = ({ onNavigate: _onNavigat
 
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div className="space-y-1.5">
-                      <label className="text-slate-700 font-medium">Area of Advisory / Solution *</label>
+                      <label className="text-slate-700 font-medium">Area of Strategic Interest / Enquiry *</label>
                       <select
                         value={businessForm.serviceInterest}
                         onChange={(e) => setBusinessForm({ ...businessForm, serviceInterest: e.target.value })}
                         className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2.5 text-[#0A1128] focus:outline-none focus:border-[#0D9488]"
                       >
-                        <option value="Corporate Finance & Advisory">Corporate Finance & Advisory</option>
-                        <option value="Merchant Banking">Merchant Banking & Rights Issue</option>
-                        <option value="Investment Banking & Capital Raising">Investment Banking & Debt Syndication</option>
-                        <option value="Securities & Investment Services">Securities & Treasury Services</option>
-                        <option value="Corporate Lending & Financial Solutions">Corporate Lending / Bridge Finance</option>
+                        <option value="Business Development">Business Development</option>
+                        <option value="Mergers & Acquisitions">Mergers & Acquisitions</option>
+                        <option value="Strategic Opportunities & Partnerships">Strategic Opportunities & Partnerships</option>
+                        <option value="Corporate Evaluation & Advisory">Corporate Evaluation & Advisory</option>
+                        <option value="General Corporate Enquiry">General Corporate Enquiry</option>
                       </select>
                     </div>
 
@@ -407,7 +407,7 @@ export const ContactPage: React.FC<ContactPageProps> = ({ onNavigate: _onNavigat
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-2.5 text-[#9A7B38] font-semibold text-sm">
                     <Building2 className="w-4 h-4" />
-                    <span>Corporate & Operations Center</span>
+                    <span>Corporate Office</span>
                   </div>
                   <AmarnathLogo size={28} variant="light" />
                 </div>
@@ -443,7 +443,7 @@ export const ContactPage: React.FC<ContactPageProps> = ({ onNavigate: _onNavigat
                   <div className="font-semibold text-[#0A1128]">{COMPANY_DETAILS.rtaName}</div>
                   <div>{COMPANY_DETAILS.rtaAddress}</div>
                   <div className="pt-2 font-mono text-[11px]">
-                    <div>Tel: {COMPANY_DETAILS.rtaPhone}</div>
+                    <div>Tel: <a href={`tel:${COMPANY_DETAILS.rtaPhone.replace(/\s+/g, '')}`} className="text-slate-700 hover:text-[#0D9488]">{COMPANY_DETAILS.rtaPhone}</a></div>
                     <div>Email: <a href={`mailto:${COMPANY_DETAILS.rtaEmail}`} className="text-[#0D9488] font-semibold">{COMPANY_DETAILS.rtaEmail}</a></div>
                   </div>
                 </div>

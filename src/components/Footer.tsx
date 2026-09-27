@@ -56,12 +56,18 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
             Amarnath Securities Limited
           </h4>
           <p className="text-slate-400 text-xs leading-relaxed max-w-sm">
-            {COMPANY_DETAILS.corePositioning}. Established in 1994, Amarnath Securities Limited provides institutional-grade corporate finance, merchant banking, capital raising, and statutory investor advisory with three decades of continuous market integrity.
+            Incorporated in 1994 and listed on BSE Limited (Scrip: 538465). The Company has strategically transitioned towards exploring sustainable business opportunities, evaluating mergers and acquisitions, and maintaining disciplined corporate governance.
           </p>
 
-          <div className="space-y-2 pt-2 text-xs">
+          <div className="space-y-2.5 pt-2 text-xs">
             <div className="flex items-start gap-2.5">
-              <MapPin className="w-4 h-4 text-[#14B8A6] shrink-0 mt-0.5" />
+              <MapPin className="w-4 h-4 text-[#C5A880] shrink-0 mt-0.5" />
+              <span>
+                <strong className="text-slate-200">Corporate Office:</strong> {COMPANY_DETAILS.corpOffice}
+              </span>
+            </div>
+            <div className="flex items-start gap-2.5">
+              <Building className="w-4 h-4 text-[#14B8A6] shrink-0 mt-0.5" />
               <span>
                 <strong className="text-slate-200">Registered Office:</strong> {COMPANY_DETAILS.regOffice}
               </span>
@@ -81,10 +87,10 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
           </div>
         </div>
 
-        {/* Column 2: Capabilities */}
+        {/* Column 2: Business & Activities */}
         <div className="space-y-3">
           <h5 className="font-mono text-[11px] uppercase tracking-wider text-[#C5A880] font-semibold">
-            Capabilities
+            Business & Activities
           </h5>
           <ul className="space-y-2">
             <li>
@@ -203,10 +209,10 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
             </li>
             <li>
               <button 
-                onClick={() => onNavigate('about/governance')}
+                onClick={() => onNavigate('investor-relations/governance')}
                 className="hover:text-white transition-colors text-left"
               >
-                Board Committees
+                Corporate Governance
               </button>
             </li>
             <li>
@@ -214,7 +220,7 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
                 onClick={() => onNavigate('investor-relations/policies')}
                 className="hover:text-white transition-colors text-left"
               >
-                Corporate Policies
+                Disclosures & Policies
               </button>
             </li>
             <li>
@@ -254,7 +260,7 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
           <div className="flex items-center gap-2">
             <Building className="w-3.5 h-3.5 text-[#14B8A6]" />
             <span>
-              <strong className="text-slate-300">Registrar & Share Transfer Agent (RTA):</strong> {COMPANY_DETAILS.rtaName} | Phone: {COMPANY_DETAILS.rtaPhone} | Email: {COMPANY_DETAILS.rtaEmail}
+              <strong className="text-slate-300">Registrar & Share Transfer Agent (RTA):</strong> {COMPANY_DETAILS.rtaName} | Phone: <a href={`tel:${COMPANY_DETAILS.rtaPhone.replace(/\s+/g, '')}`} className="text-slate-300 hover:text-white transition-colors">{COMPANY_DETAILS.rtaPhone}</a> | Email: <a href={`mailto:${COMPANY_DETAILS.rtaEmail}`} className="text-slate-300 hover:text-white transition-colors">{COMPANY_DETAILS.rtaEmail}</a>
             </span>
           </div>
 
@@ -286,7 +292,7 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
               <span>•</span>
               <span>ISIN: {COMPANY_DETAILS.isin}</span>
               <span>•</span>
-              <span className="text-[#14B8A6]">Redesigned for 2026</span>
+              <span className="text-[#14B8A6]">BSE Scrip: {COMPANY_DETAILS.bseScripCode}</span>
             </div>
           </div>
         </div>

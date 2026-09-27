@@ -19,6 +19,7 @@ export type PageRoute =
   | 'investor-relations/agm-notices'
   | 'investor-relations/governance'
   | 'investor-relations/policies'
+  | 'investor-relations/disclosures-policies'
   | 'investor-relations/grievance'
   | 'investor-relations/rta'
   | 'insights'
@@ -33,6 +34,7 @@ export type DocumentCategory =
   | 'AGM / EGM / Notices'
   | 'Corporate Governance'
   | 'Company Policies'
+  | 'Disclosures & Policies'
   | 'Investor Grievance';
 
 export interface InvestorDocument {

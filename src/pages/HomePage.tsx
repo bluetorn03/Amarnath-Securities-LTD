@@ -45,83 +45,84 @@ interface HomePageProps {
   onOpenDocument: (doc: InvestorDocument) => void;
 }
 
-// Stable reference for hero typewriter phrases to prevent unnecessary re-initializations
+// Stable reference for hero typewriter phrases to reflect corporate evolution & strategic focus
 const HERO_TYPEWRITER_PHRASES = [
-  'Corporate Finance & Advisory',
-  'Merchant Banking Services',
-  'Capital Raising & Investment Solutions',
-  'Strategic Financial Advisory'
+  'Capital. Strategy. Opportunity.',
+  'Strategic Business Development',
+  'Corporate Evolution & Transition',
+  'Mergers & Acquisitions Evaluation',
+  'Sustainable Growth & Governance'
 ];
 
 export const HomePage: React.FC<HomePageProps> = ({ onNavigate, onOpenDocument }) => {
-  const [selectedNeedTab, setSelectedNeedTab] = useState<'corporates' | 'institutions' | 'promoters' | 'treasuries'>('corporates');
+  const [selectedNeedTab, setSelectedNeedTab] = useState<'business-dev' | 'ma-transactions' | 'strategic-opps' | 'responsible-growth'>('business-dev');
 
   // Filter latest 4 corporate disclosures
   const latestDisclosures = INVESTOR_DOCUMENTS.filter(
     d => d.category === 'BSE Disclosures' || d.category === 'Financial Results'
   ).slice(0, 4);
 
-  // Stacked cards data for sticky storytelling in Capabilities/Methodology
+  // Stacked cards data for sticky storytelling in Business & Activities
   const stackItems: StackCardItem[] = [
     {
       id: 'cap-1',
-      stepNumber: '01 / ADVISORY',
-      title: 'Corporate Finance & Capital Structuring',
-      category: 'Balance Sheet Agility',
-      description: 'Engineering resilient debt and equity architectures tailored to operational cycles, capex expansions, and liquidity optimization.',
+      stepNumber: 'PILLAR A',
+      title: 'BUSINESS DEVELOPMENT',
+      category: 'Long-Term Value Creation',
+      description: 'Our focus is on evaluating businesses and opportunities that have the potential to create sustainable long-term value for the Company and its stakeholders.',
       keyPoints: [
-        'Consortium Loan Syndication',
-        'Balance Sheet De-leveraging',
-        'Working Capital Rationalization',
-        'Structured Debt Placement'
+        'Commercial Viability Assessment',
+        'Scalability & Operating Potential',
+        'Strategic Relevance Analysis',
+        'Long-Term Potential Evaluation'
       ],
-      statBadge: { label: 'Ticket Range', value: '₹20 - ₹200 Cr' },
-      route: 'capabilities/corporate-finance'
+      statBadge: { label: 'Strategic Focus', value: 'Value Creation' },
+      route: 'capabilities'
     },
     {
       id: 'cap-2',
-      stepNumber: '02 / MERCHANT BANKING',
-      title: 'Merchant Banking & Capital Markets',
-      category: 'Public & Private Issues',
-      description: 'Managing statutory capital transactions from preliminary due diligence and SEBI LODR disclosures to depository allocation.',
+      stepNumber: 'PILLAR B',
+      title: 'MERGERS & ACQUISITIONS',
+      category: 'Corporate Transactions & Growth',
+      description: 'The Company also evaluates and pursues suitable mergers, acquisitions, strategic investments and other corporate transactions that may support its growth and diversification objectives.',
       keyPoints: [
-        'Rights Issues & Preferential Allotments',
-        'Independent Corporate Valuations',
-        'BSE Scrip Compliance Management',
-        'Takeover Regulations (SAST) Advisory'
+        'Strategic Potential Identification',
+        'Financial, Legal & Operational Due Diligence',
+        'Commercial Viability & Regulatory Assessment',
+        'Independent or Partner Collaboration'
       ],
-      statBadge: { label: 'BSE Scrip', value: '538465' },
-      route: 'capabilities/merchant-banking'
+      statBadge: { label: 'Evaluation Basis', value: 'Strategic Fit' },
+      route: 'capabilities'
     },
     {
       id: 'cap-3',
-      stepNumber: '03 / INSTITUTIONAL',
-      title: 'Investment Banking & Capital Raising',
-      category: 'Syndicate & Growth Liquidity',
-      description: 'Connecting mid-market enterprises with domestic institutional investors, private credit funds, and family offices for expansion rounds.',
+      stepNumber: 'PILLAR C',
+      title: 'STRATEGIC OPPORTUNITIES',
+      category: 'Cross-Sector Openness',
+      description: 'The Company remains open to opportunities across suitable sectors where its resources, management capabilities and strategic approach can contribute to sustainable business development.',
       keyPoints: [
-        'Private Equity / Credit Placement',
-        'Promoter Equity Financing',
-        'Institutional Roadshow Management',
-        'BSE Block Deal Coordination'
+        'Organic Growth Initiatives',
+        'Mergers & Acquisitions',
+        'Strategic Investments',
+        'Joint Ventures & Partnerships'
       ],
-      statBadge: { label: 'Syndicate Reach', value: '180+ Funds' },
-      route: 'capabilities/investment-banking'
+      statBadge: { label: 'Approach', value: 'Multi-Sector' },
+      route: 'capabilities'
     },
     {
       id: 'cap-4',
-      stepNumber: '04 / GOVERNANCE',
-      title: 'Securities Services & Treasury Frameworks',
-      category: 'Yield & Fiduciary Rigor',
-      description: 'Building institutional-grade yield and liquidity parameters for corporate treasuries, prioritizing capital preservation over volatility.',
+      stepNumber: 'PILLAR D',
+      title: 'RESPONSIBLE GROWTH',
+      category: 'Governance & Disclosures',
+      description: 'Every opportunity is evaluated with consideration to applicable laws and regulations, financial viability, governance requirements and the interests of the Company’s stakeholders.',
       keyPoints: [
-        'Secondary Fixed Income Allocation',
-        'Yield Optimization Frameworks',
-        'Depository & Custodian Coordination',
-        'Risk-Weighted Solvency Monitoring'
+        'Applicable Laws & Regulations',
+        'Financial Viability & Risk Prudence',
+        'Governance & Stakeholder Accountability',
+        'BSE Disclosures & Regulatory Filings'
       ],
-      statBadge: { label: 'Risk Protocol', value: 'Zero Speculation' },
-      route: 'capabilities/securities-services'
+      statBadge: { label: 'Disclosures', value: 'BSE Listed' },
+      route: 'capabilities'
     }
   ];
 
@@ -180,7 +181,7 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate, onOpenDocument }
               transition={{ duration: 0.7, delay: 0.35, ease: 'easeOut' }}
               className="text-slate-600 text-base sm:text-lg max-w-xl leading-relaxed font-normal"
             >
-              Institutional financial services, strategic corporate advisory, and capital solutions. Advancing enterprises through disciplined capital allocation, merchant banking, and regulatory stewardship since 1994.
+              A BSE-listed company incorporated in 1994, Amarnath Securities Limited is focused on identifying and developing sustainable business opportunities, evaluating strategic corporate transactions, and pursuing long-term value creation through disciplined governance.
             </motion.p>
 
             {/* Dual CTAs with Micro-interactions */}
@@ -195,7 +196,7 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate, onOpenDocument }
                 className="w-full sm:w-auto px-7 py-3.5 rounded-xl font-semibold text-sm text-white bg-[#0A1128] hover:bg-[#0D9488] shadow-md hover:shadow-lg transition-all duration-200 flex items-center justify-center gap-2 group cursor-pointer active:scale-[0.98]"
                 id="hero-explore-capabilities"
               >
-                <span>Explore Capabilities</span>
+                <span>Business & Activities</span>
                 <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
               </MagneticButton>
 
@@ -287,19 +288,21 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate, onOpenDocument }
                   </div>
                 </div>
 
-                {/* Metric 3: 100% LODR Compliance */}
+                {/* Metric 3: Paid-Up Equity Capital */}
                 <div className="p-6 rounded-2xl bg-white border border-slate-200/90 flex flex-col justify-between group hover:border-[#0D9488]/50 transition-all shadow-2xs hover:shadow-sm">
                   <div className="text-xs font-mono uppercase tracking-wider text-[#0D9488] flex items-center justify-between font-semibold">
-                    <span>Statutory Rigor</span>
-                    <ShieldCheck className="w-3.5 h-3.5 text-slate-400 group-hover:text-[#0D9488] transition-colors" />
+                    <span>Equity Capital Base</span>
+                    <Coins className="w-3.5 h-3.5 text-slate-400 group-hover:text-[#0D9488] transition-colors" />
                   </div>
                   <div className="my-3">
                     <div className="text-3xl sm:text-4xl font-display font-bold text-[#0A1128] tracking-tight">
-                      <AnimatedCounter end={100} suffix="%" duration={1600} />
+                      <span>₹</span>
+                      <AnimatedCounter end={3} duration={1400} />
+                      <span className="text-2xl font-sans font-semibold text-[#0A1128]">.00 Cr</span>
                     </div>
                   </div>
                   <div className="text-xs text-slate-500 font-sans">
-                    LODR Compliance • Zero Pending Grievances
+                    Paid-Up Equity Capital • 30 Lakh Shares
                   </div>
                 </div>
 
@@ -355,35 +358,35 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate, onOpenDocument }
             <ScrollReveal direction="left" distance={30} className="lg:col-span-7 space-y-6">
               <div className="inline-flex items-center gap-2 text-xs font-mono uppercase tracking-widest text-[#0D9488] font-semibold">
                 <Building2 className="w-3.5 h-3.5" />
-                <span>Institutional Heritage</span>
+                <span>About Amarnath Securities Limited</span>
               </div>
 
               <h2 className="font-display text-2xl sm:text-4xl font-bold text-[#0A1128] leading-tight">
-                Architecting Strategic Capital & Value Preservation for Three Decades
+                Sustainable Business Development Guided by Disciplined Governance
               </h2>
 
               <p className="text-slate-600 text-sm sm:text-base leading-relaxed">
-                Amarnath Securities Limited is a BSE-listed non-banking financial and corporate advisory institution. Operating at the confluence of capital markets, corporate finance, and statutory governance, we serve enterprises, institutional funds, and family offices seeking disciplined capital stewardship.
+                Amarnath Securities Limited is a publicly listed company incorporated in 1994, with its registered office in Ahmedabad, Gujarat, and its equity shares listed on BSE Limited. Over the years, the Company has evolved in response to changing business opportunities and market conditions. Having historically operated in the financial services and NBFC space, the Company has undertaken a strategic transition towards exploring opportunities beyond its earlier business activities.
               </p>
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-2">
                 <div className="p-5 rounded-xl bg-white border border-slate-200/80 space-y-1.5 shadow-2xs hover:border-[#0D9488]/40 transition-colors">
                   <div className="flex items-center gap-2 text-[#9A7B38] font-semibold text-sm">
-                    <ShieldCheck className="w-4 h-4 text-[#0D9488]" />
-                    <span>Statutory Rigor</span>
+                    <TrendingUp className="w-4 h-4 text-[#0D9488]" />
+                    <span>Sustainable Growth</span>
                   </div>
                   <p className="text-xs text-slate-600 leading-relaxed">
-                    Uncompromising adherence to SEBI regulations, Companies Act provisions, and BSE disclosure integrity.
+                    Identifying opportunities with a long-term perspective to create enduring value across suitable sectors.
                   </p>
                 </div>
 
                 <div className="p-5 rounded-xl bg-white border border-slate-200/80 space-y-1.5 shadow-2xs hover:border-[#0D9488]/40 transition-colors">
                   <div className="flex items-center gap-2 text-[#9A7B38] font-semibold text-sm">
-                    <TrendingUp className="w-4 h-4 text-[#0D9488]" />
-                    <span>Capital Structuring</span>
+                    <ShieldCheck className="w-4 h-4 text-[#0D9488]" />
+                    <span>Responsible Governance</span>
                   </div>
                   <p className="text-xs text-slate-600 leading-relaxed">
-                    Tailoring debt, equity syndication, and balance sheet agility to foster sustainable enterprise growth.
+                    Maintaining appropriate standards of corporate governance, regulatory compliance and stakeholder accountability.
                   </p>
                 </div>
               </div>
@@ -393,7 +396,7 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate, onOpenDocument }
                   onClick={() => onNavigate('about')}
                   className="inline-flex items-center gap-2 text-sm font-semibold text-[#0D9488] hover:text-[#0F766E] transition-colors group cursor-pointer"
                 >
-                  <span>Learn more about our governance & heritage</span>
+                  <span>Learn more about our company overview & governance</span>
                   <ChevronRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
                 </button>
               </div>
@@ -407,7 +410,7 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate, onOpenDocument }
                     <AmarnathLogo size={36} variant="light" />
                     <div>
                       <h3 className="font-display font-semibold text-sm text-[#0A1128]">Statutory Credentials</h3>
-                      <span className="text-[11px] font-mono text-[#9A7B38] font-semibold">ROC Gujarat Registry</span>
+                      <span className="text-[11px] font-mono text-[#9A7B38] font-semibold">ROC Ahmedabad, Gujarat</span>
                     </div>
                   </div>
                   <span className="text-[10px] font-mono uppercase px-2 py-0.5 rounded bg-teal-50 text-[#0D9488] border border-teal-200 font-bold">
@@ -443,7 +446,7 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate, onOpenDocument }
 
       {/* =========================================================================
           SECTION 5: WHITE RHYTHM
-          Pinned / Sticky Storytelling: Stacked Capabilities
+          Pinned / Sticky Storytelling: Business & Activities
          ========================================================================= */}
       <section className="py-20 px-4 sm:px-8 bg-white border-b border-slate-200/80">
         <div className="max-w-7xl mx-auto space-y-12">
@@ -452,13 +455,13 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate, onOpenDocument }
             <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
               <div className="space-y-3 max-w-2xl">
                 <div className="inline-flex items-center gap-2 text-xs font-mono uppercase tracking-widest text-[#9A7B38] font-semibold">
-                  <span>Strategic Capabilities & Disciplines</span>
+                  <span>Strategic Evolution & Operations</span>
                 </div>
                 <h2 className="font-display text-2xl sm:text-4xl font-bold text-[#0A1128]">
-                  Stacked Institutional Competencies
+                  Business & Activities
                 </h2>
-                <p className="text-slate-600 text-sm">
-                  Scroll through our specialized practice areas engineered to address complex corporate lifecycles, structured debt, and regulatory capital mandates.
+                <p className="text-slate-600 text-sm leading-relaxed">
+                  Amarnath Securities Limited is focused on identifying and developing sustainable business opportunities across suitable sectors. The Company has evolved from its historical presence in the financial services and NBFC sector and is now exploring opportunities beyond its earlier business activities.
                 </p>
               </div>
 
@@ -466,7 +469,7 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate, onOpenDocument }
                 onClick={() => onNavigate('capabilities')}
                 className="inline-flex items-center gap-2 text-sm font-semibold text-[#0D9488] hover:text-[#0A1128] transition-colors shrink-0 cursor-pointer"
               >
-                <span>View All Capabilities</span>
+                <span>View Business & Activities</span>
                 <ArrowRight className="w-4 h-4" />
               </button>
             </div>
@@ -492,10 +495,10 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate, onOpenDocument }
                 Strategic Alignment
               </span>
               <h2 className="font-display text-2xl sm:text-4xl font-bold text-[#0A1128]">
-                Tailored Solutions Across Stakeholder Profiles
+                Framework for Evaluating Strategic Opportunities
               </h2>
               <p className="text-slate-600 text-sm">
-                Discover how Amarnath Securities structures bespoke capital solutions and advisory frameworks for your specific organizational context.
+                How Amarnath Securities Limited evaluates business opportunities, partnerships, and value creation models in accordance with disciplined governance.
               </p>
             </div>
           </ScrollReveal>
@@ -503,10 +506,10 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate, onOpenDocument }
           {/* Tabs */}
           <div className="flex items-center justify-center flex-wrap gap-2 sm:gap-3 border-b border-slate-200/80 pb-4">
             {[
-              { id: 'corporates', label: 'For Operating Corporates' },
-              { id: 'institutions', label: 'For Institutions & Funds' },
-              { id: 'promoters', label: 'For Promoters & Growth Entities' },
-              { id: 'treasuries', label: 'For Treasuries & Family Offices' },
+              { id: 'business-dev', label: 'Business Development' },
+              { id: 'ma-transactions', label: 'Mergers & Acquisitions' },
+              { id: 'strategic-opps', label: 'Strategic Opportunities' },
+              { id: 'responsible-growth', label: 'Responsible Growth' },
             ].map((tab) => (
               <button
                 key={tab.id}
@@ -524,189 +527,189 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate, onOpenDocument }
 
           {/* Tab Content Box on Pure White Card */}
           <div className="p-6 sm:p-8 rounded-2xl bg-white border border-slate-200/90 shadow-2xs">
-            {selectedNeedTab === 'corporates' && (
+            {selectedNeedTab === 'business-dev' && (
               <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 items-center">
                 <div className="lg:col-span-2 space-y-4">
                   <div className="text-xs font-mono text-[#9A7B38] uppercase tracking-wider font-semibold">
-                    Balance Sheet & Capital Expansion
+                    Long-Term Commercial Potential
                   </div>
                   <h3 className="font-display text-xl sm:text-2xl font-bold text-[#0A1128]">
-                    Unlocking Capital Agility & Refinancing Optimization
+                    Evaluating Sustainable Business Creation
                   </h3>
                   <p className="text-sm text-slate-600 leading-relaxed">
-                    Operating corporates frequently encounter seasonal credit constraints, expansion capital bottlenecks, and debt covenant rigidities. We design structured credit facilities, debt rationalization plans, and bridge liquidity solutions that preserve operational momentum.
+                    Our focus is on evaluating businesses and opportunities that have the potential to create sustainable long-term value for the Company and its stakeholders. This includes assessing commercial viability, scalability, strategic relevance and long-term potential.
                   </p>
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-2 text-xs text-slate-700">
                     <div className="flex items-center gap-2">
                       <CheckCircle2 className="w-4 h-4 text-[#0D9488]" />
-                      <span>Term Loan & Working Capital Syndication</span>
+                      <span>Commercial Viability Assessment</span>
                     </div>
                     <div className="flex items-center gap-2">
                       <CheckCircle2 className="w-4 h-4 text-[#0D9488]" />
-                      <span>Balance Sheet Optimization</span>
+                      <span>Scalability & Operating Potential</span>
                     </div>
                     <div className="flex items-center gap-2">
                       <CheckCircle2 className="w-4 h-4 text-[#0D9488]" />
-                      <span>Special Situations Restructuring</span>
+                      <span>Strategic Relevance Analysis</span>
                     </div>
                     <div className="flex items-center gap-2">
                       <CheckCircle2 className="w-4 h-4 text-[#0D9488]" />
-                      <span>Commercial Paper & Debenture Issuance</span>
+                      <span>Long-Term Value Compounding</span>
                     </div>
                   </div>
                 </div>
                 <div className="p-6 rounded-xl bg-[#FAFBFD] border border-slate-200 space-y-4 text-center shadow-2xs">
-                  <span className="text-xs font-mono text-slate-500 uppercase">Typical Mandate Size</span>
-                  <div className="text-3xl font-display font-bold text-[#9A7B38]">₹20 Cr - ₹200 Cr</div>
+                  <span className="text-xs font-mono text-slate-500 uppercase">Core Objective</span>
+                  <div className="text-2xl sm:text-3xl font-display font-bold text-[#0D9488]">Value Creation</div>
                   <p className="text-xs text-slate-500">
-                    End-to-end execution with lender consortiums and institutional investors.
+                    Disciplined evaluation prioritizing sustainable compounding over speculative ventures.
+                  </p>
+                  <button
+                    onClick={() => onNavigate('capabilities')}
+                    className="w-full py-2.5 rounded-xl text-xs font-semibold bg-[#0A1128] text-white hover:bg-[#0D9488] transition-colors cursor-pointer"
+                  >
+                    View Business & Activities
+                  </button>
+                </div>
+              </div>
+            )}
+
+            {selectedNeedTab === 'ma-transactions' && (
+              <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 items-center">
+                <div className="lg:col-span-2 space-y-4">
+                  <div className="text-xs font-mono text-[#9A7B38] uppercase tracking-wider font-semibold">
+                    Corporate Growth & Diversification
+                  </div>
+                  <h3 className="font-display text-xl sm:text-2xl font-bold text-[#0A1128]">
+                    Mergers, Acquisitions & Strategic Transactions
+                  </h3>
+                  <p className="text-sm text-slate-600 leading-relaxed">
+                    The Company evaluates and pursues suitable mergers, acquisitions, strategic investments and other corporate transactions that may support its growth and diversification objectives, backed by rigorous financial, legal, operational and regulatory due diligence.
+                  </p>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-2 text-xs text-slate-700">
+                    <div className="flex items-center gap-2">
+                      <CheckCircle2 className="w-4 h-4 text-[#0D9488]" />
+                      <span>Strategic Fit & Potential Identification</span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <CheckCircle2 className="w-4 h-4 text-[#0D9488]" />
+                      <span>Financial & Legal Due Diligence</span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <CheckCircle2 className="w-4 h-4 text-[#0D9488]" />
+                      <span>Operational & Regulatory Compliance</span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <CheckCircle2 className="w-4 h-4 text-[#0D9488]" />
+                      <span>Collaborations & Strategic Partnerships</span>
+                    </div>
+                  </div>
+                </div>
+                <div className="p-6 rounded-xl bg-[#FAFBFD] border border-slate-200 space-y-4 text-center shadow-2xs">
+                  <span className="text-xs font-mono text-slate-500 uppercase">Evaluation Basis</span>
+                  <div className="text-2xl sm:text-3xl font-display font-bold text-[#9A7B38]">Strategic Fit</div>
+                  <p className="text-xs text-slate-500">
+                    Subject to applicable laws, regulatory approvals, and corporate governance standards.
+                  </p>
+                  <button
+                    onClick={() => onNavigate('capabilities')}
+                    className="w-full py-2.5 rounded-xl text-xs font-semibold bg-[#0A1128] text-white hover:bg-[#0D9488] transition-colors cursor-pointer"
+                  >
+                    M&A Evaluation Pillars
+                  </button>
+                </div>
+              </div>
+            )}
+
+            {selectedNeedTab === 'strategic-opps' && (
+              <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 items-center">
+                <div className="lg:col-span-2 space-y-4">
+                  <div className="text-xs font-mono text-[#9A7B38] uppercase tracking-wider font-semibold">
+                    Multi-Sector Openness
+                  </div>
+                  <h3 className="font-display text-xl sm:text-2xl font-bold text-[#0A1128]">
+                    Cross-Sector Corporate Development
+                  </h3>
+                  <p className="text-sm text-slate-600 leading-relaxed">
+                    The Company remains open to opportunities across suitable sectors where its resources, management capabilities and strategic approach can contribute to sustainable business development through organic initiatives, joint ventures, and partnerships.
+                  </p>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-2 text-xs text-slate-700">
+                    <div className="flex items-center gap-2">
+                      <CheckCircle2 className="w-4 h-4 text-[#0D9488]" />
+                      <span>Organic Growth Initiatives</span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <CheckCircle2 className="w-4 h-4 text-[#0D9488]" />
+                      <span>Strategic Investments & Co-Investments</span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <CheckCircle2 className="w-4 h-4 text-[#0D9488]" />
+                      <span>Joint Ventures & Commercial Alliances</span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <CheckCircle2 className="w-4 h-4 text-[#0D9488]" />
+                      <span>Corporate Development Opportunities</span>
+                    </div>
+                  </div>
+                </div>
+                <div className="p-6 rounded-xl bg-[#FAFBFD] border border-slate-200 space-y-4 text-center shadow-2xs">
+                  <span className="text-xs font-mono text-slate-500 uppercase">Sector Scope</span>
+                  <div className="text-2xl sm:text-3xl font-display font-bold text-[#0D9488]">Multi-Sector</div>
+                  <p className="text-xs text-slate-500">
+                    Open to suitable emerging and resilient industries with long-term potential.
                   </p>
                   <button
                     onClick={() => onNavigate('contact')}
                     className="w-full py-2.5 rounded-xl text-xs font-semibold bg-[#0A1128] text-white hover:bg-[#0D9488] transition-colors cursor-pointer"
                   >
-                    Consult Corporate Finance Desk
+                    Initiate Discussion
                   </button>
                 </div>
               </div>
             )}
 
-            {selectedNeedTab === 'institutions' && (
+            {selectedNeedTab === 'responsible-growth' && (
               <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 items-center">
                 <div className="lg:col-span-2 space-y-4">
                   <div className="text-xs font-mono text-[#9A7B38] uppercase tracking-wider font-semibold">
-                    Institutional Co-Investment & Origination
+                    Governance & Statutory Compliance
                   </div>
                   <h3 className="font-display text-xl sm:text-2xl font-bold text-[#0A1128]">
-                    Sourcing High-Conviction Mid-Market Deal Flow
+                    Disciplined Fiduciary Stewardship
                   </h3>
                   <p className="text-sm text-slate-600 leading-relaxed">
-                    We partner with domestic and offshore institutional funds, credit funds, and AIFs seeking vetted private placement opportunities, structured debt deals, and secondary market block transactions with rigorous downside protection.
+                    Every opportunity is evaluated with consideration to applicable laws and regulations, financial viability, governance requirements and stakeholder interests. Material developments are communicated through statutory disclosures and BSE filings.
                   </p>
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-2 text-xs text-slate-700">
                     <div className="flex items-center gap-2">
                       <CheckCircle2 className="w-4 h-4 text-[#0D9488]" />
-                      <span>Proprietary Mid-Market Deal Sourcing</span>
+                      <span>Statutory Disclosures & Stock Exchange Filings</span>
                     </div>
                     <div className="flex items-center gap-2">
                       <CheckCircle2 className="w-4 h-4 text-[#0D9488]" />
-                      <span>Independent Valuation & Due Diligence</span>
+                      <span>SEBI LODR Compliance Framework</span>
                     </div>
                     <div className="flex items-center gap-2">
                       <CheckCircle2 className="w-4 h-4 text-[#0D9488]" />
-                      <span>BSE Platform Block Deal Execution</span>
+                      <span>Fiduciary Governance & Board Oversight</span>
                     </div>
                     <div className="flex items-center gap-2">
                       <CheckCircle2 className="w-4 h-4 text-[#0D9488]" />
-                      <span>Post-Closing Governance Monitoring</span>
+                      <span>Transparent Stakeholder Communications</span>
                     </div>
                   </div>
                 </div>
                 <div className="p-6 rounded-xl bg-[#FAFBFD] border border-slate-200 space-y-4 text-center shadow-2xs">
-                  <span className="text-xs font-mono text-slate-500 uppercase">Institutional Syndicate</span>
-                  <div className="text-3xl font-display font-bold text-[#0D9488]">180+ Funds</div>
+                  <span className="text-xs font-mono text-slate-500 uppercase">Compliance Standard</span>
+                  <div className="text-2xl sm:text-3xl font-display font-bold text-[#9A7B38]">SEBI LODR</div>
                   <p className="text-xs text-slate-500">
-                    Network spanning domestic AIFs, NBFCs, and global family offices.
+                    Timely statutory filings published across exchange and company portals.
                   </p>
                   <button
-                    onClick={() => onNavigate('capabilities/investment-banking')}
+                    onClick={() => onNavigate('investor-relations/policies')}
                     className="w-full py-2.5 rounded-xl text-xs font-semibold bg-[#0A1128] text-white hover:bg-[#0D9488] transition-colors cursor-pointer"
                   >
-                    View Investment Banking Practice
-                  </button>
-                </div>
-              </div>
-            )}
-
-            {selectedNeedTab === 'promoters' && (
-              <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 items-center">
-                <div className="lg:col-span-2 space-y-4">
-                  <div className="text-xs font-mono text-[#9A7B38] uppercase tracking-wider font-semibold">
-                    Promoter Equity & Growth Realization
-                  </div>
-                  <h3 className="font-display text-xl sm:text-2xl font-bold text-[#0A1128]">
-                    Non-Dilutive Growth Capital & Strategic Stake Financing
-                  </h3>
-                  <p className="text-sm text-slate-600 leading-relaxed">
-                    Founders and promoter groups require agile liquidity to exercise preferential warrants, consolidate shareholding, or fund subsidiary capex without prematurely diluting voting control.
-                  </p>
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-2 text-xs text-slate-700">
-                    <div className="flex items-center gap-2">
-                      <CheckCircle2 className="w-4 h-4 text-[#0D9488]" />
-                      <span>Promoter Stake Consolidation Advisory</span>
-                    </div>
-                    <div className="flex items-center gap-2">
-                      <CheckCircle2 className="w-4 h-4 text-[#0D9488]" />
-                      <span>Preferential Allotment & Rights Structuring</span>
-                    </div>
-                    <div className="flex items-center gap-2">
-                      <CheckCircle2 className="w-4 h-4 text-[#0D9488]" />
-                      <span>SEBI Takeover & SAST Compliance</span>
-                    </div>
-                    <div className="flex items-center gap-2">
-                      <CheckCircle2 className="w-4 h-4 text-[#0D9488]" />
-                      <span>Succession & Inter-Generational Holding</span>
-                    </div>
-                  </div>
-                </div>
-                <div className="p-6 rounded-xl bg-[#FAFBFD] border border-slate-200 space-y-4 text-center shadow-2xs">
-                  <span className="text-xs font-mono text-slate-500 uppercase">Equity Protection</span>
-                  <div className="text-3xl font-display font-bold text-[#9A7B38]">100% Focused</div>
-                  <p className="text-xs text-slate-500">
-                    Structured to protect promoter control and long-term voting integrity.
-                  </p>
-                  <button
-                    onClick={() => onNavigate('capabilities/merchant-banking')}
-                    className="w-full py-2.5 rounded-xl text-xs font-semibold bg-[#0A1128] text-white hover:bg-[#0D9488] transition-colors cursor-pointer"
-                  >
-                    Merchant Banking Overview
-                  </button>
-                </div>
-              </div>
-            )}
-
-            {selectedNeedTab === 'treasuries' && (
-              <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 items-center">
-                <div className="lg:col-span-2 space-y-4">
-                  <div className="text-xs font-mono text-[#9A7B38] uppercase tracking-wider font-semibold">
-                    Corporate Treasury & Family Wealth
-                  </div>
-                  <h3 className="font-display text-xl sm:text-2xl font-bold text-[#0A1128]">
-                    Disciplined Yield Frameworks & Capital Preservation
-                  </h3>
-                  <p className="text-sm text-slate-600 leading-relaxed">
-                    Protecting liquid surpluses while generating predictable risk-adjusted yield spreads. We build regulatory-compliant treasury frameworks utilizing high-grade money market instruments and structured debt.
-                  </p>
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-2 text-xs text-slate-700">
-                    <div className="flex items-center gap-2">
-                      <CheckCircle2 className="w-4 h-4 text-[#0D9488]" />
-                      <span>Treasury Yield Optimization Frameworks</span>
-                    </div>
-                    <div className="flex items-center gap-2">
-                      <CheckCircle2 className="w-4 h-4 text-[#0D9488]" />
-                      <span>Secondary Fixed Income Allocation</span>
-                    </div>
-                    <div className="flex items-center gap-2">
-                      <CheckCircle2 className="w-4 h-4 text-[#0D9488]" />
-                      <span>Custodian & Depository Coordination</span>
-                    </div>
-                    <div className="flex items-center gap-2">
-                      <CheckCircle2 className="w-4 h-4 text-[#0D9488]" />
-                      <span>Risk-Weighted Solvency Monitoring</span>
-                    </div>
-                  </div>
-                </div>
-                <div className="p-6 rounded-xl bg-[#FAFBFD] border border-slate-200 space-y-4 text-center shadow-2xs">
-                  <span className="text-xs font-mono text-slate-500 uppercase">Risk Philosophy</span>
-                  <div className="text-3xl font-display font-bold text-[#0D9488]">Zero Speculation</div>
-                  <p className="text-xs text-slate-500">
-                    Institutional-grade security and liquidity prioritized over volatility.
-                  </p>
-                  <button
-                    onClick={() => onNavigate('capabilities/securities-services')}
-                    className="w-full py-2.5 rounded-xl text-xs font-semibold bg-[#0A1128] text-white hover:bg-[#0D9488] transition-colors cursor-pointer"
-                  >
-                    Securities Services Overview
+                    Disclosures & Policies
                   </button>
                 </div>
               </div>
@@ -726,13 +729,13 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate, onOpenDocument }
               <div className="space-y-3 max-w-2xl">
                 <div className="inline-flex items-center gap-2 text-xs font-mono uppercase tracking-widest text-[#0D9488] font-semibold">
                   <ShieldCheck className="w-3.5 h-3.5" />
-                  <span>Investor Relations & Transparency</span>
+                  <span>Statutory Disclosures & Policies</span>
                 </div>
                 <h2 className="font-display text-2xl sm:text-4xl font-bold text-[#0A1128]">
-                  Statutory Filings, Disclosures & Investor Centre
+                  Disclosures & Policies
                 </h2>
-                <p className="text-slate-600 text-sm">
-                  Empowering shareholders with complete transparency, timely BSE disseminations, and full adherence to SEBI Listing Regulations.
+                <p className="text-slate-600 text-sm sm:text-base leading-relaxed">
+                  Amarnath Securities Limited is committed to maintaining transparency and providing timely information to its shareholders and stakeholders in accordance with applicable laws, regulations and listing requirements.
                 </p>
               </div>
 
@@ -973,13 +976,13 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate, onOpenDocument }
               <div className="p-8 sm:p-10 rounded-2xl bg-gradient-to-br from-[#0A1128] to-[#060B18] text-white flex flex-col justify-between space-y-6 shadow-xl border border-slate-800">
                 <div className="space-y-4">
                   <span className="text-xs font-mono uppercase tracking-widest text-[#14B8A6] font-semibold">
-                    Corporate Mandates
+                    Strategic Opportunities
                   </span>
                   <h3 className="font-display text-2xl sm:text-3xl font-bold text-white">
-                    Initiate a Corporate Finance or Advisory Mandate
+                    Explore Business & Corporate Development Initiatives
                   </h3>
                   <p className="text-sm text-slate-300 leading-relaxed">
-                    Connect with our advisory committee to evaluate balance sheet recapitalization, merchant banking transactions, or structured lending solutions.
+                    Connect with the Company to evaluate potential business opportunities, strategic partnerships, mergers and acquisitions, and sustainable growth projects.
                   </p>
                 </div>
 

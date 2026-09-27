@@ -46,7 +46,7 @@ export const AboutPage: React.FC<AboutPageProps> = ({ currentRoute, onNavigate }
             <TextReveal text="Institutional Legacy Built on Capital Discipline" delay={0.1} />
           </h1>
           <p className="text-slate-600 text-sm sm:text-base leading-relaxed">
-            Incorporated in 1994 and listed on the BSE Limited, Amarnath Securities Limited stands as a testament to disciplined corporate governance, financial stewardship, and strategic advisory.
+            Incorporated in 1994 and listed on BSE Limited, Amarnath Securities Limited is committed to disciplined corporate governance, long-term stakeholder value creation, and exploring sustainable business development opportunities.
           </p>
         </div>
 
@@ -78,16 +78,19 @@ export const AboutPage: React.FC<AboutPageProps> = ({ currentRoute, onNavigate }
         {activeTab === 'overview' && (
           <div className="space-y-12">
             {/* Story & Evolution */}
-            <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 items-center">
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 items-start">
               <div className="lg:col-span-7 space-y-6">
                 <h2 className="font-display text-2xl sm:text-3xl font-bold text-[#0A1128]">
-                  Three Decades of Presence in Indian Securities & Capital Markets
+                  About Amarnath Securities Limited
                 </h2>
-                <p className="text-slate-600 text-sm sm:text-base leading-relaxed">
-                  Founded in 1994, Amarnath Securities Limited was conceived during the seminal era of Indian financial liberalization. Over thirty years, the company has witnessed the transformative evolution of the Bombay Stock Exchange (BSE), the advent of electronic depositories (NSDL & CDSL), and the implementation of modern statutory standards under SEBI LODR.
+                <p className="text-slate-700 text-sm sm:text-base leading-relaxed">
+                  Amarnath Securities Limited is a publicly listed company incorporated in 1994, with its registered office in Ahmedabad, Gujarat, and its equity shares listed on BSE Limited.
                 </p>
-                <p className="text-slate-600 text-sm sm:text-base leading-relaxed">
-                  Today, Amarnath Securities provides specialized corporate finance advisory, merchant banking interface, capital syndication, and disciplined treasury support to enterprises that value long-term financial integrity.
+                <p className="text-slate-700 text-sm sm:text-base leading-relaxed">
+                  Over the years, the Company has evolved in response to changing business opportunities and market conditions. Having historically operated in the financial services and NBFC space, the Company has undertaken a strategic transition towards exploring opportunities beyond its earlier business activities.
+                </p>
+                <p className="text-slate-700 text-sm sm:text-base leading-relaxed">
+                  With a renewed focus on building sustainable businesses, the Company seeks to identify and develop opportunities across suitable sectors while maintaining a disciplined approach to governance, compliance and responsible management.
                 </p>
 
                 <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 pt-4">
@@ -108,65 +111,72 @@ export const AboutPage: React.FC<AboutPageProps> = ({ currentRoute, onNavigate }
                 </div>
               </div>
 
-              {/* Mission / Vision Cards */}
+              {/* Approach & Stakeholder Commitment */}
               <div className="lg:col-span-5 space-y-4">
                 <div className="p-6 rounded-2xl bg-white border border-slate-200/80 space-y-3 shadow-2xs">
                   <div className="flex items-center gap-2 text-[#0D9488] font-semibold text-sm">
                     <Award className="w-5 h-5" />
-                    <span>Our Strategic Vision</span>
+                    <span>Strategic Direction</span>
                   </div>
                   <p className="text-xs sm:text-sm text-slate-600 leading-relaxed">
-                    To be the premier corporate advisory and capital architecture partner for mid-market Indian enterprises, renowned for fiduciary excellence, transactional precision, and enduring stakeholder trust.
+                    With a renewed focus on building sustainable businesses, the Company seeks to identify and develop opportunities across suitable sectors while maintaining a disciplined approach to governance, compliance and responsible management.
                   </p>
                 </div>
 
                 <div className="p-6 rounded-2xl bg-white border border-slate-200/80 space-y-3 shadow-2xs">
                   <div className="flex items-center gap-2 text-[#9A7B38] font-semibold text-sm">
                     <ShieldCheck className="w-5 h-5" />
-                    <span>Governance Commitment</span>
+                    <span>Stakeholder Communication</span>
                   </div>
                   <p className="text-xs sm:text-sm text-slate-600 leading-relaxed">
-                    Upholding the highest benchmarks of statutory compliance, transparent BSE disclosures, and active protection of minority shareholder rights in adherence to SEBI LODR 2015.
+                    As a listed company, Amarnath Securities Limited remains committed to transparent communication with its shareholders and other stakeholders while continuing to evaluate opportunities for the Company’s future growth.
                   </p>
                 </div>
               </div>
             </div>
 
-            {/* Core Values Strip */}
+            {/* Three Fundamental Principles */}
             <div className="p-8 rounded-2xl bg-white border border-slate-200 shadow-2xs space-y-6">
-              <h3 className="font-display text-xl font-bold text-[#0A1128] text-center">
-                Foundational Principles of Capital Stewardship
-              </h3>
+              <div className="text-center max-w-2xl mx-auto space-y-1">
+                <span className="text-xs font-mono uppercase tracking-widest text-[#9A7B38] font-semibold">Guiding Philosophy</span>
+                <h3 className="font-display text-xl sm:text-2xl font-bold text-[#0A1128]">
+                  Our Approach is Guided by Three Fundamental Principles
+                </h3>
+              </div>
               <div className="grid grid-cols-1 md:grid-cols-3 gap-6 text-center">
-                <div className="space-y-2 p-4">
-                  <div className="w-10 h-10 rounded-full bg-teal-50 border border-teal-200 flex items-center justify-center mx-auto text-[#0D9488]">
+                <div className="space-y-3 p-5 rounded-xl bg-slate-50/70 border border-slate-200/60">
+                  <div className="w-11 h-11 rounded-full bg-teal-50 border border-teal-200 flex items-center justify-center mx-auto text-[#0D9488]">
                     <ShieldCheck className="w-5 h-5" />
                   </div>
-                  <h4 className="font-display font-semibold text-base text-[#0A1128]">Integrity & Disclosures</h4>
+                  <h4 className="font-display font-bold text-base text-[#0A1128]">Integrity</h4>
                   <p className="text-xs text-slate-600 leading-relaxed">
-                    Full, unreserved, and timely statutory disclosures ensuring all market participants operate with symmetrical information.
+                    Conducting business with transparency and accountability across all corporate operations and filings.
                   </p>
                 </div>
 
-                <div className="space-y-2 p-4 border-y md:border-y-0 md:border-x border-slate-200">
-                  <div className="w-10 h-10 rounded-full bg-amber-50 border border-amber-200 flex items-center justify-center mx-auto text-[#9A7B38]">
+                <div className="space-y-3 p-5 rounded-xl bg-slate-50/70 border border-slate-200/60">
+                  <div className="w-11 h-11 rounded-full bg-amber-50 border border-amber-200 flex items-center justify-center mx-auto text-[#9A7B38]">
+                    <TrendingUp className="w-5 h-5" />
+                  </div>
+                  <h4 className="font-display font-bold text-base text-[#0A1128]">Sustainable Growth</h4>
+                  <p className="text-xs text-slate-600 leading-relaxed">
+                    Identifying opportunities with a long-term perspective to create enduring value for the Company and stakeholders.
+                  </p>
+                </div>
+
+                <div className="space-y-3 p-5 rounded-xl bg-slate-50/70 border border-slate-200/60">
+                  <div className="w-11 h-11 rounded-full bg-blue-50 border border-blue-200 flex items-center justify-center mx-auto text-[#2563EB]">
                     <Scale className="w-5 h-5" />
                   </div>
-                  <h4 className="font-display font-semibold text-base text-[#0A1128]">Fiduciary Discipline</h4>
+                  <h4 className="font-display font-bold text-base text-[#0A1128]">Responsible Governance</h4>
                   <p className="text-xs text-slate-600 leading-relaxed">
-                    Capital allocation aligned with long-term solvency, downside protection, and sustainable stakeholder return.
+                    Maintaining appropriate standards of corporate governance, regulatory compliance and stakeholder accountability.
                   </p>
                 </div>
+              </div>
 
-                <div className="space-y-2 p-4">
-                  <div className="w-10 h-10 rounded-full bg-blue-50 border border-blue-200 flex items-center justify-center mx-auto text-[#2563EB]">
-                    <Landmark className="w-5 h-5" />
-                  </div>
-                  <h4 className="font-display font-semibold text-base text-[#0A1128]">Prudent Structuring</h4>
-                  <p className="text-xs text-slate-600 leading-relaxed">
-                    Structuring transactions with customized risk boundaries that withstand macroeconomic and rate cycle volatility.
-                  </p>
-                </div>
+              <div className="p-4 rounded-xl bg-[#FAFBFD] border border-slate-200 text-center text-xs text-slate-600">
+                As a listed company, Amarnath Securities Limited remains committed to transparent communication with its shareholders and other stakeholders while continuing to evaluate opportunities for the Company’s future growth.
               </div>
             </div>
           </div>
@@ -288,7 +298,7 @@ export const AboutPage: React.FC<AboutPageProps> = ({ currentRoute, onNavigate }
                   Chaired by a Non-Executive Director pursuant to Regulation 20 of SEBI (LODR) Regulations, 2015. Specifically monitors investor complaints, transfer/transmission of shares, demat requests, and unresolved grievances.
                 </p>
                 <div className="text-xs font-mono text-slate-600 font-semibold pt-2 border-t border-slate-100">
-                  Complaint Redressal Rate: 100%
+                  Grievance Monitoring: SEBI Reg 13(3) Framework
                 </div>
               </div>
 
@@ -298,7 +308,7 @@ export const AboutPage: React.FC<AboutPageProps> = ({ currentRoute, onNavigate }
                   <span>Risk Management Committee</span>
                 </div>
                 <p className="text-xs text-slate-600 leading-relaxed">
-                  Regularly evaluates operational, statutory, liquidity, and credit risks across financial advisory and lending transactions, ensuring balanced risk-weighted decision architecture.
+                  Regularly evaluates operational, statutory, governance, and business risks across corporate operations and strategic initiatives, ensuring balanced risk-weighted decision architecture.
                 </p>
                 <div className="text-xs font-mono text-[#9A7B38] font-semibold pt-2 border-t border-slate-100">
                   Quarterly Risk Review Protocol
@@ -404,7 +414,9 @@ export const AboutPage: React.FC<AboutPageProps> = ({ currentRoute, onNavigate }
                       </div>
                       <div className="text-[#0A1128] font-medium">{COMPANY_DETAILS.rtaName}</div>
                       <div className="text-slate-600">{COMPANY_DETAILS.rtaAddress}</div>
-                      <div className="text-slate-500">Email: {COMPANY_DETAILS.rtaEmail} | Tel: {COMPANY_DETAILS.rtaPhone}</div>
+                      <div className="text-slate-500">
+                        Email: <a href={`mailto:${COMPANY_DETAILS.rtaEmail}`} className="text-[#0D9488] hover:underline font-semibold">{COMPANY_DETAILS.rtaEmail}</a> | Tel: <a href={`tel:${COMPANY_DETAILS.rtaPhone.replace(/\s+/g, '')}`} className="text-slate-700 hover:text-[#0D9488] font-mono">{COMPANY_DETAILS.rtaPhone}</a>
+                      </div>
                     </div>
 
                     <div className="p-4 rounded-xl bg-slate-50 border border-slate-200/80 space-y-1">
@@ -418,7 +430,7 @@ export const AboutPage: React.FC<AboutPageProps> = ({ currentRoute, onNavigate }
                     <div className="p-4 rounded-xl bg-slate-50 border border-slate-200/80 space-y-1">
                       <div className="text-[#2563EB] font-semibold flex items-center gap-1.5">
                         <MapPin className="w-3.5 h-3.5" />
-                        <span>Corporate & Operational Office</span>
+                        <span>Corporate Office</span>
                       </div>
                       <div className="text-slate-700">{COMPANY_DETAILS.corpOffice}</div>
                     </div>

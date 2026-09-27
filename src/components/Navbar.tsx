@@ -219,7 +219,7 @@ export const Navbar: React.FC<NavbarProps> = ({ currentRoute, onNavigate }) => {
               </AnimatePresence>
             </div>
 
-            {/* Capabilities Dropdown */}
+            {/* Business & Activities Dropdown */}
             <div 
               className="relative"
               onMouseEnter={() => handleMouseEnter('capabilities')}
@@ -234,7 +234,7 @@ export const Navbar: React.FC<NavbarProps> = ({ currentRoute, onNavigate }) => {
                 }`}
                 aria-expanded={activeDropdown === 'capabilities'}
               >
-                <span>Capabilities</span>
+                <span>Business & Activities</span>
                 <ChevronDown className={`w-3.5 h-3.5 transition-transform duration-200 ${
                   activeDropdown === 'capabilities' ? 'rotate-180 text-[#0D9488]' : ''
                 }`} />
@@ -251,7 +251,7 @@ export const Navbar: React.FC<NavbarProps> = ({ currentRoute, onNavigate }) => {
                   >
                     <div className="bg-white rounded-xl shadow-[0_12px_36px_-6px_rgba(15,23,42,0.12)] p-2.5 border border-slate-200 space-y-1">
                       <div className="px-3 py-1.5 text-[11px] font-mono uppercase tracking-wider text-[#9A7B38] border-b border-slate-100 mb-1 font-semibold">
-                        Core Advisory & Solutions
+                        Business & Activities
                       </div>
 
                       <button
@@ -412,10 +412,17 @@ export const Navbar: React.FC<NavbarProps> = ({ currentRoute, onNavigate }) => {
                         </button>
 
                         <button
+                          onClick={() => navigateTo('investor-relations/governance')}
+                          className="w-full text-left px-2.5 py-1.5 rounded-md hover:bg-slate-50 text-sm text-slate-600 hover:text-[#0A1128] cursor-pointer"
+                        >
+                          Corporate Governance
+                        </button>
+
+                        <button
                           onClick={() => navigateTo('investor-relations/policies')}
                           className="w-full text-left px-2.5 py-1.5 rounded-md hover:bg-slate-50 text-sm text-slate-600 hover:text-[#0A1128] cursor-pointer"
                         >
-                          Company Policies
+                          Disclosures & Policies
                         </button>
 
                         <button
@@ -530,10 +537,13 @@ export const Navbar: React.FC<NavbarProps> = ({ currentRoute, onNavigate }) => {
                 </div>
               </div>
 
-              {/* Capabilities Section */}
+              {/* Business & Activities Section */}
               <div className="py-2 border-b border-slate-100">
-                <div className="text-xs font-mono uppercase text-[#9A7B38] mb-2 tracking-wider font-semibold">Capabilities</div>
+                <div className="text-xs font-mono uppercase text-[#9A7B38] mb-2 tracking-wider font-semibold">Business & Activities</div>
                 <div className="space-y-2 text-slate-700">
+                  <button onClick={() => navigateTo('capabilities')} className="block text-left py-1 font-semibold text-[#0D9488] cursor-pointer">
+                    Business & Activities Overview
+                  </button>
                   <button onClick={() => navigateTo('capabilities/corporate-finance')} className="block text-left py-1 hover:text-[#0D9488] cursor-pointer">
                     Corporate Finance & Advisory
                   </button>
@@ -577,8 +587,11 @@ export const Navbar: React.FC<NavbarProps> = ({ currentRoute, onNavigate }) => {
                   <button onClick={() => navigateTo('investor-relations/agm-notices')} className="text-left py-1 hover:text-[#0D9488] cursor-pointer">
                     AGM / Notices
                   </button>
+                  <button onClick={() => navigateTo('investor-relations/governance')} className="text-left py-1 hover:text-[#0D9488] cursor-pointer">
+                    Corporate Governance
+                  </button>
                   <button onClick={() => navigateTo('investor-relations/policies')} className="text-left py-1 hover:text-[#0D9488] cursor-pointer">
-                    Company Policies
+                    Disclosures & Policies
                   </button>
                   <button onClick={() => navigateTo('investor-relations/grievance')} className="text-left py-1 hover:text-[#0D9488] cursor-pointer">
                     Investor Grievance

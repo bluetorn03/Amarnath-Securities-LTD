@@ -5,7 +5,8 @@ import {
   COMPANY_DETAILS, 
   MARKET_TICKER_DATA, 
   SHAREHOLDING_BREAKDOWN, 
-  REGULATION_46_CLAUSES 
+  REGULATION_46_CLAUSES,
+  DISCLOSURES_POLICIES_OVERVIEW 
 } from '../data/mockData';
 import { TextReveal } from '../components/TextReveal';
 import { ScrollReveal } from '../components/ScrollReveal';
@@ -19,7 +20,8 @@ import {
   ChevronRight,
   Building,
   Mail,
-  Layers
+  Layers,
+  Scale
 } from 'lucide-react';
 
 interface InvestorRelationsPageProps {
@@ -40,9 +42,11 @@ export const InvestorRelationsPage: React.FC<InvestorRelationsPageProps> = ({
       case 'investor-relations/annual-reports': return 'Annual Reports';
       case 'investor-relations/shareholding-pattern': return 'Shareholding Pattern';
       case 'investor-relations/bse-disclosures': return 'BSE Disclosures';
+      case 'investor-relations/governance': return 'Corporate Governance';
+      case 'investor-relations/policies':
+      case 'investor-relations/disclosures-policies': return 'Disclosures & Policies';
       case 'investor-relations/regulation-46': return 'Regulation 46';
       case 'investor-relations/agm-notices': return 'AGM / EGM / Notices';
-      case 'investor-relations/policies': return 'Company Policies';
       case 'investor-relations/grievance': return 'Investor Grievance';
       case 'investor-relations/rta': return 'RTA';
       default: return 'All';
@@ -66,9 +70,10 @@ export const InvestorRelationsPage: React.FC<InvestorRelationsPageProps> = ({
     'Annual Reports',
     'Shareholding Pattern',
     'BSE Disclosures',
-    'Regulation 46',
+    'Corporate Governance',
+    'Disclosures & Policies',
     'AGM / EGM / Notices',
-    'Company Policies',
+    'Regulation 46',
     'Investor Grievance',
     'RTA'
   ];
@@ -88,8 +93,14 @@ export const InvestorRelationsPage: React.FC<InvestorRelationsPageProps> = ({
   const filteredDocuments = useMemo(() => {
     return INVESTOR_DOCUMENTS.filter((doc) => {
       // Category filter
-      if (selectedCategory !== 'All' && selectedCategory !== 'RTA' && doc.category !== selectedCategory) {
-        return false;
+      if (selectedCategory !== 'All' && selectedCategory !== 'RTA') {
+        if (selectedCategory === 'Disclosures & Policies') {
+          if (doc.category !== 'Company Policies' && doc.category !== 'Disclosures & Policies') {
+            return false;
+          }
+        } else if (doc.category !== selectedCategory) {
+          return false;
+        }
       }
 
       // Year filter
@@ -126,13 +137,13 @@ export const InvestorRelationsPage: React.FC<InvestorRelationsPageProps> = ({
           <div className="space-y-4 max-w-3xl">
             <div className="inline-flex items-center gap-2 text-xs font-mono uppercase tracking-widest text-[#0D9488] font-semibold">
               <ShieldCheck className="w-3.5 h-3.5" />
-              <span>SEBI LODR Compliance & Shareholder Relations</span>
+              <span>Disclosures, Policies & Shareholder Relations</span>
             </div>
             <h1 className="font-display text-3xl sm:text-5xl font-bold text-[#0A1128] tracking-tight">
               <TextReveal text="Investor Relations Centre" delay={0.1} />
             </h1>
-            <p className="text-slate-600 text-sm sm:text-base leading-relaxed">
-              Timely statutory filings, audited financials, corporate disclosures, and shareholder services for Amarnath Securities Limited (BSE: 538465).
+            <p className="text-slate-700 text-sm sm:text-base leading-relaxed">
+              Amarnath Securities Limited is committed to maintaining transparency and providing timely information to its shareholders and stakeholders in accordance with applicable laws, regulations and listing requirements.
             </p>
           </div>
 
@@ -172,9 +183,10 @@ export const InvestorRelationsPage: React.FC<InvestorRelationsPageProps> = ({
                 else if (cat === 'Annual Reports') onNavigate('investor-relations/annual-reports');
                 else if (cat === 'Shareholding Pattern') onNavigate('investor-relations/shareholding-pattern');
                 else if (cat === 'BSE Disclosures') onNavigate('investor-relations/bse-disclosures');
-                else if (cat === 'Regulation 46') onNavigate('investor-relations/regulation-46');
+                else if (cat === 'Corporate Governance') onNavigate('investor-relations/governance');
+                else if (cat === 'Disclosures & Policies') onNavigate('investor-relations/policies');
                 else if (cat === 'AGM / EGM / Notices') onNavigate('investor-relations/agm-notices');
-                else if (cat === 'Company Policies') onNavigate('investor-relations/policies');
+                else if (cat === 'Regulation 46') onNavigate('investor-relations/regulation-46');
                 else if (cat === 'Investor Grievance') onNavigate('investor-relations/grievance');
                 else if (cat === 'RTA') onNavigate('investor-relations/rta');
               }}
@@ -397,7 +409,7 @@ export const InvestorRelationsPage: React.FC<InvestorRelationsPageProps> = ({
                   </div>
                 </div>
                 <div className="p-3 rounded-xl bg-emerald-50 border border-emerald-200 text-[11px] text-emerald-800 font-medium">
-                  ✓ 100% resolution compliance within SEBI mandated 21-day window.
+                  ✓ Statutory redressal protocol monitored quarterly under SEBI (LODR) Regulation 13(3).
                 </div>
               </div>
 
@@ -416,7 +428,7 @@ export const InvestorRelationsPage: React.FC<InvestorRelationsPageProps> = ({
                   </p>
                   <div className="p-3 rounded-xl bg-slate-50 border border-slate-200 space-y-1.5 font-mono text-xs">
                     <div>Email: <a href={`mailto:${COMPANY_DETAILS.email}`} className="text-[#0D9488] font-semibold">{COMPANY_DETAILS.email}</a></div>
-                    <div>Phone: <a href={`tel:${COMPANY_DETAILS.phone}`} className="text-[#0A1128]">{COMPANY_DETAILS.phone}</a></div>
+                    <div>Phone: <a href={`tel:${COMPANY_DETAILS.phone.replace(/\s+/g, '')}`} className="text-[#0A1128] hover:underline font-semibold">{COMPANY_DETAILS.phone}</a></div>
                     <div className="text-slate-500 text-[10px]">Response SLA: Within 48 business hours</div>
                   </div>
                 </div>
@@ -487,7 +499,7 @@ export const InvestorRelationsPage: React.FC<InvestorRelationsPageProps> = ({
                     </div>
                     <div>
                       <strong className="text-[#0A1128] block font-sans">Telephone Contact:</strong>
-                      <span className="text-slate-700">{COMPANY_DETAILS.rtaPhone}</span>
+                      <a href={`tel:${COMPANY_DETAILS.rtaPhone.replace(/\s+/g, '')}`} className="text-slate-700 hover:text-[#0D9488] transition-colors">{COMPANY_DETAILS.rtaPhone}</a>
                     </div>
                   </div>
                 </div>
@@ -519,6 +531,116 @@ export const InvestorRelationsPage: React.FC<InvestorRelationsPageProps> = ({
                   </div>
                 </div>
               </div>
+            </div>
+          </div>
+        )}
+
+        {/* =========================================================================
+            SPECIAL VIEW: CORPORATE GOVERNANCE (Task 7)
+           ========================================================================= */}
+        {selectedCategory === 'Corporate Governance' && (
+          <div className="space-y-6">
+            <div className="p-6 sm:p-8 rounded-2xl bg-white border border-slate-200 shadow-2xs space-y-4">
+              <div className="flex items-center gap-2 text-xs font-mono text-[#9A7B38] uppercase tracking-wider font-semibold">
+                <Scale className="w-4 h-4 text-[#0D9488]" />
+                <span>Regulation 27(2) LODR & Companies Act Governance</span>
+              </div>
+              <h2 className="font-display text-xl sm:text-2xl font-bold text-[#0A1128]">
+                Corporate Governance Framework & Statutory Filings
+              </h2>
+              <p className="text-slate-700 text-sm leading-relaxed max-w-3xl">
+                The Company adheres to statutory standards of corporate governance, board independence, and regulatory compliance. Quarterly governance reports, secretarial audit records, and board committee structures are maintained in accordance with SEBI (Listing Obligations and Disclosure Requirements) Regulations, 2015.
+              </p>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+              <div className="p-6 rounded-2xl bg-white border border-slate-200 space-y-3 shadow-2xs">
+                <div className="text-xs font-mono uppercase text-[#0D9488] font-semibold">Board Committees</div>
+                <div className="font-display font-bold text-base text-[#0A1128]">Active Committee Oversight</div>
+                <p className="text-xs text-slate-600 leading-relaxed">
+                  Audit Committee, Nomination & Remuneration Committee, and Stakeholders Relationship Committee function with independent director oversight under the Companies Act, 2013 and SEBI LODR.
+                </p>
+              </div>
+              <div className="p-6 rounded-2xl bg-white border border-slate-200 space-y-3 shadow-2xs">
+                <div className="text-xs font-mono uppercase text-[#9A7B38] font-semibold">Secretarial Audit</div>
+                <div className="font-display font-bold text-base text-[#0A1128]">Form MR-3 Compliance</div>
+                <p className="text-xs text-slate-600 leading-relaxed">
+                  Secretarial audit conducted annually by an independent Practicing Company Secretary pursuant to Section 204 of the Companies Act, 2013 and Regulation 24A of SEBI LODR Regulations.
+                </p>
+              </div>
+              <div className="p-6 rounded-2xl bg-white border border-slate-200 space-y-3 shadow-2xs">
+                <div className="text-xs font-mono uppercase text-[#2563EB] font-semibold">Exchange Disclosures</div>
+                <div className="font-display font-bold text-base text-[#0A1128]">Quarterly LODR Reg 27(2)</div>
+                <p className="text-xs text-slate-600 leading-relaxed">
+                  Periodic corporate governance compliance reports submitted to BSE Limited within prescribed statutory deadlines following the conclusion of each financial quarter.
+                </p>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* =========================================================================
+            SPECIAL VIEW: DISCLOSURES & POLICIES (Task 8)
+           ========================================================================= */}
+        {selectedCategory === 'Disclosures & Policies' && (
+          <div className="space-y-6">
+            <div className="p-6 sm:p-8 rounded-2xl bg-white border border-slate-200 shadow-2xs space-y-4">
+              <div className="flex items-center gap-2 text-xs font-mono text-[#0D9488] uppercase tracking-wider font-semibold">
+                <ShieldCheck className="w-4 h-4 text-[#0D9488]" />
+                <span>Statutory Compliance & Governance Policy Repository</span>
+              </div>
+              <h2 className="font-display text-xl sm:text-2xl font-bold text-[#0A1128]">
+                Disclosures & Policies
+              </h2>
+              <p className="text-slate-700 text-sm sm:text-base leading-relaxed max-w-3xl">
+                Amarnath Securities Limited is committed to maintaining transparency and providing timely information to its shareholders and stakeholders in accordance with applicable laws, regulations and listing requirements.
+              </p>
+              <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-lg bg-teal-50 border border-teal-200 text-xs font-mono text-[#0D9488] font-semibold">
+                <CheckCircle2 className="w-3.5 h-3.5" />
+                <span>Structured Category Placeholders • Ready for Backend & CMS Integration</span>
+              </div>
+            </div>
+
+            {/* Clean Document / Category Placeholders Ready for Backend Integration */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              {DISCLOSURES_POLICIES_OVERVIEW.frameworks.map((framework, idx) => (
+                <div
+                  key={framework.id}
+                  className="p-6 rounded-2xl bg-white border border-slate-200 shadow-2xs hover:border-[#0D9488]/40 transition-all space-y-4 flex flex-col justify-between"
+                >
+                  <div className="space-y-2">
+                    <div className="flex items-center justify-between">
+                      <span className="text-[10px] font-mono uppercase px-2 py-0.5 rounded bg-slate-100 text-[#9A7B38] font-semibold border border-slate-200">
+                        Framework 0{idx + 1}
+                      </span>
+                      <span className="text-[10px] font-mono text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200 font-semibold">
+                        Backend Ready
+                      </span>
+                    </div>
+                    <h3 className="font-display font-semibold text-lg text-[#0A1128]">
+                      {framework.title}
+                    </h3>
+                    <p className="text-xs sm:text-sm text-slate-600 leading-relaxed">
+                      {framework.desc}
+                    </p>
+                  </div>
+
+                  <div className="pt-4 border-t border-slate-100 flex items-center justify-between text-xs">
+                    <span className="text-slate-500 font-mono text-[11px]">BSE LODR Framework</span>
+                    <button
+                      onClick={() => {
+                        if (framework.title.includes('Corporate Governance')) setSelectedCategory('Corporate Governance');
+                        else if (framework.title.includes('SEBI LODR')) setSelectedCategory('BSE Disclosures');
+                        else if (framework.title.includes('Shareholder')) setSelectedCategory('Shareholding Pattern');
+                      }}
+                      className="text-[#0D9488] hover:text-[#0F766E] font-semibold flex items-center gap-1 cursor-pointer"
+                    >
+                      <span>Filter Category</span>
+                      <ChevronRight className="w-3.5 h-3.5" />
+                    </button>
+                  </div>
+                </div>
+              ))}
             </div>
           </div>
         )}

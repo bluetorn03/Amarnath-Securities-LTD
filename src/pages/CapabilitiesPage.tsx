@@ -1,6 +1,6 @@
 import React from 'react';
 import { PageRoute } from '../types';
-import { CAPABILITIES } from '../data/mockData';
+import { CAPABILITIES, BUSINESS_ACTIVITIES_DATA } from '../data/mockData';
 import { TextReveal } from '../components/TextReveal';
 import { ScrollReveal } from '../components/ScrollReveal';
 import { 
@@ -14,7 +14,8 @@ import {
   ArrowRight,
   Briefcase,
   Sparkles,
-  ArrowUpRight
+  ArrowUpRight,
+  Scale
 } from 'lucide-react';
 
 interface CapabilitiesPageProps {
@@ -49,22 +50,27 @@ export const CapabilitiesPage: React.FC<CapabilitiesPageProps> = ({ currentRoute
 
   return (
     <div className="w-full bg-[#FAFBFD] text-[#0A1128] min-h-screen py-10 px-4 sm:px-8 font-sans">
-      <div className="max-w-7xl mx-auto space-y-10">
+      <div className="max-w-7xl mx-auto space-y-12">
         {/* Header */}
         <div className="space-y-4 max-w-3xl">
           <div className="inline-flex items-center gap-2 text-xs font-mono uppercase tracking-widest text-[#0D9488] font-semibold">
             <Briefcase className="w-3.5 h-3.5" />
-            <span>Capabilities & Strategic Advisory</span>
+            <span>Strategic Evolution & Scope</span>
           </div>
           <h1 className="font-display text-3xl sm:text-5xl font-bold text-[#0A1128] tracking-tight">
-            <TextReveal text="Institutional Capital Architecture & Advisory" delay={0.1} />
+            <TextReveal text="Business & Activities" delay={0.1} />
           </h1>
-          <p className="text-slate-600 text-sm sm:text-base leading-relaxed">
-            Delivering bespoke corporate finance, merchant banking, capital raising, and structured credit solutions engineered for growth enterprises, institutional investors, and promoter groups.
-          </p>
+          <div className="space-y-3 text-slate-700 text-sm sm:text-base leading-relaxed">
+            <p>
+              Amarnath Securities Limited is focused on identifying and developing sustainable business opportunities across suitable sectors.
+            </p>
+            <p className="text-slate-600 text-sm">
+              The Company has evolved from its historical presence in the financial services and NBFC sector and is now exploring opportunities beyond its earlier business activities.
+            </p>
+          </div>
         </div>
 
-        {/* Quick Tabs to Switch Between Capabilities */}
+        {/* Quick Tabs */}
         <div className="flex items-center gap-2 border-b border-slate-200 pb-4 overflow-x-auto">
           <button
             onClick={() => onNavigate('capabilities')}
@@ -74,7 +80,7 @@ export const CapabilitiesPage: React.FC<CapabilitiesPageProps> = ({ currentRoute
                 : 'text-slate-600 hover:text-[#0A1128] hover:bg-slate-100'
             }`}
           >
-            All Capabilities
+            Business & Activities (All)
           </button>
           {CAPABILITIES.map((cap) => (
             <button
@@ -153,16 +159,16 @@ export const CapabilitiesPage: React.FC<CapabilitiesPageProps> = ({ currentRoute
 
                   <div className="p-6 rounded-xl bg-gradient-to-br from-[#0A1128] to-[#060B18] text-white border border-slate-800 space-y-4 shadow-md">
                     <h4 className="font-display font-semibold text-base text-white">
-                      Engage on {selectedCap.title}
+                      Corporate & Strategic Enquiry
                     </h4>
                     <p className="text-xs text-slate-300 leading-relaxed">
-                      Our transaction team conducts initial feasibility reviews within 48 hours for qualified corporate and institutional mandates.
+                      Reach out to our corporate office regarding business development opportunities, strategic collaborations, or shareholder relations.
                     </p>
                     <button
                       onClick={() => onNavigate('contact')}
                       className="w-full py-3 rounded-xl text-xs font-semibold text-[#0A1128] bg-[#0D9488] hover:bg-[#14B8A6] transition-colors shadow-xs cursor-pointer"
                     >
-                      Schedule Advisory Discussion
+                      Contact Corporate Office
                     </button>
                   </div>
                 </div>
@@ -171,101 +177,159 @@ export const CapabilitiesPage: React.FC<CapabilitiesPageProps> = ({ currentRoute
           </div>
         ) : (
           /* =========================================================================
-              ALL CAPABILITIES OVERVIEW GRID
+              ALL BUSINESS & ACTIVITIES OVERVIEW
              ========================================================================= */
           <ScrollReveal direction="up" distance={20}>
-            <div className="space-y-12">
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                {CAPABILITIES.map((cap) => (
+            <div className="space-y-16">
+              {/* Four Clear Content Blocks */}
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                {BUSINESS_ACTIVITIES_DATA.pillars.map((pillar) => (
                   <div
-                    key={cap.id}
-                    onClick={() => onNavigate(cap.route)}
-                    className="p-6 rounded-2xl bg-white border border-slate-200/80 hover:border-[#0D9488]/40 cursor-pointer flex flex-col justify-between group transition-all duration-300 shadow-2xs hover:shadow-sm"
+                    key={pillar.id}
+                    className="p-8 rounded-2xl bg-white border border-slate-200/90 shadow-2xs hover:shadow-sm hover:border-[#0D9488]/40 transition-all space-y-6 flex flex-col justify-between"
                   >
                     <div className="space-y-4">
                       <div className="flex items-center justify-between">
-                        <div className="w-12 h-12 rounded-xl bg-slate-50 border border-slate-200 flex items-center justify-center group-hover:border-[#0D9488]/40 transition-colors">
-                          {getCapabilityIcon(cap.iconName)}
-                        </div>
-                        <div className="w-8 h-8 rounded-full bg-slate-100 border border-slate-200 group-hover:bg-[#0D9488] group-hover:text-white group-hover:border-[#0D9488] text-slate-500 flex items-center justify-center transition-all duration-200">
-                          <ArrowUpRight className="w-4 h-4 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
-                        </div>
+                        <span className="text-[11px] font-mono uppercase px-2.5 py-1 rounded bg-teal-50 text-[#0D9488] border border-teal-200/60 font-bold">
+                          PILLAR {pillar.pillarLetter}
+                        </span>
+                        <span className="text-xs font-mono text-slate-400">
+                          {pillar.subtitle}
+                        </span>
                       </div>
 
-                      <h3 className="font-display font-semibold text-lg text-[#0A1128] group-hover:text-[#0D9488] transition-colors">
-                        {cap.title}
+                      <h3 className="font-display font-bold text-xl sm:text-2xl text-[#0A1128]">
+                        {pillar.title}
                       </h3>
 
-                      <p className="text-xs sm:text-sm text-slate-600 leading-relaxed">
-                        {cap.shortDesc}
-                      </p>
-
-                      <div className="space-y-1.5 pt-2 border-t border-slate-100">
-                        {cap.keyOfferings.map((offering, idx) => (
-                          <div key={idx} className="flex items-center gap-2 text-xs text-slate-600">
-                            <div className="w-1.5 h-1.5 rounded-full bg-[#0D9488]" />
-                            <span className="truncate">{offering}</span>
-                          </div>
+                      <div className="space-y-3 text-slate-700 text-sm leading-relaxed">
+                        {pillar.paragraphs.map((p, pIdx) => (
+                          <p key={pIdx}>{p}</p>
                         ))}
                       </div>
                     </div>
 
-                    <div className="pt-6 mt-6 border-t border-slate-100 flex items-center justify-between text-xs">
-                      {cap.stats && (
-                        <span className="font-mono text-[11px] text-[#9A7B38] font-semibold">{cap.stats.value}</span>
-                      )}
-                      <span className="text-[#0D9488] font-medium flex items-center gap-1 group-hover:translate-x-1 transition-transform ml-auto">
-                        Explore Division <ArrowRight className="w-3.5 h-3.5" />
-                      </span>
+                    <div className="pt-4 border-t border-slate-100 space-y-2">
+                      <div className="text-[11px] font-mono uppercase text-[#9A7B38] font-semibold">Key Criteria & Dimensions</div>
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs text-slate-600">
+                        {pillar.keyFactors.map((kf, kfIdx) => (
+                          <div key={kfIdx} className="flex items-center gap-2">
+                            <CheckCircle2 className="w-3.5 h-3.5 text-[#0D9488] shrink-0" />
+                            <span>{kf}</span>
+                          </div>
+                        ))}
+                      </div>
                     </div>
                   </div>
                 ))}
               </div>
 
-              {/* Advisory Process & Execution Methodology */}
+              {/* Historical / Earlier Activities Context */}
+              <div className="space-y-6 pt-4 border-t border-slate-200/80">
+                <div className="space-y-2 max-w-3xl">
+                  <div className="inline-flex items-center gap-2 text-xs font-mono uppercase tracking-widest text-[#9A7B38] font-semibold">
+                    <span>Corporate Evolution</span>
+                  </div>
+                  <h3 className="font-display text-2xl font-bold text-[#0A1128]">
+                    Historical Practice Disciplines & Institutional Background
+                  </h3>
+                  <p className="text-slate-600 text-xs sm:text-sm leading-relaxed">
+                    Having historically operated in the financial services and NBFC space, the Company has undertaken a strategic transition towards exploring opportunities beyond its earlier business activities. The disciplines below reflect our historical foundation and analytical background, which inform our evaluation of new corporate opportunities.
+                  </p>
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                  {CAPABILITIES.map((cap) => (
+                    <div
+                      key={cap.id}
+                      onClick={() => onNavigate(cap.route)}
+                      className="p-6 rounded-2xl bg-white border border-slate-200/80 hover:border-[#0D9488]/40 cursor-pointer flex flex-col justify-between group transition-all duration-300 shadow-2xs hover:shadow-sm"
+                    >
+                      <div className="space-y-4">
+                        <div className="flex items-center justify-between">
+                          <div className="w-12 h-12 rounded-xl bg-slate-50 border border-slate-200 flex items-center justify-center group-hover:border-[#0D9488]/40 transition-colors">
+                            {getCapabilityIcon(cap.iconName)}
+                          </div>
+                          <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-slate-100 text-slate-600 border border-slate-200">
+                            Historical Context
+                          </span>
+                        </div>
+
+                        <h4 className="font-display font-semibold text-base text-[#0A1128] group-hover:text-[#0D9488] transition-colors">
+                          {cap.title}
+                        </h4>
+
+                        <p className="text-xs text-slate-600 leading-relaxed">
+                          {cap.shortDesc}
+                        </p>
+
+                        <div className="space-y-1.5 pt-2 border-t border-slate-100">
+                          {cap.keyOfferings.map((offering, idx) => (
+                            <div key={idx} className="flex items-center gap-2 text-xs text-slate-600">
+                              <div className="w-1.5 h-1.5 rounded-full bg-[#0D9488]" />
+                              <span className="truncate">{offering}</span>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+
+                      <div className="pt-4 mt-4 border-t border-slate-100 flex items-center justify-between text-xs">
+                        {cap.stats && (
+                          <span className="font-mono text-[11px] text-[#9A7B38] font-semibold">{cap.stats.value}</span>
+                        )}
+                        <span className="text-[#0D9488] font-medium flex items-center gap-1 group-hover:translate-x-1 transition-transform ml-auto">
+                          View Details <ArrowRight className="w-3.5 h-3.5" />
+                        </span>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              {/* Strategic Evaluation Framework */}
               <div className="p-8 sm:p-10 rounded-2xl bg-white border border-slate-200 shadow-2xs space-y-8">
                 <div className="text-center max-w-2xl mx-auto space-y-2">
                   <span className="text-xs font-mono uppercase tracking-widest text-[#9A7B38] font-semibold">
-                    Disciplined Execution
+                    Governance & Discipline
                   </span>
                   <h3 className="font-display text-2xl font-bold text-[#0A1128]">
-                    The Amarnath Advisory Framework
+                    Strategic Evaluation & Growth Governance
                   </h3>
                   <p className="text-xs sm:text-sm text-slate-600">
-                    Every transaction follows our four-stage institutional diligence and execution lifecycle.
+                    Every opportunity is evaluated through disciplined due diligence and adherence to statutory compliance.
                   </p>
                 </div>
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
                   <div className="p-5 rounded-xl bg-slate-50 border border-slate-200/80 space-y-2">
                     <span className="font-mono text-xs text-[#0D9488] font-semibold">STAGE 01</span>
-                    <h4 className="font-display font-semibold text-sm text-[#0A1128]">Diligence & Diagnostic</h4>
+                    <h4 className="font-display font-semibold text-sm text-[#0A1128]">Commercial Viability</h4>
                     <p className="text-xs text-slate-600 leading-relaxed">
-                      Granular analysis of balance sheet covenants, cash flow sensitivity, and regulatory parameters.
+                      Assessing operational scalability, strategic relevance, and long-term value creation potential.
                     </p>
                   </div>
 
                   <div className="p-5 rounded-xl bg-slate-50 border border-slate-200/80 space-y-2">
                     <span className="font-mono text-xs text-[#9A7B38] font-semibold">STAGE 02</span>
-                    <h4 className="font-display font-semibold text-sm text-[#0A1128]">Capital Architecture</h4>
+                    <h4 className="font-display font-semibold text-sm text-[#0A1128]">Due Diligence</h4>
                     <p className="text-xs text-slate-600 leading-relaxed">
-                      Structuring instruments (senior debt, mezzanine, equity rights) to minimize overall weighted cost of capital.
+                      Conducting comprehensive financial, legal, operational and regulatory diligence.
                     </p>
                   </div>
 
                   <div className="p-5 rounded-xl bg-slate-50 border border-slate-200/80 space-y-2">
                     <span className="font-mono text-xs text-[#2563EB] font-semibold">STAGE 03</span>
-                    <h4 className="font-display font-semibold text-sm text-[#0A1128]">Syndication & Placement</h4>
+                    <h4 className="font-display font-semibold text-sm text-[#0A1128]">Approvals & Governance</h4>
                     <p className="text-xs text-slate-600 leading-relaxed">
-                      Engaging aligned institutional lenders, domestic AIFs, and strategic investors under strict confidentiality.
+                      Ensuring alignment with applicable laws, corporate approvals, and stakeholder interests.
                     </p>
                   </div>
 
                   <div className="p-5 rounded-xl bg-slate-50 border border-slate-200/80 space-y-2">
                     <span className="font-mono text-xs text-emerald-600 font-semibold">STAGE 04</span>
-                    <h4 className="font-display font-semibold text-sm text-[#0A1128]">Closing & Governance</h4>
+                    <h4 className="font-display font-semibold text-sm text-[#0A1128]">Statutory Disclosures</h4>
                     <p className="text-xs text-slate-600 leading-relaxed">
-                      Facilitating definitive documentation, escrow mechanics, and post-transaction statutory BSE disclosures.
+                      Timely communication through the Company’s statutory disclosures and BSE filings.
                     </p>
                   </div>
                 </div>
