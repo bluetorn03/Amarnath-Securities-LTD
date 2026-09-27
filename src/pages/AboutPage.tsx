@@ -14,7 +14,8 @@ import {
   Award,
   ExternalLink,
   MapPin,
-  Landmark
+  Landmark,
+  TrendingUp
 } from 'lucide-react';
 
 interface AboutPageProps {

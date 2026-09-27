@@ -605,7 +605,7 @@ export const InvestorRelationsPage: React.FC<InvestorRelationsPageProps> = ({
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               {DISCLOSURES_POLICIES_OVERVIEW.frameworks.map((framework, idx) => (
                 <div
-                  key={framework.id}
+                  key={framework.title || idx}
                   className="p-6 rounded-2xl bg-white border border-slate-200 shadow-2xs hover:border-[#0D9488]/40 transition-all space-y-4 flex flex-col justify-between"
                 >
                   <div className="space-y-2">

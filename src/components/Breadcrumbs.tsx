@@ -18,7 +18,7 @@ export const Breadcrumbs: React.FC<BreadcrumbsProps> = ({ currentRoute, onNaviga
       case 'leadership': return 'Board & Leadership';
       case 'governance': return 'Corporate Governance';
       case 'corporate-info': return 'Corporate Information';
-      case 'capabilities': return 'Capabilities';
+      case 'capabilities': return 'Business & Activities';
       case 'corporate-finance': return 'Corporate Finance & Advisory';
       case 'merchant-banking': return 'Merchant Banking';
       case 'investment-banking': return 'Investment Banking';

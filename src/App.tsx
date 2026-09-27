@@ -13,8 +13,22 @@ import { InsightsPage } from './pages/InsightsPage';
 import { ContactPage } from './pages/ContactPage';
 import { AnimatePresence, motion } from 'motion/react';
 
+const getInitialRoute = (): PageRoute => {
+  if (typeof window !== 'undefined') {
+    const hash = window.location.hash.replace(/^#\/?/, '').trim();
+    if (hash) {
+      return hash as PageRoute;
+    }
+    const path = window.location.pathname.replace(/^\//, '').replace(/\/$/, '').trim();
+    if (path) {
+      return path as PageRoute;
+    }
+  }
+  return 'home';
+};
+
 export default function App() {
-  const [currentRoute, setCurrentRoute] = useState<PageRoute>('home');
+  const [currentRoute, setCurrentRoute] = useState<PageRoute>(getInitialRoute);
   const [activeDocument, setActiveDocument] = useState<InvestorDocument | null>(null);
 
   // Scroll to top on navigation
@@ -23,16 +37,22 @@ export default function App() {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
-  // Optional: Handle browser popstate / back button
+  // Handle browser popstate / back button / hash changes
   useEffect(() => {
-    const handleHashChange = () => {
-      const hash = window.location.hash.replace('#', '') as PageRoute;
-      if (hash && hash !== currentRoute) {
-        setCurrentRoute(hash);
+    const handleRouteChange = () => {
+      const hash = window.location.hash.replace(/^#\/?/, '').trim();
+      const path = window.location.pathname.replace(/^\//, '').replace(/\/$/, '').trim();
+      const resolved = (hash || path || 'home') as PageRoute;
+      if (resolved !== currentRoute) {
+        setCurrentRoute(resolved);
       }
     };
-    window.addEventListener('hashchange', handleHashChange);
-    return () => window.removeEventListener('hashchange', handleHashChange);
+    window.addEventListener('hashchange', handleRouteChange);
+    window.addEventListener('popstate', handleRouteChange);
+    return () => {
+      window.removeEventListener('hashchange', handleRouteChange);
+      window.removeEventListener('popstate', handleRouteChange);
+    };
   }, [currentRoute]);
 
   // Sync hash when route changes
@@ -42,7 +62,10 @@ export default function App() {
         history.replaceState(null, '', window.location.pathname);
       }
     } else {
-      window.location.hash = currentRoute;
+      const targetHash = `#${currentRoute}`;
+      if (window.location.hash !== targetHash) {
+        window.location.hash = currentRoute;
+      }
     }
   }, [currentRoute]);
 
