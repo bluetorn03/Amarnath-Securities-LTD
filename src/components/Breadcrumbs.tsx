@@ -1,5 +1,6 @@
 import React from 'react';
 import { PageRoute } from '../types';
+import { INSIGHTS } from '../data/mockData';
 import { ChevronRight, Home } from 'lucide-react';
 
 interface BreadcrumbsProps {
@@ -12,7 +13,13 @@ export const Breadcrumbs: React.FC<BreadcrumbsProps> = ({ currentRoute, onNaviga
 
   const parts = currentRoute.split('/');
   
-  const getLabel = (part: string) => {
+  const getLabel = (part: string, routePrefix: string) => {
+    const article = INSIGHTS.find((candidate) => candidate.id === part);
+    if (article) return article.title;
+
+    // Any unresolved segment beneath the insights library is an article reference.
+    if (routePrefix.startsWith('insights/')) return 'Article';
+
     switch (part) {
       case 'about': return 'About Us';
       case 'leadership': return 'Board & Leadership';
@@ -36,7 +43,7 @@ export const Breadcrumbs: React.FC<BreadcrumbsProps> = ({ currentRoute, onNaviga
       case 'rta': return 'Registrar & Transfer Agent';
       case 'insights': return 'Market Insights';
       case 'contact': return 'Contact & Enquiry';
-      default: return part.replace('-', ' ');
+      default: return part.replace(/-/g, ' ');
     }
   };
 
@@ -65,15 +72,19 @@ export const Breadcrumbs: React.FC<BreadcrumbsProps> = ({ currentRoute, onNaviga
               </li>
               <li>
                 {isLast ? (
-                  <span className="text-[#9A7B38] font-semibold" aria-current="page">
-                    {getLabel(part)}
+                  <span
+                    className="text-[#9A7B38] font-semibold inline-block max-w-[15rem] sm:max-w-[26rem] truncate align-bottom"
+                    aria-current="page"
+                    title={getLabel(part, route)}
+                  >
+                    {getLabel(part, route)}
                   </span>
                 ) : (
                   <button
                     onClick={() => onNavigate(route)}
                     className="text-slate-600 hover:text-[#0D9488] transition-colors cursor-pointer"
                   >
-                    {getLabel(part)}
+                    {getLabel(part, route)}
                   </button>
                 )}
               </li>

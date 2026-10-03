@@ -663,12 +663,25 @@ export const INSIGHTS: InsightArticle[] = [
     date: 'February 2026',
     readTime: '5 min read',
     author: 'Amarnath Securities Corporate Secretariat',
-    excerpt: 'An overview of how Indian mid-market enterprises evaluate capital structures, sustainable growth avenues, and strategic corporate transactions.',
+    excerpt: 'How Indian mid-market enterprises weigh capital structures, sustainable growth avenues and strategic corporate transactions in a tighter governance environment.',
     content: `As the Indian economy sustains its robust momentum in 2026, mid-market enterprises face dynamic opportunities and operational considerations across varied sectors. Traditional bank credit lines, structured instruments, and equity transactions each present distinct governance and balance-sheet implications.
 
 Corporate entities increasingly evaluate opportunities based on commercial viability, strategic alignment, and sustainable value creation. Careful assessment of capital structures and disciplined regulatory compliance remain central to long-term enterprise compounding.
 
-Amarnath Securities Limited observes these broader market developments with a focus on sustainable long-term value creation, responsible governance, and statutory transparency.`
+Capital structure decisions are rarely binary. For most mid-market businesses the practical question is not whether to raise capital, but how the mix of debt, equity and internal accruals should evolve alongside the operating cycle. Over-leveraging compresses resilience during a downturn, while excessive dilution transfers value away from promoters and long-standing shareholders. The discipline lies in matching instrument tenor to the productive life of the asset it funds.
+
+Governance quality has also become inseparable from access to capital. Lenders and institutional investors now examine disclosure practices, related-party frameworks and board independence before they examine a business plan. An entity with modest but consistently transparent reporting frequently secures better terms than a larger peer whose disclosures are irregular.
+
+Diligence standards have hardened in step with that shift. Financial, legal, operational and regulatory reviews are conducted in parallel rather than sequentially, and their findings carry weight comparable to the headline valuation. Where an opportunity does not survive that scrutiny, the appropriate outcome is to decline it rather than to restructure the transaction around unresolved risk.
+
+Amarnath Securities Limited observes these broader market developments with a focus on sustainable long-term value creation, responsible governance, and statutory transparency.`,
+    keyTakeaways: [
+      'Instrument tenor should be matched to the productive life of the asset being financed.',
+      'Disclosure consistency influences the cost and availability of capital more than balance sheet size alone.',
+      'Financial, legal, operational and regulatory diligence now run in parallel and set the pace of transactions.',
+      'Declining an opportunity that fails diligence is a governance outcome, not a missed opportunity.'
+    ],
+    topics: ['Capital Structure', 'Mid-Market Finance', 'Corporate Governance', 'Due Diligence']
   },
   {
     id: 'insight-2',
@@ -677,10 +690,25 @@ Amarnath Securities Limited observes these broader market developments with a fo
     date: 'January 2026',
     readTime: '6 min read',
     author: 'Secretarial & Compliance Division',
-    excerpt: 'A comprehensive analysis of enhanced SEBI materiality thresholds under Regulation 30 and the imperative for real-time statutory disclosure integrity.',
+    excerpt: 'How enhanced materiality thresholds under Regulation 30 reshape disclosure protocols, response timelines and board-level oversight for listed entities.',
     content: `Regulatory architecture in India has undergone a transformative evolution. The enhanced materiality standards introduced by SEBI require listed entities to adopt structured protocols for identifying and disclosing quantitative and qualitative events within stringent hourly timelines.
 
-For shareholders and institutional stakeholders, this translates into unprecedented transparency. Amarnath Securities Limited maintains strict compliance with Regulation 46 disclosures, ensuring that every financial result, board decision, and shareholding pattern is accessible to the investing public in real time.`
+Materiality is now defined both quantitatively and qualitatively. An event that is financially immaterial may still require disclosure if it affects the company’s reputation, operations or stakeholder confidence. In practice this places the judgement of the compliance function on record for every determination, which is why documented internal thresholds matter as much as the regulation itself.
+
+The operative discipline is sequence. Disclosure obligations are triggered before a transaction is consummated rather than after it is announced, and the window between board approval and exchange dissemination is measured in hours. Listed entities therefore maintain calendarised disclosure protocols, designated spokespersons and single-point dissemination channels to BSE Limited.
+
+For boards, the practical consequence is that compliance can no longer be treated as a quarterly exercise. Continuous obligations under Regulation 30 and periodic obligations under Regulations 31, 33 and 46 require an operating rhythm rather than a reporting deadline. Entities that treat disclosure as an ongoing process generally encounter fewer clarifications from the exchange and fewer restatements.
+
+Investor grievance mechanisms form part of the same architecture. Prompt acknowledgement and closure of complaints, together with the quarterly statement filed under Regulation 13(3), are increasingly read alongside financial disclosures as indicators of how responsive a management is in practice.
+
+For shareholders and institutional stakeholders, this translates into unprecedented transparency. Amarnath Securities Limited maintains strict compliance with Regulation 46 disclosures, ensuring that every financial result, board decision, and shareholding pattern is accessible to the investing public in real time.`,
+    keyTakeaways: [
+      'Materiality under Regulation 30 is judged qualitatively as well as quantitatively.',
+      'Disclosure windows are measured in hours, so protocols must be calendarised rather than reactive.',
+      'Continuous obligations call for an operating rhythm, not a quarterly reporting deadline.',
+      'Grievance resolution statistics are read alongside financial disclosures as a governance signal.'
+    ],
+    topics: ['SEBI LODR', 'Regulation 30', 'Disclosure Obligations', 'Board Governance']
   },
   {
     id: 'insight-3',
@@ -689,10 +717,25 @@ For shareholders and institutional stakeholders, this translates into unpreceden
     date: 'December 2025',
     readTime: '4 min read',
     author: 'Corporate & Strategic Perspectives',
-    excerpt: 'Analyzing liquidity frameworks, capital preservation strategies, and governance standards across evolving economic environments.',
+    excerpt: 'Liquidity frameworks, capital preservation buffers and the governance of treasury operations across changing economic cycles.',
     content: `Managing corporate balance sheets requires a disciplined balance between capital preservation, regulatory compliance, and operational liquidity. In dynamic macroeconomic cycles, entities prioritize solvency and prudent capital allocation.
 
-Corporate entities and market participants increasingly evaluate balanced strategies to manage working capital and liquidity while adhering to statutory and prudential guidelines.`
+Treasury policy is most useful precisely when conditions are least predictable. A framework that specifies approved instruments, counterparty limits, maturity bands and concentration ceilings allows a company to act deliberately when funding markets tighten, instead of negotiating its own principles under pressure.
+
+Liquidity buffers serve a different purpose from investment yield. Reserving a defined proportion of surplus in instruments with a high certainty of settlement reduces the probability that an operating shortfall forces asset sales at depressed values. The cost of that buffer is the return foregone, and it is ordinarily outweighed by the cost of distressed funding that it avoids.
+
+Working capital discipline and balance sheet structure are connected. Lengthening receivable cycles and inventory build-ups are early indicators that operating cash generation is diverging from reported profitability, and they typically precede rather than follow a liquidity event.
+
+Governance oversight of treasury operations is equally material. Documented delegation thresholds, independent reconciliation of holdings and periodic review of exposures by the audit committee keep treasury discretion accountable and ensure that reported positions reflect those actually held.
+
+Corporate entities and market participants increasingly evaluate balanced strategies to manage working capital and liquidity while adhering to statutory and prudential guidelines.`,
+    keyTakeaways: [
+      'Treasury frameworks are most valuable when funding conditions are least predictable.',
+      'A liquidity buffer is an insurance cost measured against the return foregone, not a yield decision.',
+      'Receivable and inventory cycles usually signal liquidity stress before reported profitability does.',
+      'Delegation thresholds and independent reconciliation keep treasury discretion accountable.'
+    ],
+    topics: ['Treasury Management', 'Liquidity Risk', 'Balance Sheet Discipline', 'Risk Governance']
   }
 ];
 

@@ -1,3 +1,6 @@
+/** Route for an individual insight article, e.g. `insights/insight-1`. */
+export type InsightRoute = `insights/${string}`;
+
 export type PageRoute = 
   | 'home'
   | 'about'
@@ -23,6 +26,7 @@ export type PageRoute =
   | 'investor-relations/grievance'
   | 'investor-relations/rta'
   | 'insights'
+  | InsightRoute
   | 'contact';
 
 export type DocumentCategory = 
@@ -107,4 +111,8 @@ export interface InsightArticle {
   date: string;
   readTime: string;
   author: string;
+  /** Short summary points rendered in the article's takeaways panel. */
+  keyTakeaways: string[];
+  /** Thematic tags listed beneath the article body. */
+  topics: string[];
 }

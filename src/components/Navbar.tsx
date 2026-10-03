@@ -449,7 +449,7 @@ export const Navbar: React.FC<NavbarProps> = ({ currentRoute, onNavigate }) => {
             <button
               onClick={() => navigateTo('insights')}
               className={`px-3 py-2 rounded-lg transition-colors cursor-pointer ${
-                currentRoute === 'insights'
+                currentRoute === 'insights' || currentRoute.startsWith('insights/')
                   ? 'text-[#0D9488] font-semibold bg-teal-50/70'
                   : 'text-slate-700 hover:text-[#0D9488] hover:bg-slate-50'
               }`}

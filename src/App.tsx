@@ -10,6 +10,7 @@ import { AboutPage } from './pages/AboutPage';
 import { CapabilitiesPage } from './pages/CapabilitiesPage';
 import { InvestorRelationsPage } from './pages/InvestorRelationsPage';
 import { InsightsPage } from './pages/InsightsPage';
+import { ArticleDetailPage } from './pages/ArticleDetailPage';
 import { ContactPage } from './pages/ContactPage';
 import { AnimatePresence, motion } from 'motion/react';
 
@@ -100,6 +101,11 @@ export default function App() {
 
     if (currentRoute === 'insights') {
       return <InsightsPage onNavigate={handleNavigate} />;
+    }
+
+    if (currentRoute.startsWith('insights/')) {
+      const articleId = currentRoute.slice('insights/'.length);
+      return <ArticleDetailPage articleId={articleId} onNavigate={handleNavigate} />;
     }
 
     if (currentRoute === 'contact') {
