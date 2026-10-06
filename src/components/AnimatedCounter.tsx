@@ -27,11 +27,10 @@ export const AnimatedCounter: React.FC<AnimatedCounterProps> = ({
   const hasAnimatedRef = useRef(false);
 
   useEffect(() => {
-    // Check reduced motion
+    // Accessibility: Reduced motion displays final value immediately
     const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     if (prefersReducedMotion) {
       setValue(end);
-      hasAnimatedRef.current = true;
       return;
     }
 
@@ -44,14 +43,14 @@ export const AnimatedCounter: React.FC<AnimatedCounterProps> = ({
     let startTime: number | null = null;
 
     const startAnimation = () => {
-      if (hasAnimatedRef.current) return;
-      hasAnimatedRef.current = true;
+      startTime = null;
+      if (rafRef.current) cancelAnimationFrame(rafRef.current);
 
       const animate = (timestamp: number) => {
         if (!startTime) startTime = timestamp;
         const elapsed = timestamp - startTime;
         const progress = Math.min(elapsed / duration, 1);
-        // Smooth ease-out cubic
+        // Smooth institutional ease-out cubic
         const easeOut = 1 - Math.pow(1 - progress, 3);
         const current = start + (end - start) * easeOut;
         setValue(current);
@@ -63,44 +62,47 @@ export const AnimatedCounter: React.FC<AnimatedCounterProps> = ({
         }
       };
 
-      if (rafRef.current) cancelAnimationFrame(rafRef.current);
       rafRef.current = requestAnimationFrame(animate);
     };
 
-    // Immediate viewport check
+    // Check if element is already in the viewport on mount
     const rect = node.getBoundingClientRect();
     if (rect.top < window.innerHeight && rect.bottom > 0) {
+      hasAnimatedRef.current = true;
       startAnimation();
       return;
     }
 
     if (!('IntersectionObserver' in window)) {
-      setValue(end);
+      startAnimation();
       return;
     }
 
     const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          startAnimation();
-          observer.unobserve(entry.target);
-        }
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            if (!hasAnimatedRef.current) {
+              hasAnimatedRef.current = true;
+              startAnimation();
+            }
+          } else {
+            // When completely scrolled away, allow replaying upon return
+            // without altering the displayed value
+            hasAnimatedRef.current = false;
+          }
+        });
       },
-      { threshold: 0.1, rootMargin: '0px 0px -10px 0px' }
+      {
+        threshold: 0.1,
+        rootMargin: '0px 0px -20px 0px'
+      }
     );
 
     observer.observe(node);
 
-    // Fail-safe: ensure counter reaches end value eventually
-    const safetyTimer = setTimeout(() => {
-      if (!hasAnimatedRef.current) {
-        startAnimation();
-      }
-    }, 1500);
-
     return () => {
       observer.disconnect();
-      clearTimeout(safetyTimer);
       if (rafRef.current) cancelAnimationFrame(rafRef.current);
     };
   }, [end, start, duration]);

@@ -9,7 +9,6 @@ import {
   DISCLOSURES_POLICIES_OVERVIEW 
 } from '../data/mockData';
 import { TextReveal } from '../components/TextReveal';
-import { ScrollReveal } from '../components/ScrollReveal';
 import { 
   Search, 
   Download, 

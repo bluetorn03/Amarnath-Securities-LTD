@@ -26,7 +26,7 @@ export const ScrollReveal: React.FC<ScrollRevealProps> = ({
   const [prefersReducedMotion, setPrefersReducedMotion] = useState(false);
 
   useEffect(() => {
-    // Check user preference for reduced motion
+    // Accessibility check: immediately show if reduced motion is requested
     const mql = window.matchMedia('(prefers-reduced-motion: reduce)');
     if (mql.matches) {
       setPrefersReducedMotion(true);
@@ -40,12 +40,15 @@ export const ScrollReveal: React.FC<ScrollRevealProps> = ({
       return;
     }
 
-    // Immediate viewport check on mount so above-the-fold content shows instantly
+    // Check if element is already in viewport on mount
     const rect = node.getBoundingClientRect();
     const inViewport = rect.top < window.innerHeight && rect.bottom > 0;
     if (inViewport) {
-      setIsVisible(true);
-      if (once) return;
+      // Small frame delay so the opening entrance transition actually renders on screen
+      const frameTimer = setTimeout(() => {
+        setIsVisible(true);
+      }, 40);
+      return () => clearTimeout(frameTimer);
     }
 
     if (!('IntersectionObserver' in window)) {
@@ -68,8 +71,8 @@ export const ScrollReveal: React.FC<ScrollRevealProps> = ({
       },
       {
         root: null,
-        rootMargin: '0px 0px -20px 0px',
-        threshold: 0.05
+        rootMargin: '0px 0px -30px 0px',
+        threshold: 0.08
       }
     );
 
@@ -93,7 +96,7 @@ export const ScrollReveal: React.FC<ScrollRevealProps> = ({
   // Calculate transform offset based on direction and scale
   const getTransform = () => {
     if (isVisible) return 'none';
-    const scaleFactor = typeof scale === 'number' ? scale : scale ? 0.96 : 1;
+    const scaleFactor = typeof scale === 'number' ? scale : scale ? 0.97 : 1;
     let translateX = 0;
     let translateY = 0;
     if (direction === 'up') translateY = distance;

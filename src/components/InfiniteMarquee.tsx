@@ -1,5 +1,4 @@
-import React from 'react';
-import { useReducedMotion } from 'motion/react';
+import React, { useState, useEffect } from 'react';
 
 interface InfiniteMarqueeProps {
   items?: string[];
@@ -26,7 +25,15 @@ export const InfiniteMarquee: React.FC<InfiniteMarqueeProps> = ({
   itemClassName = '',
   separator = '•'
 }) => {
-  const prefersReducedMotion = useReducedMotion();
+  const [prefersReducedMotion, setPrefersReducedMotion] = useState(false);
+
+  useEffect(() => {
+    const mql = window.matchMedia('(prefers-reduced-motion: reduce)');
+    setPrefersReducedMotion(mql.matches);
+    const handler = (e: MediaQueryListEvent) => setPrefersReducedMotion(e.matches);
+    mql.addEventListener('change', handler);
+    return () => mql.removeEventListener('change', handler);
+  }, []);
 
   if (prefersReducedMotion) {
     return (

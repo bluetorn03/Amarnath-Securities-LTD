@@ -236,9 +236,14 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate, onOpenDocument }
           </div>
 
           {/* HERO RIGHT COLUMN: Meaningful Institutional Visual */}
-          <div className="lg:col-span-5 flex justify-center w-full">
+          <motion.div
+            initial={{ opacity: 0, scale: 0.96, y: 15 }}
+            animate={{ opacity: 1, scale: 1, y: 0 }}
+            transition={{ duration: 0.75, delay: 0.25, ease: 'easeOut' }}
+            className="lg:col-span-5 flex justify-center w-full"
+          >
             <HeroInstitutionalVisual />
-          </div>
+          </motion.div>
         </div>
       </section>
 
@@ -253,10 +258,10 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate, onOpenDocument }
         {/* Bento Statistics Grid with Replaying Animated Counters */}
         <section className="py-12 px-4 sm:px-8">
           <div className="max-w-7xl mx-auto">
-            <ScrollReveal direction="up" distance={20}>
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6">
-                {/* Metric 1: 30+ Years */}
-                <div className="p-6 rounded-2xl bg-white border border-slate-200/90 flex flex-col justify-between group hover:border-[#0D9488]/50 transition-all shadow-2xs hover:shadow-sm">
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6">
+              {/* Metric 1: 30+ Years */}
+              <ScrollReveal direction="up" distance={20} scale={0.98} delay={0} className="h-full">
+                <div className="p-6 rounded-2xl bg-white border border-slate-200/90 flex flex-col justify-between group hover:border-[#0D9488]/50 transition-all shadow-2xs hover:shadow-sm h-full">
                   <div className="text-xs font-mono uppercase tracking-wider text-[#0D9488] flex items-center justify-between font-semibold">
                     <span>Legacy & Stewardship</span>
                     <Clock className="w-3.5 h-3.5 text-slate-400 group-hover:text-[#0D9488] transition-colors" />
@@ -271,9 +276,11 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate, onOpenDocument }
                     Continuous Market Presence • Founded 1994
                   </div>
                 </div>
+              </ScrollReveal>
 
-                {/* Metric 2: 538465 BSE Scrip Code */}
-                <div className="p-6 rounded-2xl bg-white border border-slate-200/90 flex flex-col justify-between group hover:border-[#9A7B38]/50 transition-all shadow-2xs hover:shadow-sm">
+              {/* Metric 2: 538465 BSE Scrip Code */}
+              <ScrollReveal direction="up" distance={20} scale={0.98} delay={0.08} className="h-full">
+                <div className="p-6 rounded-2xl bg-white border border-slate-200/90 flex flex-col justify-between group hover:border-[#9A7B38]/50 transition-all shadow-2xs hover:shadow-sm h-full">
                   <div className="text-xs font-mono uppercase tracking-wider text-[#9A7B38] flex items-center justify-between font-semibold">
                     <span>BSE Listed Scrip</span>
                     <Award className="w-3.5 h-3.5 text-slate-400 group-hover:text-[#9A7B38] transition-colors" />
@@ -287,9 +294,11 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate, onOpenDocument }
                     BSE Scrip Code: AMARNATH
                   </div>
                 </div>
+              </ScrollReveal>
 
-                {/* Metric 3: Paid-Up Equity Capital */}
-                <div className="p-6 rounded-2xl bg-white border border-slate-200/90 flex flex-col justify-between group hover:border-[#0D9488]/50 transition-all shadow-2xs hover:shadow-sm">
+              {/* Metric 3: Paid-Up Equity Capital */}
+              <ScrollReveal direction="up" distance={20} scale={0.98} delay={0.16} className="h-full">
+                <div className="p-6 rounded-2xl bg-white border border-slate-200/90 flex flex-col justify-between group hover:border-[#0D9488]/50 transition-all shadow-2xs hover:shadow-sm h-full">
                   <div className="text-xs font-mono uppercase tracking-wider text-[#0D9488] flex items-center justify-between font-semibold">
                     <span>Equity Capital Base</span>
                     <Coins className="w-3.5 h-3.5 text-slate-400 group-hover:text-[#0D9488] transition-colors" />
@@ -305,9 +314,11 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate, onOpenDocument }
                     Paid-Up Equity Capital • 30 Lakh Shares
                   </div>
                 </div>
+              </ScrollReveal>
 
-                {/* Metric 4: 1994 Inception */}
-                <div className="p-6 rounded-2xl bg-white border border-slate-200/90 flex flex-col justify-between group hover:border-[#9A7B38]/50 transition-all shadow-2xs hover:shadow-sm">
+              {/* Metric 4: 1994 Inception */}
+              <ScrollReveal direction="up" distance={20} scale={0.98} delay={0.24} className="h-full">
+                <div className="p-6 rounded-2xl bg-white border border-slate-200/90 flex flex-col justify-between group hover:border-[#9A7B38]/50 transition-all shadow-2xs hover:shadow-sm h-full">
                   <div className="text-xs font-mono uppercase tracking-wider text-[#9A7B38] flex items-center justify-between font-semibold">
                     <span>Incorporation Year</span>
                     <Layers className="w-3.5 h-3.5 text-slate-400 group-hover:text-[#9A7B38] transition-colors" />
@@ -321,8 +332,8 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate, onOpenDocument }
                     RoC Gujarat • ISIN: INE745P01010
                   </div>
                 </div>
-              </div>
-            </ScrollReveal>
+              </ScrollReveal>
+            </div>
           </div>
         </section>
       </div>

@@ -1,5 +1,4 @@
 import React from 'react';
-import { motion, useReducedMotion } from 'motion/react';
 import { ArrowUpRight } from 'lucide-react';
 import { PageRoute } from '../types';
 
@@ -26,13 +25,11 @@ export const StickyCardStack: React.FC<StickyCardStackProps> = ({
   onNavigate,
   className = ''
 }) => {
-  const prefersReducedMotion = useReducedMotion();
-
   return (
     <div className={`relative space-y-6 sm:space-y-8 ${className}`}>
       {items.map((item, index) => {
         // Sticky offset so cards stack with an elegant revealed header margin
-        const topOffset = 100 + index * 24;
+        const topOffset = 96 + index * 24;
 
         return (
           <div
