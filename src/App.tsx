@@ -32,10 +32,10 @@ export default function App() {
   const [currentRoute, setCurrentRoute] = useState<PageRoute>(getInitialRoute);
   const [activeDocument, setActiveDocument] = useState<InvestorDocument | null>(null);
 
-  // Scroll to top on navigation
+  // Scroll to top on navigation immediately so newly mounted page begins at top
   const handleNavigate = (route: PageRoute) => {
     setCurrentRoute(route);
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    window.scrollTo(0, 0);
   };
 
   // Handle browser popstate / back button / hash changes
@@ -46,6 +46,7 @@ export default function App() {
       const resolved = (hash || path || 'home') as PageRoute;
       if (resolved !== currentRoute) {
         setCurrentRoute(resolved);
+        window.scrollTo(0, 0);
       }
     };
     window.addEventListener('hashchange', handleRouteChange);

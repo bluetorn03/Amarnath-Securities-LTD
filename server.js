@@ -17,8 +17,11 @@ app.use('/assets', express.static(path.join(__dirname, 'dist/assets'), {
 // Serve other static files (favicons, logos, etc.)
 app.use(express.static(path.join(__dirname, 'dist')));
 
-// SPA fallback: send index.html for all non-static GET routes
+// SPA fallback: send index.html for all non-static GET routes with cache-busting headers
 app.get('*', (req, res) => {
+    res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate');
+    res.setHeader('Pragma', 'no-cache');
+    res.setHeader('Expires', '0');
     res.sendFile(path.join(__dirname, 'dist/index.html'));
 });
 

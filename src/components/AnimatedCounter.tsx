@@ -1,5 +1,4 @@
 import React, { useEffect, useState, useRef } from 'react';
-import { useReducedMotion } from 'motion/react';
 
 interface AnimatedCounterProps {
   end: number;
@@ -22,63 +21,89 @@ export const AnimatedCounter: React.FC<AnimatedCounterProps> = ({
   formatNumber = false,
   className = ''
 }) => {
-  const prefersReducedMotion = useReducedMotion();
   const [value, setValue] = useState(start);
   const elementRef = useRef<HTMLSpanElement | null>(null);
   const rafRef = useRef<number | null>(null);
+  const hasAnimatedRef = useRef(false);
 
   useEffect(() => {
+    // Check reduced motion
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     if (prefersReducedMotion) {
       setValue(end);
+      hasAnimatedRef.current = true;
       return;
     }
 
     const node = elementRef.current;
-    if (!node) return;
+    if (!node) {
+      setValue(end);
+      return;
+    }
 
     let startTime: number | null = null;
 
-    const animate = (timestamp: number) => {
-      if (!startTime) startTime = timestamp;
-      const elapsed = timestamp - startTime;
-      const progress = Math.min(elapsed / duration, 1);
-      // Smooth ease-out cubic
-      const easeOut = 1 - Math.pow(1 - progress, 3);
-      const current = start + (end - start) * easeOut;
-      setValue(current);
+    const startAnimation = () => {
+      if (hasAnimatedRef.current) return;
+      hasAnimatedRef.current = true;
 
-      if (progress < 1) {
-        rafRef.current = requestAnimationFrame(animate);
-      } else {
-        setValue(end);
-      }
+      const animate = (timestamp: number) => {
+        if (!startTime) startTime = timestamp;
+        const elapsed = timestamp - startTime;
+        const progress = Math.min(elapsed / duration, 1);
+        // Smooth ease-out cubic
+        const easeOut = 1 - Math.pow(1 - progress, 3);
+        const current = start + (end - start) * easeOut;
+        setValue(current);
+
+        if (progress < 1) {
+          rafRef.current = requestAnimationFrame(animate);
+        } else {
+          setValue(end);
+        }
+      };
+
+      if (rafRef.current) cancelAnimationFrame(rafRef.current);
+      rafRef.current = requestAnimationFrame(animate);
     };
+
+    // Immediate viewport check
+    const rect = node.getBoundingClientRect();
+    if (rect.top < window.innerHeight && rect.bottom > 0) {
+      startAnimation();
+      return;
+    }
+
+    if (!('IntersectionObserver' in window)) {
+      setValue(end);
+      return;
+    }
 
     const observer = new IntersectionObserver(
       ([entry]) => {
         if (entry.isIntersecting) {
-          // Restart animation from start value to final value
-          if (rafRef.current) cancelAnimationFrame(rafRef.current);
-          startTime = null;
-          setValue(start);
-          rafRef.current = requestAnimationFrame(animate);
-        } else {
-          // Reset when scrolled out of view, so it replays upon return!
-          if (rafRef.current) cancelAnimationFrame(rafRef.current);
-          startTime = null;
-          setValue(start);
+          startAnimation();
+          observer.unobserve(entry.target);
         }
       },
-      { threshold: 0.2 }
+      { threshold: 0.1, rootMargin: '0px 0px -10px 0px' }
     );
 
     observer.observe(node);
 
+    // Fail-safe: ensure counter reaches end value eventually
+    const safetyTimer = setTimeout(() => {
+      if (!hasAnimatedRef.current) {
+        startAnimation();
+      }
+    }, 1500);
+
     return () => {
       observer.disconnect();
+      clearTimeout(safetyTimer);
       if (rafRef.current) cancelAnimationFrame(rafRef.current);
     };
-  }, [end, start, duration, prefersReducedMotion]);
+  }, [end, start, duration]);
 
   const formattedValue = () => {
     if (decimals > 0) return value.toFixed(decimals);

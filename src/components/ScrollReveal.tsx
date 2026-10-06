@@ -1,5 +1,4 @@
-import React from 'react';
-import { motion, useReducedMotion } from 'motion/react';
+import React, { useEffect, useRef, useState } from 'react';
 
 interface ScrollRevealProps {
   children: React.ReactNode;
@@ -22,43 +21,104 @@ export const ScrollReveal: React.FC<ScrollRevealProps> = ({
   scale = false,
   once = true
 }) => {
-  const shouldReduceMotion = useReducedMotion();
+  const ref = useRef<HTMLDivElement | null>(null);
+  const [isVisible, setIsVisible] = useState(false);
+  const [prefersReducedMotion, setPrefersReducedMotion] = useState(false);
 
-  if (shouldReduceMotion) {
+  useEffect(() => {
+    // Check user preference for reduced motion
+    const mql = window.matchMedia('(prefers-reduced-motion: reduce)');
+    if (mql.matches) {
+      setPrefersReducedMotion(true);
+      setIsVisible(true);
+      return;
+    }
+
+    const node = ref.current;
+    if (!node) {
+      setIsVisible(true);
+      return;
+    }
+
+    // Immediate viewport check on mount so above-the-fold content shows instantly
+    const rect = node.getBoundingClientRect();
+    const inViewport = rect.top < window.innerHeight && rect.bottom > 0;
+    if (inViewport) {
+      setIsVisible(true);
+      if (once) return;
+    }
+
+    if (!('IntersectionObserver' in window)) {
+      setIsVisible(true);
+      return;
+    }
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            setIsVisible(true);
+            if (once) {
+              observer.unobserve(entry.target);
+            }
+          } else if (!once) {
+            setIsVisible(false);
+          }
+        });
+      },
+      {
+        root: null,
+        rootMargin: '0px 0px -20px 0px',
+        threshold: 0.05
+      }
+    );
+
+    observer.observe(node);
+
+    // Fail-safe timeout: guarantees no element is ever stuck at opacity:0
+    const safetyTimer = setTimeout(() => {
+      setIsVisible(true);
+    }, 1200);
+
+    return () => {
+      observer.disconnect();
+      clearTimeout(safetyTimer);
+    };
+  }, [once]);
+
+  if (prefersReducedMotion) {
     return <div className={className}>{children}</div>;
   }
 
-  const getInitialPosition = () => {
-    switch (direction) {
-      case 'up': return { y: distance, x: 0 };
-      case 'down': return { y: -distance, x: 0 };
-      case 'left': return { x: distance, y: 0 };
-      case 'right': return { x: -distance, y: 0 };
-      case 'none': return { x: 0, y: 0 };
-    }
-  };
+  // Calculate transform offset based on direction and scale
+  const getTransform = () => {
+    if (isVisible) return 'none';
+    const scaleFactor = typeof scale === 'number' ? scale : scale ? 0.96 : 1;
+    let translateX = 0;
+    let translateY = 0;
+    if (direction === 'up') translateY = distance;
+    if (direction === 'down') translateY = -distance;
+    if (direction === 'left') translateX = distance;
+    if (direction === 'right') translateX = -distance;
 
-  const initialScale = typeof scale === 'number' ? scale : scale ? 0.96 : 1;
-
-  const initial = {
-    opacity: 0,
-    scale: initialScale,
-    ...getInitialPosition()
+    return `translate3d(${translateX}px, ${translateY}px, 0) scale(${scaleFactor})`;
   };
 
   return (
-    <motion.div
-      initial={initial}
-      whileInView={{ opacity: 1, x: 0, y: 0, scale: 1 }}
-      viewport={{ once, margin: '-10px', amount: 0.05 }}
-      transition={{
-        duration,
-        delay,
-        ease: [0.16, 1, 0.3, 1] // smooth institutional cubic-bezier
-      }}
+    <div
+      ref={ref}
       className={className}
+      style={{
+        opacity: isVisible ? 1 : 0,
+        transform: getTransform(),
+        transitionProperty: 'opacity, transform',
+        transitionDuration: `${duration}s`,
+        transitionDelay: `${delay}s`,
+        transitionTimingFunction: 'cubic-bezier(0.16, 1, 0.3, 1)',
+        willChange: isVisible ? 'auto' : 'opacity, transform'
+      }}
     >
       {children}
-    </motion.div>
+    </div>
   );
 };

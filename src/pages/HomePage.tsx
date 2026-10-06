@@ -127,7 +127,7 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate, onOpenDocument }
   ];
 
   return (
-    <div className="w-full flex flex-col font-sans bg-white text-[#0A1128] overflow-x-hidden">
+    <div className="w-full flex flex-col font-sans bg-white text-[#0A1128] overflow-x-clip">
       {/* =========================================================================
           SECTION 1: HERO (WHITE BACKGROUND • FULL VIEWPORT HEIGHT)
           Two-column layout: Left = Brand Copy + Infinite Typewriter, Right = Verified Visual

@@ -23,6 +23,9 @@ export default defineConfig(() => {
       chunkSizeWarningLimit: 600,
       rollupOptions: {
         output: {
+          entryFileNames: 'assets/[name]-[hash].js',
+          chunkFileNames: 'assets/[name]-[hash].js',
+          assetFileNames: 'assets/[name]-[hash].[ext]',
           // Split stable vendor libraries into separate cacheable chunks
           manualChunks: (id: string) => {
             if (id.includes('node_modules/react') || id.includes('node_modules/react-dom') || id.includes('node_modules/scheduler')) {

@@ -56,7 +56,7 @@ export const InfiniteMarquee: React.FC<InfiniteMarqueeProps> = ({
       <div className="pointer-events-none absolute right-0 top-0 bottom-0 w-12 sm:w-28 bg-gradient-to-l from-[#FAF7F2] to-transparent z-10" />
 
       {/* Two Identical Running Tracks for Mathematical Zero-Jump Loop */}
-      <div className="flex w-max group-hover:[&_*]:[animation-play-state:paused]">
+      <div className="flex w-max">
         {/* Track 1 */}
         <div className="flex shrink-0 items-center gap-8 sm:gap-10 pr-8 sm:pr-10 animate-marquee will-change-transform">
           {items.map((item, idx) => (
