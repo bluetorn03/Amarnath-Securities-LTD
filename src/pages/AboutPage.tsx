@@ -1,6 +1,6 @@
 import React from 'react';
 import { PageRoute } from '../types';
-import { COMPANY_DETAILS, LEADERSHIP_TEAM } from '../data/mockData';
+import { COMPANY_DETAILS, DIRECTORS_REGISTRY, BOARD_COMMITTEES_REGISTRY } from '../data/mockData';
 import { AmarnathLogo } from '../components/AmarnathLogo';
 import { AnimatedCounter } from '../components/AnimatedCounter';
 import { TextReveal } from '../components/TextReveal';
@@ -198,43 +198,41 @@ export const AboutPage: React.FC<AboutPageProps> = ({ currentRoute, onNavigate }
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              {LEADERSHIP_TEAM.map((leader, idx) => (
+              {DIRECTORS_REGISTRY.map((director) => (
                 <div
-                  key={idx}
+                  key={director.id}
                   className="p-6 rounded-2xl bg-white border border-slate-200/80 space-y-4 shadow-2xs flex flex-col justify-between"
                 >
                   <div className="space-y-3">
                     <div className="flex items-center justify-between">
                       <span className="text-[10px] font-mono uppercase px-2.5 py-1 rounded bg-teal-50 text-[#0D9488] border border-teal-200/60 font-semibold">
-                        {leader.category}
+                        {director.category}
                       </span>
-                      <span className="text-xs font-mono text-slate-500">{leader.dinOrMembership}</span>
+                      <span className="text-xs font-mono text-slate-500 font-medium">DIN: {director.din}</span>
                     </div>
 
                     <h3 className="font-display font-bold text-xl text-[#0A1128]">
-                      {leader.name}
+                      {director.name}
                     </h3>
                     <div className="text-xs text-[#9A7B38] font-semibold tracking-wide">
-                      {leader.designation}
+                      {director.designation}
                     </div>
 
                     <p className="text-xs sm:text-sm text-slate-600 leading-relaxed pt-2">
-                      {leader.bio}
+                      {director.bio}
                     </p>
                   </div>
 
-                  {leader.committees && (
-                    <div className="pt-4 border-t border-slate-100 space-y-1.5">
-                      <span className="text-[10px] font-mono uppercase text-slate-400 font-semibold">Board Committees</span>
-                      <div className="flex flex-wrap gap-1.5">
-                        {leader.committees.map((com, cIdx) => (
-                          <span key={cIdx} className="text-xs bg-slate-50 px-2.5 py-1 rounded border border-slate-200 text-slate-700">
-                            {com}
-                          </span>
-                        ))}
-                      </div>
+                  <div className="pt-4 border-t border-slate-100 space-y-2">
+                    <span className="text-[10px] font-mono uppercase text-slate-400 font-semibold block">Board Committees</span>
+                    <div className="flex flex-wrap gap-1.5">
+                      {director.committeeMemberships.map((com, cIdx) => (
+                        <span key={cIdx} className="text-xs bg-slate-50 px-2.5 py-1 rounded border border-slate-200 text-slate-700">
+                          {com.committeeName} ({com.role})
+                        </span>
+                      ))}
                     </div>
-                  )}
+                  </div>
                 </div>
               ))}
             </div>

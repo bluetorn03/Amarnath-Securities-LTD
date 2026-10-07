@@ -190,18 +190,42 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
                 AGM / Notices
               </button>
             </li>
+            <li>
+              <button 
+                onClick={() => onNavigate('investor-relations/newspaper-publications')}
+                className="hover:text-white transition-colors text-left"
+              >
+                Newspaper Publications (Reg 47)
+              </button>
+            </li>
+            <li>
+              <button 
+                onClick={() => onNavigate('investor-relations/annual-return')}
+                className="hover:text-white transition-colors text-left"
+              >
+                Annual Return (MGT-7)
+              </button>
+            </li>
+            <li>
+              <button 
+                onClick={() => onNavigate('investor-relations/secretarial-compliance')}
+                className="hover:text-white transition-colors text-left"
+              >
+                Secretarial Compliance
+              </button>
+            </li>
           </ul>
         </div>
 
         {/* Column 4: Governance & Compliance */}
         <div className="space-y-3">
           <h5 className="font-mono text-[11px] uppercase tracking-wider text-[#C5A880] font-semibold">
-            Governance & RTA
+            Governance & Compliance
           </h5>
           <ul className="space-y-2">
             <li>
               <button 
-                onClick={() => onNavigate('about/leadership')}
+                onClick={() => onNavigate('investor-relations/board-of-directors')}
                 className="hover:text-white transition-colors text-left"
               >
                 Board of Directors
@@ -209,10 +233,10 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
             </li>
             <li>
               <button 
-                onClick={() => onNavigate('investor-relations/governance')}
+                onClick={() => onNavigate('investor-relations/committees')}
                 className="hover:text-white transition-colors text-left"
               >
-                Corporate Governance
+                Board Committees
               </button>
             </li>
             <li>
@@ -220,7 +244,23 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
                 onClick={() => onNavigate('investor-relations/policies')}
                 className="hover:text-white transition-colors text-left"
               >
-                Disclosures & Policies
+                Statutory Policies & MOA/AOA
+              </button>
+            </li>
+            <li>
+              <button 
+                onClick={() => onNavigate('investor-relations/analyst-meets')}
+                className="hover:text-white transition-colors text-left"
+              >
+                Analyst & Investor Meets
+              </button>
+            </li>
+            <li>
+              <button 
+                onClick={() => onNavigate('investor-relations/kmp-contacts')}
+                className="hover:text-white transition-colors text-left"
+              >
+                Authorized KMP (Reg 30(5))
               </button>
             </li>
             <li>
@@ -246,7 +286,18 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
                 rel="noopener noreferrer"
                 className="hover:text-[#14B8A6] transition-colors flex items-center gap-1"
               >
-                <span>SEBI SCORES Portal</span>
+                <span>SEBI SCORES 2.0 Portal</span>
+                <ExternalLink className="w-3 h-3" />
+              </a>
+            </li>
+            <li>
+              <a 
+                href={COMPANY_DETAILS.sebiSmartOdrUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="hover:text-[#C5A880] transition-colors flex items-center gap-1"
+              >
+                <span>SEBI SMART ODR Portal</span>
                 <ExternalLink className="w-3 h-3" />
               </a>
             </li>

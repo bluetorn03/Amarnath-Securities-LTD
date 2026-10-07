@@ -342,14 +342,14 @@ export const Navbar: React.FC<NavbarProps> = ({ currentRoute, onNavigate }) => {
                     animate={{ opacity: 1, y: 0 }}
                     exit={{ opacity: 0, y: 8 }}
                     transition={{ duration: 0.15 }}
-                    className="absolute -left-12 top-full pt-2 w-[540px]"
+                    className="absolute -left-20 top-full pt-2 w-[620px]"
                   >
-                    <div className="bg-white rounded-xl shadow-[0_12px_36px_-6px_rgba(15,23,42,0.12)] p-4 border border-slate-200 grid grid-cols-2 gap-4">
-                      {/* Column 1: Financials & Reports */}
+                    <div className="bg-white rounded-xl shadow-[0_16px_40px_-6px_rgba(15,23,42,0.14)] p-4 border border-slate-200 grid grid-cols-2 gap-4">
+                      {/* Column 1: Financials, Reports & Statutory Filings */}
                       <div className="space-y-1">
                         <div className="text-[11px] font-mono uppercase tracking-wider text-[#9A7B38] pb-1 border-b border-slate-100 mb-1.5 flex items-center gap-1.5 font-semibold">
                           <TrendingUp className="w-3.5 h-3.5 text-[#0D9488]" />
-                          <span>Financial & Filings</span>
+                          <span>Financial & Statutory Filings</span>
                         </div>
 
                         <button
@@ -364,28 +364,49 @@ export const Navbar: React.FC<NavbarProps> = ({ currentRoute, onNavigate }) => {
                           onClick={() => navigateTo('investor-relations/financial-results')}
                           className="w-full text-left px-2.5 py-1.5 rounded-md hover:bg-slate-50 text-sm text-slate-600 hover:text-[#0A1128] cursor-pointer"
                         >
-                          Financial Results
+                          Financial Results (Reg 33)
                         </button>
 
                         <button
                           onClick={() => navigateTo('investor-relations/annual-reports')}
                           className="w-full text-left px-2.5 py-1.5 rounded-md hover:bg-slate-50 text-sm text-slate-600 hover:text-[#0A1128] cursor-pointer"
                         >
-                          Annual Reports
+                          Annual Reports (Reg 34)
                         </button>
 
                         <button
                           onClick={() => navigateTo('investor-relations/shareholding-pattern')}
                           className="w-full text-left px-2.5 py-1.5 rounded-md hover:bg-slate-50 text-sm text-slate-600 hover:text-[#0A1128] cursor-pointer"
                         >
-                          Shareholding Pattern
+                          Shareholding Pattern (Reg 31)
                         </button>
 
                         <button
                           onClick={() => navigateTo('investor-relations/bse-disclosures')}
                           className="w-full text-left px-2.5 py-1.5 rounded-md hover:bg-slate-50 text-sm text-slate-600 hover:text-[#0A1128] cursor-pointer"
                         >
-                          BSE Disclosures
+                          BSE Disclosures (Reg 30)
+                        </button>
+
+                        <button
+                          onClick={() => navigateTo('investor-relations/newspaper-publications')}
+                          className="w-full text-left px-2.5 py-1.5 rounded-md hover:bg-slate-50 text-sm text-slate-600 hover:text-[#0A1128] cursor-pointer"
+                        >
+                          Newspaper Publications (Reg 47)
+                        </button>
+
+                        <button
+                          onClick={() => navigateTo('investor-relations/annual-return')}
+                          className="w-full text-left px-2.5 py-1.5 rounded-md hover:bg-slate-50 text-sm text-slate-600 hover:text-[#0A1128] cursor-pointer"
+                        >
+                          Annual Return (MGT-7 / Sec 92)
+                        </button>
+
+                        <button
+                          onClick={() => navigateTo('investor-relations/secretarial-compliance')}
+                          className="w-full text-left px-2.5 py-1.5 rounded-md hover:bg-slate-50 text-sm text-slate-600 hover:text-[#0A1128] cursor-pointer"
+                        >
+                          Secretarial Compliance (Reg 24A)
                         </button>
                       </div>
 
@@ -393,43 +414,57 @@ export const Navbar: React.FC<NavbarProps> = ({ currentRoute, onNavigate }) => {
                       <div className="space-y-1">
                         <div className="text-[11px] font-mono uppercase tracking-wider text-[#9A7B38] pb-1 border-b border-slate-100 mb-1.5 flex items-center gap-1.5 font-semibold">
                           <ShieldCheck className="w-3.5 h-3.5 text-[#0D9488]" />
-                          <span>LODR & Shareholder</span>
+                          <span>Regulation 46 & Governance</span>
                         </div>
 
                         <button
                           onClick={() => navigateTo('investor-relations/regulation-46')}
-                          className="w-full text-left px-2.5 py-1.5 rounded-md hover:bg-slate-50 text-sm text-slate-600 hover:text-[#0A1128] flex items-center justify-between cursor-pointer"
+                          className="w-full text-left px-2.5 py-1.5 rounded-md hover:bg-slate-50 text-sm text-slate-800 font-medium hover:text-[#0D9488] flex items-center justify-between cursor-pointer"
                         >
-                          <span>Regulation 46 Index</span>
-                          <span className="text-[9px] text-[#9A7B38] font-mono border border-[#9A7B38]/30 px-1 rounded bg-amber-50">SEBI</span>
+                          <span>Regulation 46 Master Index</span>
+                          <span className="text-[9px] text-[#9A7B38] font-mono border border-[#9A7B38]/30 px-1 rounded bg-amber-50 font-bold">SEBI</span>
                         </button>
 
                         <button
-                          onClick={() => navigateTo('investor-relations/agm-notices')}
+                          onClick={() => navigateTo('investor-relations/board-of-directors')}
                           className="w-full text-left px-2.5 py-1.5 rounded-md hover:bg-slate-50 text-sm text-slate-600 hover:text-[#0A1128] cursor-pointer"
                         >
-                          AGM / EGM / Notices
+                          Board of Directors (DIN Profiles)
                         </button>
 
                         <button
-                          onClick={() => navigateTo('investor-relations/governance')}
+                          onClick={() => navigateTo('investor-relations/committees')}
                           className="w-full text-left px-2.5 py-1.5 rounded-md hover:bg-slate-50 text-sm text-slate-600 hover:text-[#0A1128] cursor-pointer"
                         >
-                          Corporate Governance
+                          Board Committees (Reg 18-20)
                         </button>
 
                         <button
                           onClick={() => navigateTo('investor-relations/policies')}
                           className="w-full text-left px-2.5 py-1.5 rounded-md hover:bg-slate-50 text-sm text-slate-600 hover:text-[#0A1128] cursor-pointer"
                         >
-                          Disclosures & Policies
+                          Statutory Policies & MOA/AOA
+                        </button>
+
+                        <button
+                          onClick={() => navigateTo('investor-relations/analyst-meets')}
+                          className="w-full text-left px-2.5 py-1.5 rounded-md hover:bg-slate-50 text-sm text-slate-600 hover:text-[#0A1128] cursor-pointer"
+                        >
+                          Analyst & Investor Meets (Reg 46(2)(o))
+                        </button>
+
+                        <button
+                          onClick={() => navigateTo('investor-relations/kmp-contacts')}
+                          className="w-full text-left px-2.5 py-1.5 rounded-md hover:bg-slate-50 text-sm text-slate-600 hover:text-[#0A1128] cursor-pointer"
+                        >
+                          Authorized KMP (Reg 30(5))
                         </button>
 
                         <button
                           onClick={() => navigateTo('investor-relations/grievance')}
                           className="w-full text-left px-2.5 py-1.5 rounded-md hover:bg-slate-50 text-sm text-slate-600 hover:text-[#0A1128] cursor-pointer"
                         >
-                          Investor Grievance & SCORES
+                          Investor Grievance & SCORES/ODR
                         </button>
 
                         <button
@@ -581,23 +616,38 @@ export const Navbar: React.FC<NavbarProps> = ({ currentRoute, onNavigate }) => {
                   <button onClick={() => navigateTo('investor-relations/bse-disclosures')} className="text-left py-1 hover:text-[#0D9488] cursor-pointer">
                     BSE Disclosures
                   </button>
-                  <button onClick={() => navigateTo('investor-relations/regulation-46')} className="text-left py-1 hover:text-[#0D9488] cursor-pointer">
-                    Regulation 46
+                  <button onClick={() => navigateTo('investor-relations/regulation-46')} className="text-left py-1 hover:text-[#0D9488] font-semibold text-[#0D9488] cursor-pointer">
+                    Regulation 46 Index
                   </button>
-                  <button onClick={() => navigateTo('investor-relations/agm-notices')} className="text-left py-1 hover:text-[#0D9488] cursor-pointer">
-                    AGM / Notices
+                  <button onClick={() => navigateTo('investor-relations/board-of-directors')} className="text-left py-1 hover:text-[#0D9488] cursor-pointer">
+                    Board of Directors
                   </button>
-                  <button onClick={() => navigateTo('investor-relations/governance')} className="text-left py-1 hover:text-[#0D9488] cursor-pointer">
-                    Corporate Governance
+                  <button onClick={() => navigateTo('investor-relations/committees')} className="text-left py-1 hover:text-[#0D9488] cursor-pointer">
+                    Board Committees
+                  </button>
+                  <button onClick={() => navigateTo('investor-relations/newspaper-publications')} className="text-left py-1 hover:text-[#0D9488] cursor-pointer">
+                    Newspaper Publications
+                  </button>
+                  <button onClick={() => navigateTo('investor-relations/annual-return')} className="text-left py-1 hover:text-[#0D9488] cursor-pointer">
+                    Annual Return (MGT-7)
+                  </button>
+                  <button onClick={() => navigateTo('investor-relations/secretarial-compliance')} className="text-left py-1 hover:text-[#0D9488] cursor-pointer">
+                    Secretarial Compliance
                   </button>
                   <button onClick={() => navigateTo('investor-relations/policies')} className="text-left py-1 hover:text-[#0D9488] cursor-pointer">
-                    Disclosures & Policies
+                    Policies & Charters
+                  </button>
+                  <button onClick={() => navigateTo('investor-relations/analyst-meets')} className="text-left py-1 hover:text-[#0D9488] cursor-pointer">
+                    Analyst Meets
+                  </button>
+                  <button onClick={() => navigateTo('investor-relations/kmp-contacts')} className="text-left py-1 hover:text-[#0D9488] cursor-pointer">
+                    Authorized KMP
                   </button>
                   <button onClick={() => navigateTo('investor-relations/grievance')} className="text-left py-1 hover:text-[#0D9488] cursor-pointer">
-                    Investor Grievance
+                    Investor Grievance & SCORES
                   </button>
                   <button onClick={() => navigateTo('investor-relations/rta')} className="text-left py-1 hover:text-[#0D9488] cursor-pointer">
-                    RTA Details
+                    Registrar & Transfer Agent
                   </button>
                 </div>
               </div>

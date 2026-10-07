@@ -433,6 +433,33 @@ export const ContactPage: React.FC<ContactPageProps> = ({ onNavigate: _onNavigat
                 </div>
               </div>
 
+              {/* Compliance Officer & Company Secretary Card */}
+              <div className="p-6 rounded-2xl bg-white border border-slate-200 space-y-3 shadow-2xs">
+                <div className="flex items-center gap-2.5 text-[#0D9488] font-semibold text-sm">
+                  <ShieldCheck className="w-4 h-4" />
+                  <span>Company Secretary & Compliance Officer</span>
+                </div>
+                <div className="font-semibold text-[#0A1128] text-sm">{COMPANY_DETAILS.complianceOfficer}</div>
+                <div className="text-xs text-slate-500 font-mono">{COMPANY_DETAILS.complianceDesignation}</div>
+                <div className="space-y-1.5 pt-2 border-t border-slate-100 font-mono text-xs">
+                  <div>
+                    <span className="text-slate-500">Email: </span>
+                    <a href={`mailto:${COMPANY_DETAILS.complianceEmail}`} className="text-[#0D9488] hover:underline font-semibold">
+                      {COMPANY_DETAILS.complianceEmail}
+                    </a>
+                  </div>
+                  <div>
+                    <span className="text-slate-500">Phone: </span>
+                    <a href={`tel:${COMPANY_DETAILS.compliancePhone.replace(/\s+/g, '')}`} className="text-slate-800 hover:underline">
+                      {COMPANY_DETAILS.compliancePhone}
+                    </a>
+                  </div>
+                  <div className="text-slate-400 text-[10px] pt-1 font-sans">
+                    Statutory liaison for Regulation 6 & Regulation 30 disclosures
+                  </div>
+                </div>
+              </div>
+
               {/* RTA Information */}
               <div className="p-6 rounded-2xl bg-white border border-slate-200 space-y-4 shadow-2xs">
                 <div className="flex items-center gap-2.5 text-[#2563EB] font-semibold text-sm">
@@ -442,10 +469,51 @@ export const ContactPage: React.FC<ContactPageProps> = ({ onNavigate: _onNavigat
                 <div className="space-y-1 text-xs text-slate-600">
                   <div className="font-semibold text-[#0A1128]">{COMPANY_DETAILS.rtaName}</div>
                   <div>{COMPANY_DETAILS.rtaAddress}</div>
-                  <div className="pt-2 font-mono text-[11px]">
+                  <div className="pt-2 font-mono text-[11px] space-y-1">
                     <div>Tel: <a href={`tel:${COMPANY_DETAILS.rtaPhone.replace(/\s+/g, '')}`} className="text-slate-700 hover:text-[#0D9488]">{COMPANY_DETAILS.rtaPhone}</a></div>
                     <div>Email: <a href={`mailto:${COMPANY_DETAILS.rtaEmail}`} className="text-[#0D9488] font-semibold">{COMPANY_DETAILS.rtaEmail}</a></div>
+                    <div>Web: <a href={COMPANY_DETAILS.rtaWebsite} target="_blank" rel="noopener noreferrer" className="text-[#0D9488] hover:underline">{COMPANY_DETAILS.rtaWebsite}</a></div>
                   </div>
+                </div>
+              </div>
+
+              {/* Official SEBI Portals: SCORES & SMART ODR */}
+              <div className="p-6 rounded-2xl bg-white border border-slate-200 space-y-3 shadow-2xs">
+                <span className="text-[10px] font-mono uppercase tracking-wider text-[#9A7B38] font-bold block">
+                  Official Statutory Dispute Portals
+                </span>
+                <div className="grid grid-cols-2 gap-3 text-xs">
+                  <a
+                    href={COMPANY_DETAILS.sebiScoresUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="p-3 rounded-xl bg-slate-50 hover:bg-slate-100 border border-slate-200 transition-colors flex flex-col justify-between group"
+                  >
+                    <div>
+                      <span className="font-semibold text-[#0A1128] block group-hover:text-[#0D9488]">SEBI SCORES 2.0</span>
+                      <span className="text-[10px] text-slate-500">Centralized Grievance</span>
+                    </div>
+                    <div className="flex items-center gap-1 text-[11px] text-[#0D9488] font-semibold mt-2">
+                      <span>Visit</span>
+                      <ExternalLink className="w-3 h-3" />
+                    </div>
+                  </a>
+
+                  <a
+                    href={COMPANY_DETAILS.sebiSmartOdrUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="p-3 rounded-xl bg-slate-50 hover:bg-slate-100 border border-slate-200 transition-colors flex flex-col justify-between group"
+                  >
+                    <div>
+                      <span className="font-semibold text-[#0A1128] block group-hover:text-[#9A7B38]">SEBI SMART ODR</span>
+                      <span className="text-[10px] text-slate-500">Online Resolution</span>
+                    </div>
+                    <div className="flex items-center gap-1 text-[11px] text-[#9A7B38] font-semibold mt-2">
+                      <span>Visit</span>
+                      <ExternalLink className="w-3 h-3" />
+                    </div>
+                  </a>
                 </div>
               </div>
 
@@ -461,7 +529,7 @@ export const ContactPage: React.FC<ContactPageProps> = ({ onNavigate: _onNavigat
                   rel="noopener noreferrer"
                   className="text-[#0D9488] hover:text-[#0A1128] flex items-center gap-1 font-mono text-[11px] font-semibold"
                 >
-                  <span>BSE Portal</span>
+                  <span>BSE Listing Portal</span>
                   <ExternalLink className="w-3.5 h-3.5" />
                 </a>
               </div>

@@ -19,10 +19,17 @@ export type PageRoute =
   | 'investor-relations/shareholding-pattern'
   | 'investor-relations/bse-disclosures'
   | 'investor-relations/regulation-46'
+  | 'investor-relations/board-of-directors'
+  | 'investor-relations/committees'
   | 'investor-relations/agm-notices'
   | 'investor-relations/governance'
   | 'investor-relations/policies'
   | 'investor-relations/disclosures-policies'
+  | 'investor-relations/newspaper-publications'
+  | 'investor-relations/annual-return'
+  | 'investor-relations/secretarial-compliance'
+  | 'investor-relations/analyst-meets'
+  | 'investor-relations/kmp-contacts'
   | 'investor-relations/grievance'
   | 'investor-relations/rta'
   | 'insights'
@@ -39,7 +46,13 @@ export type DocumentCategory =
   | 'Corporate Governance'
   | 'Company Policies'
   | 'Disclosures & Policies'
-  | 'Investor Grievance';
+  | 'Investor Grievance'
+  | 'Newspaper Publications'
+  | 'Annual Return (MGT-7)'
+  | 'Secretarial Compliance Report'
+  | 'Statutory Disclosures'
+  | 'MOA & AOA'
+  | 'Analyst & Investor Meets';
 
 export interface InvestorDocument {
   id: string;
@@ -54,6 +67,127 @@ export interface InvestorDocument {
   description: string;
   downloadUrl?: string;
   sebiReference?: string;
+  effectiveDate?: string;
+  version?: string;
+  isStatutory?: boolean;
+}
+
+export type Reg46Category = 
+  | 'General Business'
+  | 'Charter & Incorporation'
+  | 'Board & Governance'
+  | 'Statutory Policies'
+  | 'Financial Disclosures'
+  | 'Shareholding'
+  | 'Public Relations & Analyst Meets'
+  | 'Newspaper Publications'
+  | 'Compliance & Secretarial Filings'
+  | 'Investor Redressal & Contacts'
+  | 'Website Governance';
+
+export type Reg46Status = 
+  | 'Complied & Published'
+  | 'Maintained in Library'
+  | 'Active Disclosure'
+  | 'Subject to Company / CS Confirmation'
+  | 'Nil / Not Applicable (Company Confirmation Required)'
+  | 'Continuous Statutory Compliance';
+
+export interface Regulation46ClauseItem {
+  clause: string; // e.g. '46(2)(a)'
+  subRegulation?: string;
+  title: string;
+  requirement: string;
+  category: Reg46Category;
+  websiteLocation: string;
+  targetRoute: PageRoute;
+  targetCategory?: string;
+  status: Reg46Status;
+  actionText: string;
+  legalCitation: string;
+  internalNote?: string;
+}
+
+export interface DirectorProfile {
+  id: string;
+  name: string;
+  designation: string;
+  category: 'Executive Director' | 'Non-Executive Independent Director' | 'Non-Executive Director' | 'Key Managerial Personnel (KMP)';
+  din: string;
+  appointmentDate?: string;
+  term?: string;
+  bio: string;
+  otherDirectorships: string[];
+  committeeMemberships: {
+    committeeName: string;
+    role: 'Chairperson' | 'Member';
+  }[];
+  verified: boolean;
+  approvalStatus: string;
+}
+
+export interface BoardCommitteeMember {
+  name: string;
+  designation: string;
+  role: 'Chairperson' | 'Member';
+  category: string;
+  din?: string;
+}
+
+export interface BoardCommittee {
+  id: string;
+  name: string;
+  shortName: string;
+  mandate: string;
+  compositionRule: string;
+  statutoryReference: string;
+  chairperson: BoardCommitteeMember;
+  members: BoardCommitteeMember[];
+  meetingsFrequency: string;
+  keyResponsibilities: string[];
+}
+
+export interface KMPContact {
+  id: string;
+  role: string;
+  name: string;
+  designation: string;
+  email: string;
+  phone: string;
+  address?: string;
+  authorityScope: string;
+  statutoryReference: string;
+}
+
+export interface AnalystMeetItem {
+  id: string;
+  financialYear: string;
+  quarter: string;
+  eventTitle: string;
+  date: string;
+  eventType: 'Analyst Meet' | 'Institutional Investor Meet' | 'Earnings Call' | 'Investor Presentation';
+  scheduleIntimationBseAck?: string;
+  hasAudio: boolean;
+  hasVideo: boolean;
+  hasTranscript: boolean;
+  presentationUrl?: string;
+  audioUrl?: string;
+  videoUrl?: string;
+  transcriptUrl?: string;
+  statusNote: string;
+}
+
+export interface NewspaperPublicationItem {
+  id: string;
+  financialYear: string;
+  quarter: string;
+  publicationDate: string;
+  newspaperName: string;
+  edition: string;
+  language: string;
+  noticeType: 'Financial Results Notice' | 'Board Meeting Prior Notice' | 'AGM Notice' | 'Loss of Share Certificates / Transfer' | 'Other Notice';
+  fileSize: string;
+  bseAck: string;
 }
 
 export interface CapabilityItem {
@@ -116,3 +250,4 @@ export interface InsightArticle {
   /** Thematic tags listed beneath the article body. */
   topics: string[];
 }
+
