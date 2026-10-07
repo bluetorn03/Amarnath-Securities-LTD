@@ -167,6 +167,7 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate, onOpenDocument }
                   FOCUS:
                 </span>
                 <TypewriterLoop
+                  id="hero-typewriter-loop"
                   phrases={HERO_TYPEWRITER_PHRASES}
                   className="font-display text-xl sm:text-2xl md:text-3xl font-semibold text-[#9A7B38] tracking-wide"
                   cursorClassName="text-[#0D9488]"
@@ -306,8 +307,13 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate, onOpenDocument }
                   <div className="my-3">
                     <div className="text-3xl sm:text-4xl font-display font-bold text-[#0A1128] tracking-tight">
                       <span>₹</span>
-                      <AnimatedCounter end={3} duration={1400} />
-                      <span className="text-2xl font-sans font-semibold text-[#0A1128]">.00 Cr</span>
+                      <AnimatedCounter
+                        end={3}
+                        decimals={2}
+                        duration={1600}
+                        decimalClassName="text-2xl font-sans font-semibold text-[#0A1128]"
+                      />
+                      <span className="text-2xl font-sans font-semibold text-[#0A1128]"> Cr</span>
                     </div>
                   </div>
                   <div className="text-xs text-slate-500 font-sans">

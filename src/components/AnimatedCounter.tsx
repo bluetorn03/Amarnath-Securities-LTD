@@ -8,6 +8,7 @@ interface AnimatedCounterProps {
   duration?: number;
   decimals?: number;
   formatNumber?: boolean;
+  decimalClassName?: string;
   className?: string;
 }
 
@@ -19,6 +20,7 @@ export const AnimatedCounter: React.FC<AnimatedCounterProps> = ({
   duration = 1800,
   decimals = 0,
   formatNumber = false,
+  decimalClassName = '',
   className = ''
 }) => {
   const [value, setValue] = useState(start);
@@ -27,13 +29,6 @@ export const AnimatedCounter: React.FC<AnimatedCounterProps> = ({
   const hasAnimatedRef = useRef(false);
 
   useEffect(() => {
-    // Accessibility: Reduced motion displays final value immediately
-    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    if (prefersReducedMotion) {
-      setValue(end);
-      return;
-    }
-
     const node = elementRef.current;
     if (!node) {
       setValue(end);
@@ -65,7 +60,7 @@ export const AnimatedCounter: React.FC<AnimatedCounterProps> = ({
       rafRef.current = requestAnimationFrame(animate);
     };
 
-    // Check if element is already in the viewport on mount
+    // Immediate viewport check on mount so content already in view starts animating
     const rect = node.getBoundingClientRect();
     if (rect.top < window.innerHeight && rect.bottom > 0) {
       hasAnimatedRef.current = true;
@@ -86,16 +81,12 @@ export const AnimatedCounter: React.FC<AnimatedCounterProps> = ({
               hasAnimatedRef.current = true;
               startAnimation();
             }
-          } else {
-            // When completely scrolled away, allow replaying upon return
-            // without altering the displayed value
-            hasAnimatedRef.current = false;
           }
         });
       },
       {
         threshold: 0.1,
-        rootMargin: '0px 0px -20px 0px'
+        rootMargin: '0px 0px -10px 0px'
       }
     );
 
@@ -107,16 +98,32 @@ export const AnimatedCounter: React.FC<AnimatedCounterProps> = ({
     };
   }, [end, start, duration]);
 
-  const formattedValue = () => {
-    if (decimals > 0) return value.toFixed(decimals);
-    const rounded = Math.round(value);
-    return formatNumber ? rounded.toLocaleString('en-IN') : rounded.toString();
+  const renderContent = () => {
+    let numStr: string;
+    if (decimals > 0) {
+      numStr = value.toFixed(decimals);
+    } else {
+      const rounded = Math.round(value);
+      numStr = formatNumber ? rounded.toLocaleString('en-IN') : rounded.toString();
+    }
+
+    if (decimalClassName && decimals > 0 && numStr.includes('.')) {
+      const [whole, dec] = numStr.split('.');
+      return (
+        <>
+          <span>{whole}</span>
+          <span className={decimalClassName}>.{dec}</span>
+        </>
+      );
+    }
+
+    return numStr;
   };
 
   return (
     <span ref={elementRef} className={`font-mono tabular-nums inline-block ${className}`}>
       {prefix}
-      {formattedValue()}
+      {renderContent()}
       {suffix}
     </span>
   );

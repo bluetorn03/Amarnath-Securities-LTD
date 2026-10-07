@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 
 interface InfiniteMarqueeProps {
   items?: string[];
@@ -25,72 +25,40 @@ export const InfiniteMarquee: React.FC<InfiniteMarqueeProps> = ({
   itemClassName = '',
   separator = '•'
 }) => {
-  const [prefersReducedMotion, setPrefersReducedMotion] = useState(false);
-
-  useEffect(() => {
-    const mql = window.matchMedia('(prefers-reduced-motion: reduce)');
-    setPrefersReducedMotion(mql.matches);
-    const handler = (e: MediaQueryListEvent) => setPrefersReducedMotion(e.matches);
-    mql.addEventListener('change', handler);
-    return () => mql.removeEventListener('change', handler);
-  }, []);
-
-  if (prefersReducedMotion) {
-    return (
-      <div 
-        className={`w-full py-3.5 px-4 bg-[#FAF7F2] border-y border-[#EFEAE1] overflow-hidden ${className}`}
-        aria-label="Institutional Disclosures Summary"
-      >
-        <div className="max-w-7xl mx-auto flex flex-wrap items-center justify-center gap-x-6 gap-y-2 text-xs font-mono text-slate-700">
-          {items.map((item, idx) => (
-            <span key={idx} className="flex items-center gap-3">
-              <span>{item}</span>
-              {idx < items.length - 1 && <span className="text-[#0D9488] font-bold">{separator}</span>}
-            </span>
-          ))}
+  const renderTrack = (trackKey: string, isAriaHidden = false) => (
+    <div
+      key={trackKey}
+      className="flex shrink-0 flex-nowrap items-center gap-8 sm:gap-10 pr-8 sm:pr-10 animate-marquee will-change-transform"
+      aria-hidden={isAriaHidden ? 'true' : undefined}
+    >
+      {items.map((item, idx) => (
+        <div key={`${trackKey}-${idx}`} className="flex items-center gap-8 sm:gap-10 whitespace-nowrap shrink-0">
+          <span className={`text-[11px] sm:text-xs font-mono tracking-widest uppercase font-semibold text-slate-700 transition-colors hover:text-[#0A1128] ${itemClassName}`}>
+            {item}
+          </span>
+          <span className="text-[#0D9488] text-sm font-bold opacity-80 select-none">
+            {separator}
+          </span>
         </div>
-      </div>
-    );
-  }
+      ))}
+    </div>
+  );
 
   return (
     <div 
       className={`relative w-full overflow-hidden select-none pointer-events-auto bg-[#FAF7F2] border-y border-[#EFEAE1] py-3 sm:py-3.5 group ${className}`}
-      aria-hidden="true"
+      aria-label="Institutional Disclosures Summary"
     >
       {/* Side Edge Fade Gradients for Seamless Editorial Polish */}
       <div className="pointer-events-none absolute left-0 top-0 bottom-0 w-12 sm:w-28 bg-gradient-to-r from-[#FAF7F2] to-transparent z-10" />
       <div className="pointer-events-none absolute right-0 top-0 bottom-0 w-12 sm:w-28 bg-gradient-to-l from-[#FAF7F2] to-transparent z-10" />
 
-      {/* Two Identical Running Tracks for Mathematical Zero-Jump Loop */}
-      <div className="flex w-max">
-        {/* Track 1 */}
-        <div className="flex shrink-0 items-center gap-8 sm:gap-10 pr-8 sm:pr-10 animate-marquee will-change-transform">
-          {items.map((item, idx) => (
-            <div key={`track1-${idx}`} className="flex items-center gap-8 sm:gap-10 whitespace-nowrap">
-              <span className={`text-[11px] sm:text-xs font-mono tracking-widest uppercase font-semibold text-slate-700 transition-colors hover:text-[#0A1128] ${itemClassName}`}>
-                {item}
-              </span>
-              <span className="text-[#0D9488] text-sm font-bold opacity-80 select-none">
-                {separator}
-              </span>
-            </div>
-          ))}
-        </div>
-
-        {/* Track 2 (Cloned for seamless infinite loop) */}
-        <div className="flex shrink-0 items-center gap-8 sm:gap-10 pr-8 sm:pr-10 animate-marquee will-change-transform" aria-hidden="true">
-          {items.map((item, idx) => (
-            <div key={`track2-${idx}`} className="flex items-center gap-8 sm:gap-10 whitespace-nowrap">
-              <span className={`text-[11px] sm:text-xs font-mono tracking-widest uppercase font-semibold text-slate-700 transition-colors hover:text-[#0A1128] ${itemClassName}`}>
-                {item}
-              </span>
-              <span className="text-[#0D9488] text-sm font-bold opacity-80 select-none">
-                {separator}
-              </span>
-            </div>
-          ))}
-        </div>
+      {/* Identical Running Tracks for Mathematical Zero-Jump Loop (Always single horizontal row) */}
+      <div className="flex w-max flex-nowrap">
+        {renderTrack('track-1', false)}
+        {renderTrack('track-2', true)}
+        {renderTrack('track-3', true)}
+        {renderTrack('track-4', true)}
       </div>
     </div>
   );

@@ -23,17 +23,7 @@ export const ScrollReveal: React.FC<ScrollRevealProps> = ({
 }) => {
   const ref = useRef<HTMLDivElement | null>(null);
   const [isVisible, setIsVisible] = useState(false);
-  const [prefersReducedMotion, setPrefersReducedMotion] = useState(false);
-
   useEffect(() => {
-    // Accessibility check: immediately show if reduced motion is requested
-    const mql = window.matchMedia('(prefers-reduced-motion: reduce)');
-    if (mql.matches) {
-      setPrefersReducedMotion(true);
-      setIsVisible(true);
-      return;
-    }
-
     const node = ref.current;
     if (!node) {
       setIsVisible(true);
@@ -44,7 +34,6 @@ export const ScrollReveal: React.FC<ScrollRevealProps> = ({
     const rect = node.getBoundingClientRect();
     const inViewport = rect.top < window.innerHeight && rect.bottom > 0;
     if (inViewport) {
-      // Small frame delay so the opening entrance transition actually renders on screen
       const frameTimer = setTimeout(() => {
         setIsVisible(true);
       }, 40);
@@ -71,27 +60,17 @@ export const ScrollReveal: React.FC<ScrollRevealProps> = ({
       },
       {
         root: null,
-        rootMargin: '0px 0px -30px 0px',
-        threshold: 0.08
+        rootMargin: '0px 0px -20px 0px',
+        threshold: 0.05
       }
     );
 
     observer.observe(node);
 
-    // Fail-safe timeout: guarantees no element is ever stuck at opacity:0
-    const safetyTimer = setTimeout(() => {
-      setIsVisible(true);
-    }, 1200);
-
     return () => {
       observer.disconnect();
-      clearTimeout(safetyTimer);
     };
   }, [once]);
-
-  if (prefersReducedMotion) {
-    return <div className={className}>{children}</div>;
-  }
 
   // Calculate transform offset based on direction and scale
   const getTransform = () => {

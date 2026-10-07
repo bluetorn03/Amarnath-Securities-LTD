@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { motion, useReducedMotion } from 'motion/react';
+import { motion } from 'motion/react';
 import { COMPANY_DETAILS, MARKET_TICKER_DATA } from '../data/mockData';
 import { 
   Building2, 
@@ -15,7 +15,6 @@ import {
 } from 'lucide-react';
 
 export const HeroInstitutionalVisual: React.FC = () => {
-  const prefersReducedMotion = useReducedMotion();
   const [activeNode, setActiveNode] = useState<number>(0);
   const [currentTime, setCurrentTime] = useState<string>('');
 
@@ -39,12 +38,11 @@ export const HeroInstitutionalVisual: React.FC = () => {
 
   // Cycle active node highlight every 3.5 seconds
   useEffect(() => {
-    if (prefersReducedMotion) return;
     const interval = setInterval(() => {
       setActiveNode((prev) => (prev + 1) % 4);
     }, 3500);
     return () => clearInterval(interval);
-  }, [prefersReducedMotion]);
+  }, []);
 
   const verifiedNodes = [
     {

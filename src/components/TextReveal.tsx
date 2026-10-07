@@ -16,24 +16,14 @@ export const TextReveal: React.FC<TextRevealProps> = ({
   delay = 0.1
 }) => {
   const [mounted, setMounted] = useState(false);
-  const [prefersReducedMotion, setPrefersReducedMotion] = useState(false);
   const words = text.split(' ');
 
   useEffect(() => {
-    const mql = window.matchMedia('(prefers-reduced-motion: reduce)');
-    if (mql.matches) {
-      setPrefersReducedMotion(true);
-      return;
-    }
     const timer = setTimeout(() => {
       setMounted(true);
     }, 20);
     return () => clearTimeout(timer);
   }, []);
-
-  if (prefersReducedMotion) {
-    return <Component className={className}>{text}</Component>;
-  }
 
   return (
     <Component className={className} aria-label={text}>
