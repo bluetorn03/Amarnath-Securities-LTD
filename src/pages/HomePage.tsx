@@ -129,23 +129,23 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate, onOpenDocument }
   return (
     <div className="w-full flex flex-col font-sans bg-white text-[#0A1128] overflow-x-clip">
       {/* =========================================================================
-          SECTION 1: HERO (WHITE BACKGROUND • FULL VIEWPORT HEIGHT)
-          Two-column layout: Left = Brand Copy + Infinite Typewriter, Right = Verified Visual
+          SECTION 1: HERO (WHITE BACKGROUND • PROPERLY VERTICALLY CENTERED)
+          Two-column layout: Left = Brand Copy + Infinite Typewriter, Right = Institutional Terminal
          ========================================================================= */}
-      <section className="relative min-h-[100svh] flex items-center justify-center overflow-hidden bg-white px-4 sm:px-8 pt-6 pb-10 lg:pt-8 lg:pb-12">
+      <section className="relative min-h-[calc(100svh-96px)] flex items-center justify-center overflow-hidden bg-white px-4 sm:px-8 py-6 sm:py-8 lg:py-8">
         {/* Subtle Ambient Decorative Gradients */}
         <div className="absolute top-1/4 left-1/4 w-[500px] h-[300px] bg-[#0D9488]/4 rounded-full blur-3xl pointer-events-none" />
         <div className="absolute bottom-1/4 right-1/4 w-[400px] h-[300px] bg-[#9A7B38]/4 rounded-full blur-3xl pointer-events-none" />
 
-        <div className="relative z-10 max-w-7xl mx-auto w-full grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-12 items-center">
+        <div className="relative z-10 max-w-7xl mx-auto w-full grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center">
           {/* HERO LEFT COLUMN */}
-          <div className="lg:col-span-7 flex flex-col items-start text-left space-y-6">
+          <div className="lg:col-span-7 flex flex-col items-start text-left space-y-4 lg:space-y-5">
             {/* Elite Institutional Badge */}
             <motion.div
-              initial={{ opacity: 0, y: -15 }}
+              initial={{ opacity: 0, y: -12 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, ease: 'easeOut' }}
-              className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#FAFBFD] border border-slate-200/90 shadow-2xs text-xs sm:text-sm font-mono tracking-wide text-slate-700"
+              transition={{ duration: 0.5, ease: 'easeOut' }}
+              className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#FAFBFD] border border-slate-200/90 shadow-2xs text-xs font-mono tracking-wide text-slate-700"
             >
               <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
               <span className="text-[#9A7B38] font-bold">BSE LISTED: 538465</span>
@@ -156,20 +156,20 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate, onOpenDocument }
             </motion.div>
 
             {/* Core Brand Title */}
-            <div className="space-y-2 w-full">
-              <h1 className="font-display text-3xl sm:text-5xl md:text-6xl font-bold tracking-tight text-[#0A1128] leading-[1.12]">
+            <div className="space-y-1.5 w-full">
+              <h1 className="font-display text-3xl sm:text-4xl md:text-5xl lg:text-[3.15rem] xl:text-[3.35rem] font-bold tracking-tight text-[#0A1128] leading-[1.12]">
                 <TextReveal text="AMARNATH SECURITIES LIMITED" delay={0.1} stagger={0.05} />
               </h1>
 
-              {/* Dynamic Typewriter Highlight - Fully reliable on Desktop, Laptop, Tablet & Mobile */}
-              <div className="pt-2 min-h-[46px] flex items-center">
+              {/* Dynamic Typewriter Highlight */}
+              <div className="pt-1 min-h-[40px] flex items-center">
                 <span className="text-xs font-mono uppercase tracking-widest text-slate-400 mr-2.5 shrink-0 select-none">
                   FOCUS:
                 </span>
                 <TypewriterLoop
                   id="hero-typewriter-loop"
                   phrases={HERO_TYPEWRITER_PHRASES}
-                  className="font-display text-xl sm:text-2xl md:text-3xl font-semibold text-[#9A7B38] tracking-wide"
+                  className="font-display text-lg sm:text-2xl md:text-[1.7rem] font-semibold text-[#9A7B38] tracking-wide"
                   cursorClassName="text-[#0D9488]"
                 />
               </div>
@@ -177,24 +177,24 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate, onOpenDocument }
 
             {/* Verified Supporting Text */}
             <motion.p
-              initial={{ opacity: 0, y: 15 }}
+              initial={{ opacity: 0, y: 12 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.7, delay: 0.35, ease: 'easeOut' }}
-              className="text-slate-600 text-base sm:text-lg max-w-xl leading-relaxed font-normal"
+              transition={{ duration: 0.6, delay: 0.25, ease: 'easeOut' }}
+              className="text-slate-600 text-sm sm:text-base max-w-xl leading-relaxed font-normal"
             >
               A BSE-listed company incorporated in 1994, Amarnath Securities Limited is focused on identifying and developing sustainable business opportunities, evaluating strategic corporate transactions, and pursuing long-term value creation through disciplined governance.
             </motion.p>
 
             {/* Dual CTAs with Micro-interactions */}
             <motion.div
-              initial={{ opacity: 0, y: 15 }}
+              initial={{ opacity: 0, y: 12 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.7, delay: 0.45, ease: 'easeOut' }}
-              className="flex flex-col sm:flex-row items-center gap-4 w-full sm:w-auto pt-2"
+              transition={{ duration: 0.6, delay: 0.35, ease: 'easeOut' }}
+              className="flex flex-col sm:flex-row items-center gap-3.5 w-full sm:w-auto pt-1"
             >
               <MagneticButton
                 onClick={() => onNavigate('capabilities')}
-                className="w-full sm:w-auto px-7 py-3.5 rounded-xl font-semibold text-sm text-white bg-[#0A1128] hover:bg-[#0D9488] shadow-md hover:shadow-lg transition-all duration-200 flex items-center justify-center gap-2 group cursor-pointer active:scale-[0.98]"
+                className="w-full sm:w-auto px-6 py-3 rounded-xl font-semibold text-sm text-white bg-[#0A1128] hover:bg-[#0D9488] shadow-md hover:shadow-lg transition-all duration-200 flex items-center justify-center gap-2 group cursor-pointer active:scale-[0.98]"
                 id="hero-explore-capabilities"
               >
                 <span>Business & Activities</span>
@@ -203,7 +203,7 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate, onOpenDocument }
 
               <button
                 onClick={() => onNavigate('investor-relations')}
-                className="w-full sm:w-auto px-7 py-3.5 rounded-xl font-semibold text-sm text-slate-800 bg-white hover:bg-slate-50 border border-slate-300 hover:border-[#0D9488] shadow-xs hover:shadow-sm transition-all duration-200 flex items-center justify-center gap-2 group cursor-pointer active:scale-[0.98]"
+                className="w-full sm:w-auto px-6 py-3 rounded-xl font-semibold text-sm text-slate-800 bg-white hover:bg-slate-50 border border-slate-300 hover:border-[#0D9488] shadow-xs hover:shadow-sm transition-all duration-200 flex items-center justify-center gap-2 group cursor-pointer active:scale-[0.98]"
                 id="hero-investor-centre"
               >
                 <span>Investor Centre</span>
@@ -215,8 +215,8 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate, onOpenDocument }
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
-              transition={{ duration: 0.8, delay: 0.55 }}
-              className="w-full max-w-xl p-3 px-5 rounded-xl bg-[#FAFBFD] border border-slate-200/90 shadow-2xs flex flex-wrap items-center justify-between gap-4 text-xs font-mono"
+              transition={{ duration: 0.7, delay: 0.45 }}
+              className="w-full max-w-xl p-2.5 px-4 rounded-xl bg-[#FAFBFD] border border-slate-200/90 shadow-2xs flex flex-wrap items-center justify-between gap-3 text-xs font-mono"
             >
               <div className="flex items-center gap-2">
                 <span className="text-slate-400">BSE PRICE:</span>
@@ -236,14 +236,14 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate, onOpenDocument }
             </motion.div>
           </div>
 
-          {/* HERO RIGHT COLUMN: Meaningful Institutional Visual */}
+          {/* HERO RIGHT COLUMN: Upgraded Institutional Interactive Cockpit */}
           <motion.div
-            initial={{ opacity: 0, scale: 0.96, y: 15 }}
+            initial={{ opacity: 0, scale: 0.97, y: 12 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
-            transition={{ duration: 0.75, delay: 0.25, ease: 'easeOut' }}
+            transition={{ duration: 0.7, delay: 0.2, ease: 'easeOut' }}
             className="lg:col-span-5 flex justify-center w-full"
           >
-            <HeroInstitutionalVisual />
+            <HeroInstitutionalVisual onNavigate={onNavigate} />
           </motion.div>
         </div>
       </section>
