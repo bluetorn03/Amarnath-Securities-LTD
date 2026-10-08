@@ -114,6 +114,29 @@ export const AboutPage: React.FC<AboutPageProps> = ({ currentRoute, onNavigate }
 
               {/* Approach & Stakeholder Commitment */}
               <div className="lg:col-span-5 space-y-4">
+                {/* Corporate Heritage Visual */}
+                <div className="relative rounded-2xl overflow-hidden border border-slate-200/80 shadow-2xs aspect-16/9 bg-slate-100 group">
+                  <img
+                    src="/images/about-corporate-heritage.webp"
+                    alt="Amarnath Securities institutional capital stewardship and corporate heritage since 1994"
+                    width={1200}
+                    height={675}
+                    loading="lazy"
+                    decoding="async"
+                    className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-[1.02]"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-[#0A1128]/80 via-[#0A1128]/20 to-transparent flex items-end p-5">
+                    <div className="text-white space-y-0.5">
+                      <span className="text-[10px] font-mono uppercase tracking-wider text-[#9A7B38] font-bold block">
+                        Institutional Legacy
+                      </span>
+                      <p className="text-xs sm:text-sm font-display font-medium text-slate-100">
+                        Three Decades of Capital Stewardship • Estd. 1994
+                      </p>
+                    </div>
+                  </div>
+                </div>
+
                 <div className="p-6 rounded-2xl bg-white border border-slate-200/80 space-y-3 shadow-2xs">
                   <div className="flex items-center gap-2 text-[#0D9488] font-semibold text-sm">
                     <Award className="w-5 h-5" />

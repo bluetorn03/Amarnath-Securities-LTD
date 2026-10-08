@@ -104,6 +104,19 @@ export const ArticleDetailPage: React.FC<ArticleDetailPageProps> = ({ articleId,
         <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-[minmax(0,1fr)_330px] gap-10 lg:gap-12">
           <article className="min-w-0">
             <div className="rounded-2xl border border-slate-200/90 bg-white shadow-[0_8px_30px_-8px_rgba(15,23,42,0.07)] overflow-hidden">
+              {/* Editorial Feature Image */}
+              <div className="relative aspect-21/9 sm:aspect-28/9 min-h-[160px] sm:min-h-[220px] overflow-hidden bg-slate-100 border-b border-slate-100">
+                <img
+                  src="/images/insights-market-intelligence.webp"
+                  alt="Market intelligence research publication and corporate finance analytical briefing"
+                  width={1200}
+                  height={675}
+                  loading="lazy"
+                  decoding="async"
+                  className="w-full h-full object-cover object-center"
+                />
+              </div>
+
               {/* Key takeaways */}
               <div className="p-7 sm:p-9 border-b border-slate-100 bg-teal-50/30">
                 <div className="flex items-center gap-2 text-[11px] font-mono font-bold uppercase tracking-widest text-[#0D9488] mb-5">

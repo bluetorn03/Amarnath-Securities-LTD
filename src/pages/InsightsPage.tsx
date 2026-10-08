@@ -17,18 +17,43 @@ export const InsightsPage: React.FC<InsightsPageProps> = ({ onNavigate }) => {
       {/* Page Header — clean light institutional */}
       <div className="bg-[#F8FAFC] border-b border-slate-200/80 py-12 px-4 sm:px-8">
         <div className="max-w-7xl mx-auto">
-          <div className="max-w-3xl space-y-4">
-            <div className="inline-flex items-center gap-2 text-xs font-mono uppercase tracking-widest text-[#0D9488] font-semibold">
-              <TrendingUp className="w-3.5 h-3.5" />
-              <span>Market Intelligence & Research</span>
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+            <div className="lg:col-span-7 space-y-4">
+              <div className="inline-flex items-center gap-2 text-xs font-mono uppercase tracking-widest text-[#0D9488] font-semibold">
+                <TrendingUp className="w-3.5 h-3.5" />
+                <span>Market Intelligence & Research</span>
+              </div>
+              <h1 className="font-display text-3xl sm:text-4xl md:text-5xl font-bold text-[#0A1128] tracking-tight leading-tight">
+                <TextReveal text="Capital Markets & Regulatory Perspectives" delay={0.1} />
+              </h1>
+              <p className="text-slate-600 text-sm sm:text-base leading-relaxed">
+                Analytical viewpoints from Amarnath Securities research desk on Indian structured finance,
+                SEBI listing norms, corporate transactions and macroeconomic shifts.
+              </p>
             </div>
-            <h1 className="font-display text-3xl sm:text-4xl md:text-5xl font-bold text-[#0A1128] tracking-tight leading-tight">
-              <TextReveal text="Capital Markets & Regulatory Perspectives" delay={0.1} />
-            </h1>
-            <p className="text-slate-600 text-sm sm:text-base leading-relaxed">
-              Analytical viewpoints from Amarnath Securities research desk on Indian structured finance,
-              SEBI listing norms, corporate transactions and macroeconomic shifts.
-            </p>
+            <div className="lg:col-span-5">
+              <div className="relative rounded-2xl overflow-hidden border border-slate-200/90 shadow-2xs aspect-16/9 bg-slate-100 group">
+                <img
+                  src="/images/insights-market-intelligence.webp"
+                  alt="Institutional financial research desk with analytical market reports and regulatory publications"
+                  width={1200}
+                  height={675}
+                  loading="lazy"
+                  decoding="async"
+                  className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-[1.02]"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-[#0A1128]/80 via-[#0A1128]/20 to-transparent flex items-end p-4">
+                  <div className="text-white space-y-0.5">
+                    <span className="text-[10px] font-mono uppercase tracking-wider text-[#9A7B38] font-bold block">
+                      Research Desk
+                    </span>
+                    <p className="text-xs font-display font-medium text-slate-100">
+                      Analytical Publications & Regulatory Perspectives
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </div>

@@ -133,6 +133,21 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate, onOpenDocument }
           Two-column layout: Left = Brand Copy + Infinite Typewriter, Right = Institutional Terminal
          ========================================================================= */}
       <section className="relative min-h-[calc(100svh-96px)] flex items-center justify-center overflow-hidden bg-white px-4 sm:px-8 py-6 sm:py-8 lg:py-8">
+        {/* Prioritized Institutional Architecture Atmosphere */}
+        <div className="absolute inset-0 z-0 opacity-[0.055] pointer-events-none mix-blend-luminosity overflow-hidden">
+          <img
+            src="/images/hero-institutional-facade.webp"
+            alt="Premier financial district headquarters architecture representing Amarnath Securities Limited"
+            width={1600}
+            height={900}
+            fetchPriority="high"
+            loading="eager"
+            decoding="async"
+            className="w-full h-full object-cover object-center filter grayscale contrast-125"
+          />
+          <div className="absolute inset-0 bg-gradient-to-r from-white via-white/80 to-transparent" />
+        </div>
+
         {/* Subtle Ambient Decorative Gradients */}
         <div className="absolute top-1/4 left-1/4 w-[500px] h-[300px] bg-[#0D9488]/4 rounded-full blur-3xl pointer-events-none" />
         <div className="absolute bottom-1/4 right-1/4 w-[400px] h-[300px] bg-[#9A7B38]/4 rounded-full blur-3xl pointer-events-none" />
@@ -422,6 +437,24 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate, onOpenDocument }
             {/* Right Card / Statutory Credentials (Enters from right) */}
             <ScrollReveal direction="right" distance={30} className="lg:col-span-5">
               <div className="relative p-6 sm:p-8 rounded-2xl bg-white border border-slate-200/90 shadow-sm space-y-6">
+                {/* Institutional Corporate Frame */}
+                <div className="relative rounded-xl overflow-hidden aspect-16/9 bg-slate-100 border border-slate-200/80 group">
+                  <img
+                    src="/images/hero-institutional-facade.webp"
+                    alt="Amarnath Securities institutional headquarters and corporate capital credentials"
+                    width={1600}
+                    height={900}
+                    loading="lazy"
+                    decoding="async"
+                    className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-[1.02]"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-[#0A1128]/80 via-transparent to-transparent flex items-end p-4">
+                    <span className="text-[10px] font-mono uppercase tracking-wider text-white font-bold">
+                      BSE LISTED: 538465 • ESTD 1994
+                    </span>
+                  </div>
+                </div>
+
                 <div className="flex items-center justify-between pb-4 border-b border-slate-200">
                   <div className="flex items-center gap-3">
                     <AmarnathLogo size={36} variant="light" />

@@ -229,6 +229,38 @@ export const InvestorRelationsPage: React.FC<InvestorRelationsPageProps> = ({
           </div>
         </div>
 
+        {/* Capital Markets & Regulatory Governance Banner */}
+        <div className="relative rounded-2xl overflow-hidden border border-slate-200/90 shadow-2xs bg-slate-900">
+          <div className="relative aspect-21/9 sm:aspect-28/9 min-h-[160px] sm:min-h-[200px] overflow-hidden">
+            <img
+              src="/images/investor-relations-exchange.webp"
+              alt="Institutional securities exchange architecture representing BSE listing and SEBI Regulation 46 compliance"
+              width={1200}
+              height={675}
+              loading="lazy"
+              decoding="async"
+              className="w-full h-full object-cover object-center opacity-80"
+            />
+            <div className="absolute inset-0 bg-gradient-to-r from-[#0A1128]/95 via-[#0A1128]/75 to-transparent flex items-center p-6 sm:p-8">
+              <div className="max-w-xl space-y-1.5 text-white">
+                <div className="flex items-center gap-2 text-[10px] font-mono uppercase tracking-widest text-[#9A7B38] font-bold">
+                  <span>BSE SCRIP: 538465</span>
+                  <span>•</span>
+                  <span>ESTD 1994</span>
+                  <span>•</span>
+                  <span className="text-[#0D9488]">SEBI LODR COMPLIANT</span>
+                </div>
+                <h2 className="font-display text-lg sm:text-2xl font-bold text-white tracking-tight">
+                  Statutory Transparency & Capital Markets Governance
+                </h2>
+                <p className="text-slate-300 text-xs sm:text-sm leading-relaxed hidden sm:block">
+                  Disseminating mandatory filings, audited financial results, shareholding patterns, and compliance policies in full adherence to SEBI Regulation 46.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+
         {/* Master Navigation Pills / Tab Bar */}
         <div className="flex items-center gap-2 overflow-x-auto pb-3 scrollbar-thin border-b border-slate-200">
           {categories.map((cat) => {

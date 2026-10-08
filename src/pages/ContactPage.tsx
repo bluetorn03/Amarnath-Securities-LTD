@@ -100,13 +100,12 @@ export const ContactPage: React.FC<ContactPageProps> = ({ onNavigate: _onNavigat
           </p>
         </div>
 
-        {/* Main Grid: Forms on Left, Corporate Coordinates on Right */}
-        <ScrollReveal direction="up" distance={20}>
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 items-start">
-            {/* Form Container */}
-            <div className="lg:col-span-7 p-6 sm:p-10 rounded-2xl bg-white border border-slate-200 shadow-2xs space-y-8">
-              {/* Form Toggle Tabs */}
-              <div className="flex items-center gap-3 border-b border-slate-100 pb-4">
+        {/* Main Grid: Forms on Left (Sticky), Corporate Coordinates on Right */}
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 items-start">
+          {/* Form Container: Sticky on desktop below sticky navbar (top-24), stops when parent grid ends */}
+          <div className="lg:col-span-7 p-6 sm:p-10 rounded-2xl bg-white border border-slate-200 shadow-2xs space-y-8 lg:sticky lg:top-24 lg:self-start lg:max-h-[calc(100vh-7rem)] lg:overflow-y-auto xl:overflow-y-visible scrollbar-thin z-10">
+            {/* Form Toggle Tabs */}
+            <div className="flex items-center gap-3 border-b border-slate-100 pb-4">
                 <button
                   onClick={() => {
                     setFormType('business');
@@ -388,6 +387,29 @@ export const ContactPage: React.FC<ContactPageProps> = ({ onNavigate: _onNavigat
 
             {/* Right Column: Institutional Contacts & Offices */}
             <div className="lg:col-span-5 space-y-6">
+              {/* Corporate Headquarters & Physical Presence Visual */}
+              <div className="relative rounded-2xl overflow-hidden border border-slate-200/90 shadow-2xs aspect-16/9 bg-slate-100 group">
+                <img
+                  src="/images/contact-corporate-facade.webp"
+                  alt="Amarnath Securities corporate headquarters exterior and investor liaison office"
+                  width={1200}
+                  height={675}
+                  loading="lazy"
+                  decoding="async"
+                  className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-[1.02]"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-[#0A1128]/80 via-[#0A1128]/20 to-transparent flex items-end p-5">
+                  <div className="text-white space-y-0.5">
+                    <span className="text-[10px] font-mono uppercase tracking-wider text-[#0D9488] font-bold block">
+                      Institutional Coordinates
+                    </span>
+                    <p className="text-xs sm:text-sm font-display font-medium text-slate-100">
+                      Corporate Headquarters & Registered Office
+                    </p>
+                  </div>
+                </div>
+              </div>
+
               {/* Registered Office */}
               <div className="p-6 rounded-2xl bg-white border border-slate-200 space-y-4 shadow-2xs">
                 <div className="flex items-center gap-2.5 text-[#0D9488] font-semibold text-sm">
@@ -535,8 +557,7 @@ export const ContactPage: React.FC<ContactPageProps> = ({ onNavigate: _onNavigat
               </div>
             </div>
           </div>
-        </ScrollReveal>
-      </div>
+        </div>
     </div>
   );
 };

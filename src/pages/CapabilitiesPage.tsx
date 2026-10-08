@@ -180,7 +180,35 @@ export const CapabilitiesPage: React.FC<CapabilitiesPageProps> = ({ currentRoute
               ALL BUSINESS & ACTIVITIES OVERVIEW
              ========================================================================= */
           <ScrollReveal direction="up" distance={20}>
-            <div className="space-y-16">
+            <div className="space-y-12">
+              {/* Strategic Advisory & Execution Feature Visual */}
+              <div className="relative rounded-2xl overflow-hidden border border-slate-200/90 shadow-2xs bg-slate-900">
+                <div className="relative aspect-21/9 sm:aspect-24/9 min-h-[190px] sm:min-h-[240px] overflow-hidden">
+                  <img
+                    src="/images/capabilities-strategic-advisory.webp"
+                    alt="Corporate strategy boardroom and transaction diligence setting for M&A and business development"
+                    width={1200}
+                    height={675}
+                    loading="lazy"
+                    decoding="async"
+                    className="w-full h-full object-cover object-center opacity-80"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-r from-[#0A1128]/95 via-[#0A1128]/70 to-transparent flex items-center p-6 sm:p-10">
+                    <div className="max-w-xl space-y-2 text-white">
+                      <span className="inline-flex items-center gap-2 text-[10px] font-mono uppercase tracking-widest text-[#0D9488] font-bold bg-[#0D9488]/20 px-2.5 py-1 rounded-full border border-[#0D9488]/40">
+                        Strategic Deal Diligence & Advisory
+                      </span>
+                      <h2 className="font-display text-xl sm:text-2xl md:text-3xl font-bold text-white tracking-tight">
+                        Disciplined Evaluation for Long-Term Enterprise Compounding
+                      </h2>
+                      <p className="text-slate-300 text-xs sm:text-sm leading-relaxed hidden sm:block">
+                        Rigorous commercial, legal, and operational diligence applied to evaluate new corporate opportunities, strategic partnerships, and M&A mandates.
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
               {/* Four Clear Content Blocks */}
               <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                 {BUSINESS_ACTIVITIES_DATA.pillars.map((pillar) => (
