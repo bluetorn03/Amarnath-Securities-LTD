@@ -148,7 +148,7 @@ const HeroParticleNetwork = () => {
         ctx.fill();
       }
 
-      // 3. Particles — spring physics + draw
+      // 3. Particles -- spring physics + draw
       for (let i = 0; i < len; i++) {
         const p = particles[i];
 
