@@ -54,6 +54,8 @@ export type DocumentCategory =
   | 'MOA & AOA'
   | 'Analyst & Investor Meets';
 
+export type DocumentSourceType = 'upload' | 'file_url' | 'external_url';
+
 export interface InvestorDocument {
   id: string;
   title: string;
@@ -66,6 +68,11 @@ export interface InvestorDocument {
   fileType: 'PDF' | 'XBRL';
   description: string;
   downloadUrl?: string;
+  // CMS Readiness Fields (Database / Backend / Admin CMS ready)
+  sourceType: DocumentSourceType; // 'upload' | 'file_url' | 'external_url'
+  fileUrl?: string; // Direct link to hosted or uploaded PDF
+  externalUrl?: string; // External statutory filing link (e.g. BSE Listing Centre)
+  isAvailable: boolean; // true if physical/verified file exists; false if awaiting Company/CS submission
   sebiReference?: string;
   effectiveDate?: string;
   version?: string;
@@ -89,6 +96,7 @@ export type Reg46Status =
   | 'Complied & Published'
   | 'Maintained in Library'
   | 'Active Disclosure'
+  | 'Company/CS Confirmation Required'
   | 'Subject to Company / CS Confirmation'
   | 'Nil / Not Applicable (Company Confirmation Required)'
   | 'Continuous Statutory Compliance';

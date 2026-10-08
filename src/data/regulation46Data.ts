@@ -48,7 +48,7 @@ export const REGULATION_46_MASTER_INDEX: Regulation46ClauseItem[] = [
     websiteLocation: 'Disclosures & Policies / Charter Documents',
     targetRoute: 'investor-relations/policies',
     targetCategory: 'MOA & AOA',
-    status: 'Maintained in Library',
+    status: 'Company/CS Confirmation Required',
     actionText: 'View MOA & AOA',
     legalCitation: 'SEBI (LODR) Reg 46(2)(aa)'
   },
@@ -60,7 +60,7 @@ export const REGULATION_46_MASTER_INDEX: Regulation46ClauseItem[] = [
     category: 'Board & Governance',
     websiteLocation: 'Board of Directors',
     targetRoute: 'investor-relations/board-of-directors',
-    status: 'Complied & Published',
+    status: 'Company/CS Confirmation Required',
     actionText: 'View Board of Directors',
     legalCitation: 'SEBI (LODR) Reg 46(2)(ab)'
   },
@@ -73,7 +73,7 @@ export const REGULATION_46_MASTER_INDEX: Regulation46ClauseItem[] = [
     websiteLocation: 'Disclosures & Policies / Governance',
     targetRoute: 'investor-relations/policies',
     targetCategory: 'Company Policies',
-    status: 'Maintained in Library',
+    status: 'Company/CS Confirmation Required',
     actionText: 'View Appointment Terms',
     legalCitation: 'SEBI (LODR) Reg 46(2)(b) & Schedule IV Companies Act'
   },
@@ -85,7 +85,7 @@ export const REGULATION_46_MASTER_INDEX: Regulation46ClauseItem[] = [
     category: 'Board & Governance',
     websiteLocation: 'Board Committees',
     targetRoute: 'investor-relations/committees',
-    status: 'Complied & Published',
+    status: 'Company/CS Confirmation Required',
     actionText: 'View Board Committees',
     legalCitation: 'SEBI (LODR) Reg 46(2)(c) & Reg 18, 19, 20'
   },
@@ -98,7 +98,7 @@ export const REGULATION_46_MASTER_INDEX: Regulation46ClauseItem[] = [
     websiteLocation: 'Disclosures & Policies',
     targetRoute: 'investor-relations/policies',
     targetCategory: 'Company Policies',
-    status: 'Maintained in Library',
+    status: 'Company/CS Confirmation Required',
     actionText: 'View Code of Conduct',
     legalCitation: 'SEBI (LODR) Reg 46(2)(d) & Reg 17(5)'
   },
@@ -111,7 +111,7 @@ export const REGULATION_46_MASTER_INDEX: Regulation46ClauseItem[] = [
     websiteLocation: 'Disclosures & Policies',
     targetRoute: 'investor-relations/policies',
     targetCategory: 'Company Policies',
-    status: 'Maintained in Library',
+    status: 'Company/CS Confirmation Required',
     actionText: 'View Vigil Mechanism Policy',
     legalCitation: 'SEBI (LODR) Reg 46(2)(e) & Reg 22'
   },
@@ -124,7 +124,7 @@ export const REGULATION_46_MASTER_INDEX: Regulation46ClauseItem[] = [
     websiteLocation: 'Disclosures & Policies / Governance',
     targetRoute: 'investor-relations/policies',
     targetCategory: 'Company Policies',
-    status: 'Maintained in Library',
+    status: 'Company/CS Confirmation Required',
     actionText: 'View Remuneration Criteria',
     legalCitation: 'SEBI (LODR) Reg 46(2)(f) & Reg 19'
   },
@@ -137,7 +137,7 @@ export const REGULATION_46_MASTER_INDEX: Regulation46ClauseItem[] = [
     websiteLocation: 'Disclosures & Policies',
     targetRoute: 'investor-relations/policies',
     targetCategory: 'Company Policies',
-    status: 'Maintained in Library',
+    status: 'Company/CS Confirmation Required',
     actionText: 'View RPT Policy',
     legalCitation: 'SEBI (LODR) Reg 46(2)(g) & Reg 23'
   },
@@ -150,7 +150,7 @@ export const REGULATION_46_MASTER_INDEX: Regulation46ClauseItem[] = [
     websiteLocation: 'Disclosures & Policies',
     targetRoute: 'investor-relations/policies',
     targetCategory: 'Company Policies',
-    status: 'Maintained in Library',
+    status: 'Company/CS Confirmation Required',
     actionText: 'View Material Subsidiary Policy',
     legalCitation: 'SEBI (LODR) Reg 46(2)(h) & Reg 16(1)(c)'
   },
@@ -163,7 +163,7 @@ export const REGULATION_46_MASTER_INDEX: Regulation46ClauseItem[] = [
     websiteLocation: 'Disclosures & Policies / Governance',
     targetRoute: 'investor-relations/policies',
     targetCategory: 'Corporate Governance',
-    status: 'Maintained in Library',
+    status: 'Company/CS Confirmation Required',
     actionText: 'View Familiarization Details',
     legalCitation: 'SEBI (LODR) Reg 46(2)(i) & Reg 25(7)'
   },
@@ -200,7 +200,7 @@ export const REGULATION_46_MASTER_INDEX: Regulation46ClauseItem[] = [
     websiteLocation: 'BSE Disclosures / Board Notices',
     targetRoute: 'investor-relations/bse-disclosures',
     targetCategory: 'BSE Disclosures',
-    status: 'Active Disclosure',
+    status: 'Company/CS Confirmation Required',
     actionText: 'View Board Notices',
     legalCitation: 'SEBI (LODR) Reg 46(2)(l)(i) & Reg 29'
   },
@@ -213,7 +213,7 @@ export const REGULATION_46_MASTER_INDEX: Regulation46ClauseItem[] = [
     websiteLocation: 'Financial Results',
     targetRoute: 'investor-relations/financial-results',
     targetCategory: 'Financial Results',
-    status: 'Active Disclosure',
+    status: 'Company/CS Confirmation Required',
     actionText: 'View Financial Results',
     legalCitation: 'SEBI (LODR) Reg 46(2)(l)(ii) & Reg 33'
   },
@@ -226,7 +226,7 @@ export const REGULATION_46_MASTER_INDEX: Regulation46ClauseItem[] = [
     websiteLocation: 'Annual Reports',
     targetRoute: 'investor-relations/annual-reports',
     targetCategory: 'Annual Reports',
-    status: 'Active Disclosure',
+    status: 'Company/CS Confirmation Required',
     actionText: 'View Annual Reports',
     legalCitation: 'SEBI (LODR) Reg 46(2)(l)(iii) & Reg 34'
   },
@@ -239,7 +239,7 @@ export const REGULATION_46_MASTER_INDEX: Regulation46ClauseItem[] = [
     websiteLocation: 'Shareholding Pattern',
     targetRoute: 'investor-relations/shareholding-pattern',
     targetCategory: 'Shareholding Pattern',
-    status: 'Active Disclosure',
+    status: 'Company/CS Confirmation Required',
     actionText: 'View Shareholding Pattern',
     legalCitation: 'SEBI (LODR) Reg 46(2)(m) & Reg 31'
   },
@@ -264,7 +264,7 @@ export const REGULATION_46_MASTER_INDEX: Regulation46ClauseItem[] = [
     websiteLocation: 'Analyst & Investor Meets',
     targetRoute: 'investor-relations/analyst-meets',
     targetCategory: 'Analyst & Investor Meets',
-    status: 'Maintained in Library',
+    status: 'Company/CS Confirmation Required',
     actionText: 'View Meets & Presentations',
     legalCitation: 'SEBI (LODR) Reg 46(2)(o)(i)'
   },
@@ -277,7 +277,7 @@ export const REGULATION_46_MASTER_INDEX: Regulation46ClauseItem[] = [
     websiteLocation: 'Analyst & Investor Meets',
     targetRoute: 'investor-relations/analyst-meets',
     targetCategory: 'Analyst & Investor Meets',
-    status: 'Maintained in Library',
+    status: 'Company/CS Confirmation Required',
     actionText: 'View Presentations',
     legalCitation: 'SEBI (LODR) Reg 46(2)(o)(ii)'
   },
@@ -290,7 +290,7 @@ export const REGULATION_46_MASTER_INDEX: Regulation46ClauseItem[] = [
     websiteLocation: 'Analyst & Investor Meets',
     targetRoute: 'investor-relations/analyst-meets',
     targetCategory: 'Analyst & Investor Meets',
-    status: 'Maintained in Library',
+    status: 'Company/CS Confirmation Required',
     actionText: 'View Audio / Transcripts',
     legalCitation: 'SEBI (LODR) Reg 46(2)(oa)'
   },
@@ -315,7 +315,7 @@ export const REGULATION_46_MASTER_INDEX: Regulation46ClauseItem[] = [
     websiteLocation: 'Newspaper Publications',
     targetRoute: 'investor-relations/newspaper-publications',
     targetCategory: 'Newspaper Publications',
-    status: 'Active Disclosure',
+    status: 'Company/CS Confirmation Required',
     actionText: 'View Newspaper Filings',
     legalCitation: 'SEBI (LODR) Reg 46(2)(q) & Reg 47(1)'
   },
@@ -352,7 +352,7 @@ export const REGULATION_46_MASTER_INDEX: Regulation46ClauseItem[] = [
     websiteLocation: 'Secretarial Compliance Report',
     targetRoute: 'investor-relations/secretarial-compliance',
     targetCategory: 'Secretarial Compliance Report',
-    status: 'Active Disclosure',
+    status: 'Company/CS Confirmation Required',
     actionText: 'View Secretarial Report',
     legalCitation: 'SEBI (LODR) Reg 46(2)(t) & Reg 24A'
   },
@@ -365,7 +365,7 @@ export const REGULATION_46_MASTER_INDEX: Regulation46ClauseItem[] = [
     websiteLocation: 'Disclosures & Policies',
     targetRoute: 'investor-relations/policies',
     targetCategory: 'Company Policies',
-    status: 'Maintained in Library',
+    status: 'Company/CS Confirmation Required',
     actionText: 'View Materiality Policy',
     legalCitation: 'SEBI (LODR) Reg 46(2)(u) & Reg 30(4)'
   },
@@ -377,7 +377,7 @@ export const REGULATION_46_MASTER_INDEX: Regulation46ClauseItem[] = [
     category: 'Investor Redressal & Contacts',
     websiteLocation: 'Key Managerial Personnel / KMP Contacts',
     targetRoute: 'investor-relations/kmp-contacts',
-    status: 'Complied & Published',
+    status: 'Company/CS Confirmation Required',
     actionText: 'View Authorized KMP',
     legalCitation: 'SEBI (LODR) Reg 46(2)(v) & Reg 30(5)'
   },
@@ -390,7 +390,7 @@ export const REGULATION_46_MASTER_INDEX: Regulation46ClauseItem[] = [
     websiteLocation: 'BSE Disclosures',
     targetRoute: 'investor-relations/bse-disclosures',
     targetCategory: 'BSE Disclosures',
-    status: 'Active Disclosure',
+    status: 'Company/CS Confirmation Required',
     actionText: 'View Material Events Archive',
     legalCitation: 'SEBI (LODR) Reg 46(2)(w) & Reg 30(8)'
   },
@@ -428,7 +428,7 @@ export const REGULATION_46_MASTER_INDEX: Regulation46ClauseItem[] = [
     websiteLocation: 'Annual Return (MGT-7)',
     targetRoute: 'investor-relations/annual-return',
     targetCategory: 'Annual Return (MGT-7)',
-    status: 'Active Disclosure',
+    status: 'Company/CS Confirmation Required',
     actionText: 'View Annual Return (MGT-7)',
     legalCitation: 'SEBI (LODR) Reg 46(2)(z) & Sec 92 Companies Act'
   },
@@ -516,25 +516,25 @@ export const DIRECTORS_REGISTRY: DirectorProfile[] = [
     name: 'Mr. Sanjay Rajkumar',
     designation: 'Independent Director',
     category: 'Non-Executive Independent Director',
-    din: 'DIN Registered (Subject to Secretarial Record)',
+    din: 'Pending Company / CS Confirmation (Form DIR-12)',
     appointmentDate: 'Appointed under Section 149 Companies Act',
-    term: 'Term of 5 consecutive years',
+    term: 'Term of 5 consecutive years (Subject to Secretarial Confirmation)',
     bio: 'Chartered financial and corporate governance veteran providing independent oversight, rigorous review of financial results under Ind AS, and internal financial controls.',
     otherDirectorships: ['Independent directorships as per statutory ceiling under Regulation 17A'],
     committeeMemberships: [
       { committeeName: 'Audit Committee', role: 'Chairperson' },
       { committeeName: 'Nomination & Remuneration Committee', role: 'Member' }
     ],
-    verified: true,
-    approvalStatus: 'Verified BSE Governance Filing'
+    verified: false,
+    approvalStatus: 'Subject to Company / CS Confirmation'
   },
   {
     id: 'dir-nitin-walunj',
     name: 'Mr. Nitin Walunj',
     designation: 'Independent Director',
     category: 'Non-Executive Independent Director',
-    din: 'DIN Registered (BSE Intimation Aug 2025)',
-    appointmentDate: 'August 2025',
+    din: 'Pending Company / CS Confirmation (Form DIR-12)',
+    appointmentDate: 'August 2025 (Subject to Secretarial Confirmation)',
     term: 'Appointed pursuant to Section 149 & 152 Companies Act',
     bio: 'Independent professional with strategic background in commercial due diligence, corporate advisory, and stakeholder advocacy under SEBI LODR Regulations.',
     otherDirectorships: ['Professional directorships as filed in Form DIR-12'],
@@ -542,16 +542,16 @@ export const DIRECTORS_REGISTRY: DirectorProfile[] = [
       { committeeName: 'Nomination & Remuneration Committee', role: 'Chairperson' },
       { committeeName: 'Stakeholders Relationship Committee', role: 'Member' }
     ],
-    verified: true,
-    approvalStatus: 'Verified BSE Appointment Outcome'
+    verified: false,
+    approvalStatus: 'Subject to Company / CS Confirmation'
   },
   {
     id: 'dir-vaishali-mahadik',
     name: 'Ms. Vaishali Dhruvabal Mahadik',
     designation: 'Independent Director',
     category: 'Non-Executive Independent Director',
-    din: 'DIN Registered (BSE Intimation Aug 2025)',
-    appointmentDate: 'August 2025',
+    din: 'Pending Company / CS Confirmation (Form DIR-12)',
+    appointmentDate: 'August 2025 (Subject to Secretarial Confirmation)',
     term: 'Appointed pursuant to Section 149(1) & Regulation 17(1)(a)',
     bio: 'Independent woman director bringing valuable perspectives in legal compliance, risk assessment, and shareholder grievance monitoring pursuant to SEBI Listing Regulations.',
     otherDirectorships: ['Independent positions subject to Form MBP-1 disclosures'],
@@ -560,8 +560,8 @@ export const DIRECTORS_REGISTRY: DirectorProfile[] = [
       { committeeName: 'Audit Committee', role: 'Member' },
       { committeeName: 'Nomination & Remuneration Committee', role: 'Member' }
     ],
-    verified: true,
-    approvalStatus: 'Verified BSE Appointment Outcome'
+    verified: false,
+    approvalStatus: 'Subject to Company / CS Confirmation'
   }
 ];
 
@@ -736,12 +736,12 @@ export const KMP_CONTACTS_REGISTRY: KMPContact[] = [
   {
     id: 'kmp-materiality-auth',
     role: 'Regulation 30(5) Authorized KMP for Materiality',
-    name: 'Board of Directors & Company Secretary Desk',
-    designation: 'Authorized Key Managerial Personnel Panel',
+    name: 'Subject to Company / CS Board Resolution Confirmation',
+    designation: 'Authorized Key Managerial Personnel Panel (Pending Resolution Details)',
     email: 'contact.amarnathsecurities@gmail.com',
     phone: '+91 99309 82815',
     address: '1/104, Sarthik Complex, Nr. Fun Republic, Satellite Road, Ahmedabad, Gujarat - 380015',
-    authorityScope: 'Authorized under Regulation 30(5) of SEBI (Listing Obligations and Disclosure Requirements) Regulations, 2015 for the purpose of determining materiality of an event or information and for making required disclosures to BSE Limited.',
+    authorityScope: 'Key Managerial Personnel specific individual names and direct contact details authorized under Regulation 30(5) of SEBI (LODR) Regulations, 2015 for determining materiality and making BSE disclosures are subject to formal confirmation by Company Secretary from Board meeting records.',
     statutoryReference: 'Regulation 30(5) of SEBI (LODR) Regulations, 2015'
   },
   {
@@ -758,12 +758,12 @@ export const KMP_CONTACTS_REGISTRY: KMPContact[] = [
   {
     id: 'kmp-rta',
     role: 'Registrar & Share Transfer Agent (RTA)',
-    name: 'Bigshare Services Pvt. Ltd. / Purva Sharegistry',
+    name: 'Bigshare Services Pvt. Ltd. (Subject to Tri-Partite Agreement Confirmation)',
     designation: 'SEBI Registered Category-I Registrar & Transfer Agent',
     email: 'info@bigshareonline.com',
     phone: '022-62638200',
     address: 'S6-2, 6th Floor, Pinnacle Business Park, Next to Ahura Centre, Mahakali Caves Road, Andheri (East), Mumbai - 400093, Maharashtra',
-    authorityScope: 'Handling dematerialization (ISIN INE745P01010), share transfers, transmissions, duplicate certificate requests, and dividend ledger maintenance.',
+    authorityScope: 'Handling dematerialization (ISIN INE745P01010), share transfers, transmissions, duplicate certificate requests, and dividend ledger maintenance. Note: Purva Sharegistry (India) Pvt. Ltd. handled historical registry liaison; confirmation of latest tripartite agreement / demat master is subject to CS verification.',
     statutoryReference: 'SEBI (Registrars to an Issue and Share Transfer Agents) Regulations, 1993'
   }
 ];
@@ -909,7 +909,11 @@ export const STATUTORY_DOCUMENTS_LIBRARY: InvestorDocument[] = [
     sebiReference: 'Reg 46(2)(aa) SEBI (LODR)',
     effectiveDate: 'Incorporation 1994 (As amended)',
     version: 'Version 2.2',
-    isStatutory: true
+    isStatutory: true,
+    sourceType: 'upload',
+    externalUrl: 'https://www.bseindia.com/stock-share-price/amarnath-securities-ltd/amarnath/538465/',
+    isAvailable: false,
+
   },
 
   // Statutory Policies (Reg 46(2)(b, d, e, f, g, h, u, y))
@@ -927,7 +931,11 @@ export const STATUTORY_DOCUMENTS_LIBRARY: InvestorDocument[] = [
     sebiReference: 'Reg 46(2)(b) SEBI (LODR) & Schedule IV',
     effectiveDate: '10 Aug 2025',
     version: 'Version 2.0',
-    isStatutory: true
+    isStatutory: true,
+    sourceType: 'upload',
+    externalUrl: 'https://www.bseindia.com/stock-share-price/amarnath-securities-ltd/amarnath/538465/',
+    isAvailable: false,
+
   },
   {
     id: 'doc-pol-coc',
@@ -943,7 +951,11 @@ export const STATUTORY_DOCUMENTS_LIBRARY: InvestorDocument[] = [
     sebiReference: 'Reg 46(2)(d) & Reg 17(5) SEBI (LODR)',
     effectiveDate: '15 Apr 2025',
     version: 'Version 3.1',
-    isStatutory: true
+    isStatutory: true,
+    sourceType: 'upload',
+    externalUrl: 'https://www.bseindia.com/stock-share-price/amarnath-securities-ltd/amarnath/538465/',
+    isAvailable: false,
+
   },
   {
     id: 'doc-pol-vigil',
@@ -959,7 +971,11 @@ export const STATUTORY_DOCUMENTS_LIBRARY: InvestorDocument[] = [
     sebiReference: 'Reg 46(2)(e) & Reg 22 SEBI (LODR)',
     effectiveDate: '15 Apr 2025',
     version: 'Version 2.0',
-    isStatutory: true
+    isStatutory: true,
+    sourceType: 'upload',
+    externalUrl: 'https://www.bseindia.com/stock-share-price/amarnath-securities-ltd/amarnath/538465/',
+    isAvailable: false,
+
   },
   {
     id: 'doc-pol-ned-remun',
@@ -975,7 +991,11 @@ export const STATUTORY_DOCUMENTS_LIBRARY: InvestorDocument[] = [
     sebiReference: 'Reg 46(2)(f) SEBI (LODR)',
     effectiveDate: '15 Apr 2025',
     version: 'Version 1.2',
-    isStatutory: true
+    isStatutory: true,
+    sourceType: 'upload',
+    externalUrl: 'https://www.bseindia.com/stock-share-price/amarnath-securities-ltd/amarnath/538465/',
+    isAvailable: false,
+
   },
   {
     id: 'doc-pol-rpt',
@@ -991,7 +1011,11 @@ export const STATUTORY_DOCUMENTS_LIBRARY: InvestorDocument[] = [
     sebiReference: 'Reg 46(2)(g) & Reg 23 SEBI (LODR)',
     effectiveDate: '15 Apr 2025',
     version: 'Version 2.1',
-    isStatutory: true
+    isStatutory: true,
+    sourceType: 'upload',
+    externalUrl: 'https://www.bseindia.com/stock-share-price/amarnath-securities-ltd/amarnath/538465/',
+    isAvailable: false,
+
   },
   {
     id: 'doc-pol-mat-subsidiary',
@@ -1007,7 +1031,11 @@ export const STATUTORY_DOCUMENTS_LIBRARY: InvestorDocument[] = [
     sebiReference: 'Reg 46(2)(h) & Reg 16(1)(c) SEBI (LODR)',
     effectiveDate: '15 Apr 2025',
     version: 'Version 1.1',
-    isStatutory: true
+    isStatutory: true,
+    sourceType: 'upload',
+    externalUrl: 'https://www.bseindia.com/stock-share-price/amarnath-securities-ltd/amarnath/538465/',
+    isAvailable: false,
+
   },
   {
     id: 'doc-pol-familiarisation',
@@ -1023,7 +1051,11 @@ export const STATUTORY_DOCUMENTS_LIBRARY: InvestorDocument[] = [
     sebiReference: 'Reg 46(2)(i) & Reg 25(7) SEBI (LODR)',
     effectiveDate: '30 Aug 2025',
     version: 'FY 2024-25',
-    isStatutory: true
+    isStatutory: true,
+    sourceType: 'upload',
+    externalUrl: 'https://www.bseindia.com/stock-share-price/amarnath-securities-ltd/amarnath/538465/',
+    isAvailable: false,
+
   },
   {
     id: 'doc-pol-materiality',
@@ -1039,7 +1071,11 @@ export const STATUTORY_DOCUMENTS_LIBRARY: InvestorDocument[] = [
     sebiReference: 'Reg 46(2)(u) & Reg 30(4) SEBI (LODR)',
     effectiveDate: '15 Apr 2025',
     version: 'Version 2.0',
-    isStatutory: true
+    isStatutory: true,
+    sourceType: 'upload',
+    externalUrl: 'https://www.bseindia.com/stock-share-price/amarnath-securities-ltd/amarnath/538465/',
+    isAvailable: false,
+
   },
   {
     id: 'doc-pol-archival',
@@ -1055,7 +1091,11 @@ export const STATUTORY_DOCUMENTS_LIBRARY: InvestorDocument[] = [
     sebiReference: 'Reg 9 & Reg 30(8) SEBI (LODR)',
     effectiveDate: '15 Apr 2025',
     version: 'Version 1.0',
-    isStatutory: true
+    isStatutory: true,
+    sourceType: 'upload',
+    externalUrl: 'https://www.bseindia.com/stock-share-price/amarnath-securities-ltd/amarnath/538465/',
+    isAvailable: false,
+
   },
   {
     id: 'doc-pol-pit',
@@ -1071,7 +1111,11 @@ export const STATUTORY_DOCUMENTS_LIBRARY: InvestorDocument[] = [
     sebiReference: 'SEBI (PIT) Regulations, 2015',
     effectiveDate: '15 Apr 2025',
     version: 'Version 2.0',
-    isStatutory: true
+    isStatutory: true,
+    sourceType: 'upload',
+    externalUrl: 'https://www.bseindia.com/stock-share-price/amarnath-securities-ltd/amarnath/538465/',
+    isAvailable: false,
+
   },
 
   // Annual Return (Section 92 / MGT-7) (Reg 46(2)(z))
@@ -1088,7 +1132,11 @@ export const STATUTORY_DOCUMENTS_LIBRARY: InvestorDocument[] = [
     description: 'Statutory Annual Return prepared pursuant to Section 92(3) of the Companies Act, 2013 and Rule 12 of the Companies (Management and Administration) Rules, 2014.',
     sebiReference: 'Sec 92 Companies Act & Reg 46(2)(z)',
     effectiveDate: '31 Mar 2025',
-    isStatutory: true
+    isStatutory: true,
+    sourceType: 'upload',
+    externalUrl: 'https://www.bseindia.com/stock-share-price/amarnath-securities-ltd/amarnath/538465/',
+    isAvailable: false,
+
   },
   {
     id: 'doc-mgt7-fy24',
@@ -1103,7 +1151,11 @@ export const STATUTORY_DOCUMENTS_LIBRARY: InvestorDocument[] = [
     description: 'Statutory Annual Return for FY 2023-24 under Section 92(3) of the Companies Act, 2013 detailing shareholding, indebtedness, and directorship changes.',
     sebiReference: 'Sec 92 Companies Act & Reg 46(2)(z)',
     effectiveDate: '31 Mar 2024',
-    isStatutory: true
+    isStatutory: true,
+    sourceType: 'upload',
+    externalUrl: 'https://www.bseindia.com/stock-share-price/amarnath-securities-ltd/amarnath/538465/',
+    isAvailable: false,
+
   },
 
   // Secretarial Compliance Report (Regulation 24A) (Reg 46(2)(t))
@@ -1120,7 +1172,11 @@ export const STATUTORY_DOCUMENTS_LIBRARY: InvestorDocument[] = [
     description: 'Annual Secretarial Compliance Report issued by Practicing Company Secretary pursuant to Regulation 24A(2) of SEBI LODR Regulations.',
     sebiReference: 'Reg 24A(2) & Reg 46(2)(t) SEBI (LODR)',
     effectiveDate: '31 Mar 2025',
-    isStatutory: true
+    isStatutory: true,
+    sourceType: 'upload',
+    externalUrl: 'https://www.bseindia.com/stock-share-price/amarnath-securities-ltd/amarnath/538465/',
+    isAvailable: false,
+
   },
   {
     id: 'doc-sec-comp-fy24',
@@ -1135,7 +1191,11 @@ export const STATUTORY_DOCUMENTS_LIBRARY: InvestorDocument[] = [
     description: 'Secretarial compliance verification report on SEBI LODR adherence, circulars, and notifications issued by an independent PCS.',
     sebiReference: 'Reg 24A(2) & Reg 46(2)(t) SEBI (LODR)',
     effectiveDate: '31 Mar 2024',
-    isStatutory: true
+    isStatutory: true,
+    sourceType: 'upload',
+    externalUrl: 'https://www.bseindia.com/stock-share-price/amarnath-securities-ltd/amarnath/538465/',
+    isAvailable: false,
+
   },
 
   // Newspaper Publications (Regulation 47 & 46(2)(q))
@@ -1151,7 +1211,11 @@ export const STATUTORY_DOCUMENTS_LIBRARY: InvestorDocument[] = [
     fileType: 'PDF',
     description: 'Extracts of Unaudited Standalone Financial Results published in Financial Express (English national daily) and Western Times (Gujarati regional daily) pursuant to Regulation 47(1)(b).',
     sebiReference: 'Reg 47(1)(b) & Reg 46(2)(q) SEBI (LODR)',
-    isStatutory: true
+    isStatutory: true,
+    sourceType: 'upload',
+    externalUrl: 'https://www.bseindia.com/stock-share-price/amarnath-securities-ltd/amarnath/538465/',
+    isAvailable: false,
+
   },
   {
     id: 'doc-np-bm-notice-q3-26',
@@ -1165,7 +1229,11 @@ export const STATUTORY_DOCUMENTS_LIBRARY: InvestorDocument[] = [
     fileType: 'PDF',
     description: 'Prior notice of meeting of the Board of Directors published in Financial Express and Western Times pursuant to Regulation 47(1)(a).',
     sebiReference: 'Reg 47(1)(a) & Reg 46(2)(q) SEBI (LODR)',
-    isStatutory: true
+    isStatutory: true,
+    sourceType: 'upload',
+    externalUrl: 'https://www.bseindia.com/stock-share-price/amarnath-securities-ltd/amarnath/538465/',
+    isAvailable: false,
+
   },
   {
     id: 'doc-np-q2-26',
@@ -1179,7 +1247,11 @@ export const STATUTORY_DOCUMENTS_LIBRARY: InvestorDocument[] = [
     fileType: 'PDF',
     description: 'Extracts of Q2 financial results published in Financial Express and Western Times.',
     sebiReference: 'Reg 47(1)(b) & Reg 46(2)(q) SEBI (LODR)',
-    isStatutory: true
+    isStatutory: true,
+    sourceType: 'upload',
+    externalUrl: 'https://www.bseindia.com/stock-share-price/amarnath-securities-ltd/amarnath/538465/',
+    isAvailable: false,
+
   },
   {
     id: 'doc-np-agm31-notice',
@@ -1193,7 +1265,11 @@ export const STATUTORY_DOCUMENTS_LIBRARY: InvestorDocument[] = [
     fileType: 'PDF',
     description: 'Notice of 31st AGM, cut-off dates, remote e-voting guidelines, and book closure published in national and regional newspapers.',
     sebiReference: 'Reg 47(1)(d) & Reg 46(2)(q) SEBI (LODR)',
-    isStatutory: true
+    isStatutory: true,
+    sourceType: 'upload',
+    externalUrl: 'https://www.bseindia.com/stock-share-price/amarnath-securities-ltd/amarnath/538465/',
+    isAvailable: false,
+
   },
 
   // Financial Results (Existing verified entries + audit links)
@@ -1209,7 +1285,12 @@ export const STATUTORY_DOCUMENTS_LIBRARY: InvestorDocument[] = [
     fileType: 'PDF',
     description: 'Standalone Unaudited Financial Results along with Limited Review Report by Statutory Auditors under Regulation 33 of SEBI (LODR) Regulations, 2015.',
     sebiReference: 'Reg 33 & Reg 46(2)(l)(ii) SEBI (LODR)',
-    isStatutory: true
+    isStatutory: true,
+    sourceType: 'file_url',
+    fileUrl: '/documents/amarnath-statutory-disclosure-sample.pdf',
+    externalUrl: 'https://www.bseindia.com/stock-share-price/amarnath-securities-ltd/amarnath/538465/',
+    isAvailable: true,
+
   },
   {
     id: 'doc-fr-q2-26',
@@ -1223,7 +1304,11 @@ export const STATUTORY_DOCUMENTS_LIBRARY: InvestorDocument[] = [
     fileType: 'PDF',
     description: 'Standalone Financial Results along with Statement of Assets and Liabilities, Cash Flow Statement and Limited Review Report.',
     sebiReference: 'Reg 33 & Reg 46(2)(l)(ii) SEBI (LODR)',
-    isStatutory: true
+    isStatutory: true,
+    sourceType: 'upload',
+    externalUrl: 'https://www.bseindia.com/stock-share-price/amarnath-securities-ltd/amarnath/538465/',
+    isAvailable: false,
+
   },
   {
     id: 'doc-fr-q1-26',
@@ -1237,7 +1322,11 @@ export const STATUTORY_DOCUMENTS_LIBRARY: InvestorDocument[] = [
     fileType: 'PDF',
     description: 'First quarter financial statements and auditor review statement.',
     sebiReference: 'Reg 33 & Reg 46(2)(l)(ii) SEBI (LODR)',
-    isStatutory: true
+    isStatutory: true,
+    sourceType: 'upload',
+    externalUrl: 'https://www.bseindia.com/stock-share-price/amarnath-securities-ltd/amarnath/538465/',
+    isAvailable: false,
+
   },
   {
     id: 'doc-fr-aud-25',
@@ -1251,7 +1340,11 @@ export const STATUTORY_DOCUMENTS_LIBRARY: InvestorDocument[] = [
     fileType: 'PDF',
     description: 'Comprehensive Audited Financial Statements, Independent Auditor Report, Declaration on Unmodified Opinion and Notes.',
     sebiReference: 'Reg 33 & Reg 46(2)(l)(ii) SEBI (LODR)',
-    isStatutory: true
+    isStatutory: true,
+    sourceType: 'upload',
+    externalUrl: 'https://www.bseindia.com/stock-share-price/amarnath-securities-ltd/amarnath/538465/',
+    isAvailable: false,
+
   },
 
   // Annual Reports (Reg 46(2)(l)(iii))
@@ -1267,7 +1360,11 @@ export const STATUTORY_DOCUMENTS_LIBRARY: InvestorDocument[] = [
     fileType: 'PDF',
     description: 'Includes Directors Report, Management Discussion & Analysis, Corporate Governance Report, Secretarial Audit Report, and Audited Financial Accounts.',
     sebiReference: 'Reg 34 & Reg 46(2)(l)(iii) SEBI (LODR)',
-    isStatutory: true
+    isStatutory: true,
+    sourceType: 'upload',
+    externalUrl: 'https://www.bseindia.com/stock-share-price/amarnath-securities-ltd/amarnath/538465/',
+    isAvailable: false,
+
   },
   {
     id: 'doc-ar-2024',
@@ -1281,7 +1378,11 @@ export const STATUTORY_DOCUMENTS_LIBRARY: InvestorDocument[] = [
     fileType: 'PDF',
     description: 'Complete 30th milestone annual corporate disclosure and governance accounts.',
     sebiReference: 'Reg 34 & Reg 46(2)(l)(iii) SEBI (LODR)',
-    isStatutory: true
+    isStatutory: true,
+    sourceType: 'upload',
+    externalUrl: 'https://www.bseindia.com/stock-share-price/amarnath-securities-ltd/amarnath/538465/',
+    isAvailable: false,
+
   },
   {
     id: 'doc-ar-2023',
@@ -1295,7 +1396,11 @@ export const STATUTORY_DOCUMENTS_LIBRARY: InvestorDocument[] = [
     fileType: 'PDF',
     description: 'Statutory Annual Report with Independent Audit certification.',
     sebiReference: 'Reg 34 & Reg 46(2)(l)(iii) SEBI (LODR)',
-    isStatutory: true
+    isStatutory: true,
+    sourceType: 'upload',
+    externalUrl: 'https://www.bseindia.com/stock-share-price/amarnath-securities-ltd/amarnath/538465/',
+    isAvailable: false,
+
   },
 
   // Shareholding Pattern (Reg 46(2)(m))
@@ -1311,7 +1416,11 @@ export const STATUTORY_DOCUMENTS_LIBRARY: InvestorDocument[] = [
     fileType: 'PDF',
     description: 'Statement showing shareholding pattern under Regulation 31 of SEBI (Listing Obligations and Disclosure Requirements) Regulations, 2015.',
     sebiReference: 'Reg 31 & Reg 46(2)(m) SEBI (LODR)',
-    isStatutory: true
+    isStatutory: true,
+    sourceType: 'upload',
+    externalUrl: 'https://www.bseindia.com/stock-share-price/amarnath-securities-ltd/amarnath/538465/',
+    isAvailable: false,
+
   },
   {
     id: 'doc-shp-sep-25',
@@ -1325,7 +1434,11 @@ export const STATUTORY_DOCUMENTS_LIBRARY: InvestorDocument[] = [
     fileType: 'PDF',
     description: 'Quarterly breakdown of promoter and non-promoter public shareholding.',
     sebiReference: 'Reg 31 & Reg 46(2)(m) SEBI (LODR)',
-    isStatutory: true
+    isStatutory: true,
+    sourceType: 'upload',
+    externalUrl: 'https://www.bseindia.com/stock-share-price/amarnath-securities-ltd/amarnath/538465/',
+    isAvailable: false,
+
   },
 
   // BSE Disclosures (Regulation 30) (Reg 46(2)(l)(i), (w))
@@ -1341,7 +1454,12 @@ export const STATUTORY_DOCUMENTS_LIBRARY: InvestorDocument[] = [
     fileType: 'PDF',
     description: 'Approval of Unaudited Financial Results for Q3 FY26 and other corporate compliance matters pursuant to Regulation 30.',
     sebiReference: 'Reg 30 & Reg 46(2)(w) SEBI (LODR)',
-    isStatutory: true
+    isStatutory: true,
+    sourceType: 'upload',
+    fileUrl: '/documents/amarnath-statutory-disclosure-sample.pdf',
+    externalUrl: 'https://www.bseindia.com/stock-share-price/amarnath-securities-ltd/amarnath/538465/',
+    isAvailable: true,
+
   },
   {
     id: 'doc-bse-closure-dec25',
@@ -1355,7 +1473,11 @@ export const STATUTORY_DOCUMENTS_LIBRARY: InvestorDocument[] = [
     fileType: 'PDF',
     description: 'Closure of trading window for designated persons pursuant to SEBI (Prohibition of Insider Trading) Regulations, 2015.',
     sebiReference: 'SEBI (PIT) Regs & Reg 30',
-    isStatutory: true
+    isStatutory: true,
+    sourceType: 'upload',
+    externalUrl: 'https://www.bseindia.com/stock-share-price/amarnath-securities-ltd/amarnath/538465/',
+    isAvailable: false,
+
   },
   {
     id: 'doc-bse-prior-nov25',
@@ -1369,7 +1491,11 @@ export const STATUTORY_DOCUMENTS_LIBRARY: InvestorDocument[] = [
     fileType: 'PDF',
     description: 'Notice of meeting of Board of Directors to consider and approve Q2 financial statements.',
     sebiReference: 'Reg 29 & Reg 46(2)(l)(i) SEBI (LODR)',
-    isStatutory: true
+    isStatutory: true,
+    sourceType: 'upload',
+    externalUrl: 'https://www.bseindia.com/stock-share-price/amarnath-securities-ltd/amarnath/538465/',
+    isAvailable: false,
+
   },
 
   // AGM / Notices
@@ -1385,7 +1511,11 @@ export const STATUTORY_DOCUMENTS_LIBRARY: InvestorDocument[] = [
     fileType: 'PDF',
     description: 'Notice convening the 31st AGM of members, explanatory statements under Section 102, e-voting instructions, and proxy form.',
     sebiReference: 'Companies Act Sec 101 & Reg 44',
-    isStatutory: true
+    isStatutory: true,
+    sourceType: 'upload',
+    externalUrl: 'https://www.bseindia.com/stock-share-price/amarnath-securities-ltd/amarnath/538465/',
+    isAvailable: false,
+
   },
   {
     id: 'doc-agm-31-voting',
@@ -1399,7 +1529,11 @@ export const STATUTORY_DOCUMENTS_LIBRARY: InvestorDocument[] = [
     fileType: 'PDF',
     description: 'Scrutinizer report on remote e-voting and electronic voting during the 31st AGM with resolution passage details under Regulation 44.',
     sebiReference: 'Reg 44 SEBI (LODR)',
-    isStatutory: true
+    isStatutory: true,
+    sourceType: 'upload',
+    externalUrl: 'https://www.bseindia.com/stock-share-price/amarnath-securities-ltd/amarnath/538465/',
+    isAvailable: false,
+
   },
 
   // Corporate Governance (Reg 27(2))
@@ -1415,7 +1549,11 @@ export const STATUTORY_DOCUMENTS_LIBRARY: InvestorDocument[] = [
     fileType: 'PDF',
     description: 'Compliance report on corporate governance pursuant to Regulation 27(2) detailing board composition and committee meetings.',
     sebiReference: 'Reg 27(2) SEBI (LODR)',
-    isStatutory: true
+    isStatutory: true,
+    sourceType: 'external_url',
+    externalUrl: 'https://www.bseindia.com/stock-share-price/amarnath-securities-ltd/amarnath/538465/',
+    isAvailable: true,
+
   },
 
   // Investor Grievance Statement (Reg 13(3))
@@ -1431,6 +1569,10 @@ export const STATUTORY_DOCUMENTS_LIBRARY: InvestorDocument[] = [
     fileType: 'PDF',
     description: 'Quarterly compliance statement under Regulation 13(3): Opening complaints: Nil, Received: 1, Resolved: 1, Pending: Nil.',
     sebiReference: 'Reg 13(3) SEBI (LODR)',
-    isStatutory: true
+    isStatutory: true,
+    sourceType: 'upload',
+    externalUrl: 'https://www.bseindia.com/stock-share-price/amarnath-securities-ltd/amarnath/538465/',
+    isAvailable: false,
+
   }
 ];

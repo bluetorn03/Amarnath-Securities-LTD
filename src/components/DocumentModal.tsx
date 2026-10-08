@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { InvestorDocument } from '../types';
 import { COMPANY_DETAILS } from '../data/mockData';
 import { 
@@ -9,7 +9,9 @@ import {
   Calendar, 
   Hash, 
   ExternalLink,
-  CheckCircle2
+  Layers,
+  AlertCircle,
+  Eye
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 
@@ -19,51 +21,38 @@ interface DocumentModalProps {
 }
 
 export const DocumentModal: React.FC<DocumentModalProps> = ({ document, onClose }) => {
-  const [isDownloading, setIsDownloading] = useState(false);
-  const [downloadSuccess, setDownloadSuccess] = useState(false);
-
   if (!document) return null;
 
-  const handleDownload = () => {
-    setIsDownloading(true);
-    setTimeout(() => {
-      setIsDownloading(false);
-      setDownloadSuccess(true);
-      // Generate actual downloadable blob text simulation
-      const element = window.document.createElement('a');
-      const fileContent = `========================================================================
-AMARNATH SECURITIES LIMITED
-CIN: ${COMPANY_DETAILS.cin} | BSE Scrip Code: ${COMPANY_DETAILS.bseScripCode}
-Registered Office: ${COMPANY_DETAILS.regOffice}
-========================================================================
+  const resolvedSourceType = document.sourceType || 'upload';
+  const isAvailable = document.isAvailable ?? Boolean(document.fileUrl);
 
-DOCUMENT: ${document.title}
-CATEGORY: ${document.category}
-FINANCIAL YEAR: ${document.financialYear} ${document.quarter ? `(${document.quarter})` : ''}
-DATE OF FILING: ${document.filingDate}
-BSE ACKNOWLEDGEMENT NO: ${document.bseAckNumber}
-STATUTORY COMPLIANCE: ${document.sebiReference || 'SEBI (LODR) Regulations, 2015'}
+  const getSourceTypeLabel = () => {
+    switch (resolvedSourceType) {
+      case 'upload':
+        return 'Upload PDF';
+      case 'file_url':
+        return 'PDF File / URL';
+      case 'external_url':
+        return 'External URL';
+      default:
+        return 'Upload PDF';
+    }
+  };
 
-SUMMARY:
-${document.description}
+  const handleNativeDownload = () => {
+    if (!document.fileUrl || !isAvailable) return;
+    const link = window.document.createElement('a');
+    link.href = document.fileUrl;
+    link.download = `${document.title.replace(/[^a-zA-Z0-9_-]/g, '_').slice(0, 60)}.pdf`;
+    window.document.body.appendChild(link);
+    link.click();
+    window.document.body.removeChild(link);
+  };
 
-This document has been disseminated in compliance with the provisions of SEBI
-(Listing Obligations and Disclosure Requirements) Regulations, 2015 and submitted
-electronically to BSE Limited via the Listing Centre portal.
-
-For Amarnath Securities Limited
-Compliance Officer & Company Secretary
-========================================================================`;
-
-      const file = new Blob([fileContent], { type: 'text/plain;charset=utf-8' });
-      element.href = URL.createObjectURL(file);
-      element.download = `${document.title.replace(/[^a-zA-Z0-9]/g, '_').slice(0, 50)}.txt`;
-      window.document.body.appendChild(element);
-      element.click();
-      window.document.body.removeChild(element);
-
-      setTimeout(() => setDownloadSuccess(false), 3500);
-    }, 750);
+  const handleOpenPdf = () => {
+    if (document.fileUrl) {
+      window.open(document.fileUrl, '_blank', 'noopener,noreferrer');
+    }
   };
 
   return (
@@ -101,8 +90,13 @@ Compliance Officer & Company Secretary
                       • {document.quarter}
                     </span>
                   )}
+                  {/* CMS Source Type Badge */}
+                  <span className="text-[10px] font-mono uppercase px-2 py-0.5 rounded bg-blue-50 text-blue-700 border border-blue-200/60 font-semibold flex items-center gap-1">
+                    <Layers className="w-3 h-3" />
+                    <span>CMS Source: {getSourceTypeLabel()}</span>
+                  </span>
                 </div>
-                <h3 className="font-display font-semibold text-lg text-[#0A1128] mt-1 leading-snug">
+                <h3 className="font-display font-semibold text-lg text-[#0A1128] mt-1.5 leading-snug">
                   {document.title}
                 </h3>
               </div>
@@ -144,19 +138,52 @@ Compliance Officer & Company Secretary
             </div>
 
             <div className="flex flex-col">
-              <span className="text-slate-500 font-medium">File Specification</span>
+              <span className="text-slate-500 font-medium">File Format & Size</span>
               <span className="font-mono font-medium text-slate-700 mt-1">{document.fileType} • {document.fileSize}</span>
             </div>
           </div>
 
-          {/* Document Content / Simulated Viewer */}
+          {/* Document Content / Preview / CMS Status */}
           <div className="p-6 space-y-4 max-h-[50vh] overflow-y-auto">
+            {/* Availability Notification */}
+            {!isAvailable ? (
+              <div className="p-4 rounded-xl bg-amber-50/90 border border-amber-200 text-amber-900 text-xs space-y-2">
+                <div className="flex items-center gap-2 font-semibold text-amber-800">
+                  <AlertCircle className="w-4 h-4 text-amber-600 shrink-0" />
+                  <span>Physical Statutory Document Pending Upload (Company/CS Submission)</span>
+                </div>
+                <p className="text-amber-800/90 leading-relaxed">
+                  This statutory record is listed pursuant to SEBI LODR disclosure requirements. The physical signed copy is currently being compiled from Company Secretarial archives for direct upload into the upcoming CMS repository. You may inspect exchange records on the official BSE Listing Portal below.
+                </p>
+              </div>
+            ) : resolvedSourceType === 'external_url' ? (
+              <div className="p-4 rounded-xl bg-blue-50/80 border border-blue-200 text-blue-900 text-xs space-y-2">
+                <div className="flex items-center gap-2 font-semibold text-blue-800">
+                  <ExternalLink className="w-4 h-4 text-blue-600 shrink-0" />
+                  <span>External Regulatory Portal Link</span>
+                </div>
+                <p className="text-blue-800/90 leading-relaxed">
+                  This document is maintained directly on the official regulatory exchange portal. Use the action button below to open the authentic statutory record on BSE India.
+                </p>
+              </div>
+            ) : (
+              <div className="p-4 rounded-xl bg-teal-50/80 border border-teal-200 text-teal-900 text-xs space-y-2">
+                <div className="flex items-center gap-2 font-semibold text-[#0D9488]">
+                  <FileText className="w-4 h-4 shrink-0" />
+                  <span>Verified Document Ready for Viewing & Download</span>
+                </div>
+                <p className="text-teal-900/90 leading-relaxed">
+                  Authentic statutory PDF document is verified and ready. You may preview the document in a new tab or trigger a direct download to your local drive.
+                </p>
+              </div>
+            )}
+
             <div className="p-5 rounded-xl bg-slate-50 border border-slate-200 space-y-3">
               <div className="flex items-center justify-between pb-3 border-b border-slate-200">
                 <div className="flex items-center gap-2">
-                  <div className="w-2 h-2 rounded-full bg-[#0D9488]"></div>
+                  <div className={`w-2 h-2 rounded-full ${isAvailable ? 'bg-[#0D9488]' : 'bg-amber-500'}`}></div>
                   <span className="text-xs uppercase tracking-widest text-[#9A7B38] font-bold">
-                    Statutory Filing Preview
+                    Statutory Filing Scope
                   </span>
                 </div>
                 <span className="text-[11px] font-mono text-slate-500 font-semibold">BSE Scrip: 538465</span>
@@ -183,6 +210,10 @@ Compliance Officer & Company Secretary
                   <span className="text-slate-500">Corporate Identity (CIN):</span>
                   <span className="font-mono text-[#0A1128]">L67120GJ1994PLC023254</span>
                 </div>
+                <div className="flex items-center justify-between">
+                  <span className="text-slate-500">CMS Source Designation:</span>
+                  <span className="font-mono text-slate-800 font-medium">{getSourceTypeLabel()}</span>
+                </div>
               </div>
 
               <div className="text-xs text-slate-500 italic pt-1">
@@ -194,10 +225,11 @@ Compliance Officer & Company Secretary
           {/* Footer Controls */}
           <div className="flex flex-col sm:flex-row items-center justify-between gap-3 p-6 border-t border-slate-200 bg-slate-50">
             <a
-              href={COMPANY_DETAILS.bsePortalUrl}
+              href={document.externalUrl || COMPANY_DETAILS.bsePortalUrl}
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex items-center gap-1.5 text-xs text-slate-600 hover:text-[#0D9488] transition-colors"
+              id="verify-bse-portal-link"
             >
               Verify on BSE Listing Portal <ExternalLink className="w-3.5 h-3.5" />
             </a>
@@ -205,35 +237,57 @@ Compliance Officer & Company Secretary
             <div className="flex items-center gap-3 w-full sm:w-auto">
               <button
                 onClick={onClose}
-                className="px-4 py-2 rounded-xl text-sm text-slate-700 hover:text-[#0A1128] hover:bg-slate-200/60 border border-slate-200 transition-colors w-1/2 sm:w-auto text-center cursor-pointer"
+                className="px-4 py-2 rounded-xl text-sm text-slate-700 hover:text-[#0A1128] hover:bg-slate-200/60 border border-slate-200 transition-colors w-1/3 sm:w-auto text-center cursor-pointer"
                 id="modal-cancel-btn"
               >
                 Close
               </button>
 
-              <button
-                onClick={handleDownload}
-                disabled={isDownloading}
-                className="flex items-center justify-center gap-2 px-5 py-2 rounded-xl text-sm font-semibold bg-[#0A1128] hover:bg-[#0D9488] text-white shadow-xs transition-all w-1/2 sm:w-auto cursor-pointer"
-                id="modal-download-btn"
-              >
-                {isDownloading ? (
-                  <>
-                    <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
-                    <span>Preparing...</span>
-                  </>
-                ) : downloadSuccess ? (
-                  <>
-                    <CheckCircle2 className="w-4 h-4 text-emerald-400" />
-                    <span>Downloaded!</span>
-                  </>
-                ) : (
-                  <>
+              {/* Action Buttons depending on Source Type and Availability */}
+              {resolvedSourceType === 'external_url' ? (
+                <a
+                  href={document.externalUrl || COMPANY_DETAILS.bsePortalUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center justify-center gap-2 px-5 py-2 rounded-xl text-sm font-semibold bg-[#0A1128] hover:bg-[#0D9488] text-white shadow-xs transition-all w-2/3 sm:w-auto cursor-pointer"
+                  id="modal-open-external-btn"
+                >
+                  <ExternalLink className="w-4 h-4" />
+                  <span>Open Official Document</span>
+                </a>
+              ) : isAvailable && document.fileUrl ? (
+                <div className="flex items-center gap-2 w-2/3 sm:w-auto">
+                  <button
+                    onClick={handleOpenPdf}
+                    className="flex items-center justify-center gap-1.5 px-3 py-2 rounded-xl text-sm font-medium bg-slate-100 hover:bg-slate-200 text-slate-800 transition-all cursor-pointer"
+                    id="modal-view-pdf-btn"
+                    title="Open PDF in new tab"
+                  >
+                    <Eye className="w-4 h-4 text-[#0D9488]" />
+                    <span>View PDF</span>
+                  </button>
+                  <button
+                    onClick={handleNativeDownload}
+                    className="flex items-center justify-center gap-2 px-4 py-2 rounded-xl text-sm font-semibold bg-[#0A1128] hover:bg-[#0D9488] text-white shadow-xs transition-all cursor-pointer"
+                    id="modal-download-btn"
+                  >
                     <Download className="w-4 h-4" />
-                    <span>Download {document.fileType} ({document.fileSize})</span>
-                  </>
-                )}
-              </button>
+                    <span>Download PDF ({document.fileSize})</span>
+                  </button>
+                </div>
+              ) : (
+                <a
+                  href={document.externalUrl || COMPANY_DETAILS.bsePortalUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center justify-center gap-2 px-5 py-2 rounded-xl text-sm font-semibold bg-amber-600 hover:bg-amber-700 text-white shadow-xs transition-all w-2/3 sm:w-auto cursor-pointer"
+                  id="modal-bse-inspect-btn"
+                  title="Inspect disclosure on BSE Listing Centre"
+                >
+                  <ExternalLink className="w-4 h-4" />
+                  <span>Inspect on BSE India</span>
+                </a>
+              )}
             </div>
           </div>
         </motion.div>

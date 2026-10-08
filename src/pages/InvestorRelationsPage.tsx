@@ -720,9 +720,9 @@ export const InvestorRelationsPage: React.FC<InvestorRelationsPageProps> = ({
 
                     <div className="pt-6 mt-6 border-t border-slate-100 flex items-center justify-between text-xs">
                       <span className="font-mono text-slate-500 text-[11px]">{doc.sebiReference || 'SEBI LODR'}</span>
-                      <span className="text-[#0D9488] font-semibold flex items-center gap-1 group-hover:underline">
-                        <Download className="w-3.5 h-3.5" />
-                        <span>View / Download ({doc.fileSize})</span>
+                      <span className={`font-semibold flex items-center gap-1 group-hover:underline ${doc.isAvailable ? 'text-[#0D9488]' : 'text-amber-700'}`}>
+                        {doc.isAvailable ? <Download className="w-3.5 h-3.5" /> : <ExternalLink className="w-3.5 h-3.5" />}
+                        <span>{doc.isAvailable ? `View / Download (${doc.fileSize})` : 'Awaiting CS Upload'}</span>
                       </span>
                     </div>
                   </div>
@@ -783,18 +783,21 @@ export const InvestorRelationsPage: React.FC<InvestorRelationsPageProps> = ({
                           <button
                             onClick={() => {
                               // Find matching document or trigger modal
-                              const matchedDoc = INVESTOR_DOCUMENTS.find(d => d.bseAckNumber === np.bseAck) || {
+                              const matchedDoc: InvestorDocument = INVESTOR_DOCUMENTS.find(d => d.bseAckNumber === np.bseAck) || {
                                 id: np.id,
                                 title: `${np.noticeType} - ${np.newspaperName}`,
-                                category: 'Newspaper Publications' as const,
+                                category: 'Newspaper Publications',
                                 financialYear: np.financialYear,
                                 quarter: np.quarter as any,
                                 filingDate: np.publicationDate,
                                 bseAckNumber: np.bseAck,
                                 fileSize: np.fileSize,
-                                fileType: 'PDF' as const,
+                                fileType: 'PDF',
                                 description: `Statutory publication of ${np.noticeType} in ${np.newspaperName} (${np.edition}) pursuant to Regulation 47 of SEBI (LODR) Regulations, 2015.`,
-                                sebiReference: 'Reg 47(1) SEBI LODR'
+                                sebiReference: 'Reg 47(1) SEBI LODR',
+                                sourceType: 'upload',
+                                externalUrl: COMPANY_DETAILS.bsePortalUrl,
+                                isAvailable: false
                               };
                               onOpenDocument(matchedDoc);
                             }}
@@ -1467,10 +1470,14 @@ export const InvestorRelationsPage: React.FC<InvestorRelationsPageProps> = ({
                                 e.stopPropagation();
                                 onOpenDocument(doc);
                               }}
-                              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-teal-50 hover:bg-[#0D9488] text-[#0D9488] hover:text-white border border-teal-200/80 transition-all font-semibold font-mono text-[11px] cursor-pointer"
+                              className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg border transition-all font-semibold font-mono text-[11px] cursor-pointer ${
+                                doc.isAvailable
+                                  ? 'bg-teal-50 hover:bg-[#0D9488] text-[#0D9488] hover:text-white border-teal-200/80'
+                                  : 'bg-amber-50 hover:bg-amber-100 text-amber-700 border-amber-200/80'
+                              }`}
                             >
-                              <Download className="w-3.5 h-3.5" />
-                              <span>PDF ({doc.fileSize})</span>
+                              {doc.isAvailable ? <Download className="w-3.5 h-3.5" /> : <ExternalLink className="w-3.5 h-3.5" />}
+                              <span>{doc.isAvailable ? `PDF (${doc.fileSize})` : 'Awaiting CS Upload'}</span>
                             </button>
                           </td>
                         </tr>
@@ -1509,9 +1516,9 @@ export const InvestorRelationsPage: React.FC<InvestorRelationsPageProps> = ({
 
                     <div className="pt-6 mt-6 border-t border-slate-100 flex items-center justify-between text-xs">
                       <span className="font-mono text-slate-500">{doc.financialYear}</span>
-                      <span className="text-[#0D9488] font-semibold flex items-center gap-1 group-hover:underline">
-                        <Download className="w-3.5 h-3.5" />
-                        <span>View ({doc.fileSize})</span>
+                      <span className={`font-semibold flex items-center gap-1 group-hover:underline ${doc.isAvailable ? 'text-[#0D9488]' : 'text-amber-700'}`}>
+                        {doc.isAvailable ? <Download className="w-3.5 h-3.5" /> : <ExternalLink className="w-3.5 h-3.5" />}
+                        <span>{doc.isAvailable ? `View (${doc.fileSize})` : 'Awaiting CS Upload'}</span>
                       </span>
                     </div>
                   </div>
