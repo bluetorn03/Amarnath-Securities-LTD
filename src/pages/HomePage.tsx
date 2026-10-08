@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import { PageRoute, InvestorDocument } from '../types';
-import { 
-  COMPANY_DETAILS, 
-  CAPABILITIES, 
-  INVESTOR_DOCUMENTS, 
-  MARKET_TICKER_DATA, 
+import {
+  COMPANY_DETAILS,
+  CAPABILITIES,
+  INVESTOR_DOCUMENTS,
+  MARKET_TICKER_DATA,
   LEADERSHIP_TEAM,
   INSIGHTS,
   FINANCIAL_HIGHLIGHTS_SUMMARY
@@ -16,15 +16,16 @@ import { TextReveal } from '../components/TextReveal';
 import { ScrollReveal } from '../components/ScrollReveal';
 import { TypewriterLoop } from '../components/TypewriterLoop';
 import { HeroInstitutionalVisual } from '../components/HeroInstitutionalVisual';
+import HeroParticleNetwork from '../components/HeroParticleNetwork';
 import { InfiniteMarquee } from '../components/InfiniteMarquee';
 import { StickyCardStack, StackCardItem } from '../components/StickyCardStack';
-import { 
-  ArrowRight, 
-  Download, 
-  ShieldCheck, 
-  TrendingUp, 
-  Building2, 
-  FileText, 
+import {
+  ArrowRight,
+  Download,
+  ShieldCheck,
+  TrendingUp,
+  Building2,
+  FileText,
   ChevronRight,
   ExternalLink,
   Award,
@@ -133,19 +134,9 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate, onOpenDocument }
           Two-column layout: Left = Brand Copy + Infinite Typewriter, Right = Institutional Terminal
          ========================================================================= */}
       <section className="relative min-h-[calc(100svh-96px)] flex items-center justify-center overflow-hidden bg-white px-4 sm:px-8 py-6 sm:py-8 lg:py-8">
-        {/* Prioritized Institutional Architecture Atmosphere */}
-        <div className="absolute inset-0 z-0 opacity-[0.055] pointer-events-none mix-blend-luminosity overflow-hidden">
-          <img
-            src="/images/hero-institutional-facade.webp"
-            alt="Premier financial district headquarters architecture representing Amarnath Securities Limited"
-            width={1600}
-            height={900}
-            fetchPriority="high"
-            loading="eager"
-            decoding="async"
-            className="w-full h-full object-cover object-center filter grayscale contrast-125"
-          />
-          <div className="absolute inset-0 bg-gradient-to-r from-white via-white/80 to-transparent" />
+        {/* Premium Particle Network Background — brand colours: navy / gold / teal */}
+        <div className="absolute inset-0 z-0 pointer-events-none overflow-hidden">
+          <HeroParticleNetwork />
         </div>
 
         {/* Subtle Ambient Decorative Gradients */}
@@ -564,11 +555,10 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate, onOpenDocument }
               <button
                 key={tab.id}
                 onClick={() => setSelectedNeedTab(tab.id as any)}
-                className={`px-4 py-2 rounded-xl text-xs sm:text-sm font-medium transition-all cursor-pointer ${
-                  selectedNeedTab === tab.id
-                    ? 'bg-[#0A1128] text-white shadow-xs font-semibold'
-                    : 'text-slate-600 hover:text-[#0A1128] hover:bg-white/70'
-                }`}
+                className={`px-4 py-2 rounded-xl text-xs sm:text-sm font-medium transition-all cursor-pointer ${selectedNeedTab === tab.id
+                  ? 'bg-[#0A1128] text-white shadow-xs font-semibold'
+                  : 'text-slate-600 hover:text-[#0A1128] hover:bg-white/70'
+                  }`}
               >
                 {tab.label}
               </button>
