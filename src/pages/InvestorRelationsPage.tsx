@@ -123,9 +123,32 @@ export const InvestorRelationsPage: React.FC<InvestorRelationsPageProps> = ({
 
   const quarters = ['All', 'Q1', 'Q2', 'Q3', 'Q4', 'Annual'];
 
+  // Live documents state initialized with verified repository baseline
+  const [liveDocuments, setLiveDocuments] = useState<InvestorDocument[]>(INVESTOR_DOCUMENTS);
+  const [isLoadingDocs, setIsLoadingDocs] = useState<boolean>(false);
+
+  useEffect(() => {
+    let active = true;
+    setIsLoadingDocs(true);
+    fetch('/api/documents')
+      .then((res) => res.json())
+      .then((data) => {
+        if (active && data.success && Array.isArray(data.data) && data.data.length > 0) {
+          setLiveDocuments(data.data);
+        }
+      })
+      .catch((err) => {
+        console.warn('API document fetch fallback to statutory baseline:', err);
+      })
+      .finally(() => {
+        if (active) setIsLoadingDocs(false);
+      });
+    return () => { active = false; };
+  }, []);
+
   // Filtered documents for the Document Library
   const filteredDocuments = useMemo(() => {
-    return INVESTOR_DOCUMENTS.filter((doc) => {
+    return liveDocuments.filter((doc) => {
       // If a specific subtab is active, constrain to that category
       if (activeTab === 'Financial Results' && doc.category !== 'Financial Results') return false;
       if (activeTab === 'Annual Reports' && doc.category !== 'Annual Reports') return false;
@@ -1255,11 +1278,14 @@ export const InvestorRelationsPage: React.FC<InvestorRelationsPageProps> = ({
                     </div>
                     <div className="flex justify-between py-2 border-b border-slate-100">
                       <span className="text-slate-500">Promoter Holding:</span>
-                      <span className="text-[#9A7B38] font-bold">49.50%</span>
+                      <span className="text-[#9A7B38] font-bold">49.50% (CS Confirmation Req.)</span>
                     </div>
-                    <div className="flex justify-between py-2">
+                    <div className="flex justify-between py-2 border-b border-slate-100">
                       <span className="text-slate-500">Public Float:</span>
                       <span className="text-slate-700">50.50%</span>
+                    </div>
+                    <div className="pt-2 text-[10px] text-amber-700 bg-amber-50/80 p-2 rounded-lg border border-amber-200/60 font-sans">
+                      * Note: Shareholding pattern distribution is subject to Company / CS confirmation against latest BSE XBRL filing. Recent filings report transition to 100% public holding / nil promoter holding.
                     </div>
                   </div>
                 </div>

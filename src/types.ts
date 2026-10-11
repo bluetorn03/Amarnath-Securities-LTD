@@ -34,7 +34,8 @@ export type PageRoute =
   | 'investor-relations/rta'
   | 'insights'
   | InsightRoute
-  | 'contact';
+  | 'contact'
+  | 'admin';
 
 export type DocumentCategory = 
   | 'Financial Results'
@@ -77,6 +78,9 @@ export interface InvestorDocument {
   effectiveDate?: string;
   version?: string;
   isStatutory?: boolean;
+  status?: 'draft' | 'review' | 'published' | 'archived';
+  createdAt?: string;
+  updatedAt?: string;
 }
 
 export type Reg46Category = 
@@ -258,4 +262,178 @@ export interface InsightArticle {
   /** Thematic tags listed beneath the article body. */
   topics: string[];
 }
+
+export type AdminRole = 'super_admin' | 'compliance_officer' | 'editor' | 'viewer';
+
+export interface AdminUser {
+  id: string;
+  email: string;
+  name: string;
+  role: AdminRole;
+  isActive: boolean;
+  lastLoginAt?: string;
+  failedLoginAttempts?: number;
+  createdAt?: string;
+  updatedAt?: string;
+}
+
+export interface AuditLogItem {
+  id: number;
+  user_name: string | null;
+  user_email: string | null;
+  user_role?: string | null;
+  action: string;
+  entity_type: string | null;
+  entity_id: string | null;
+  ip_address: string;
+  created_at: string;
+  details: any;
+}
+
+export interface EnquiryItem {
+  id: string;
+  reference_no: string;
+  type: 'business' | 'investor';
+  name: string;
+  email: string;
+  phone: string | null;
+  company_name: string | null;
+  service_interest: string | null;
+  estimated_capital: string | null;
+  folio_or_dp_id: string | null;
+  grievance_category: string | null;
+  details: string;
+  status: 'new' | 'in_progress' | 'resolved' | 'closed';
+  resolution_notes?: string | null;
+  is_test?: boolean | number;
+  ip_address: string;
+  created_at: string;
+  updated_at?: string;
+}
+
+export interface DocumentVersionItem {
+  id: number;
+  version: string;
+  file_url: string;
+  file_size: string;
+  source_type: string;
+  change_summary: string;
+  created_by_name: string | null;
+  created_at: string;
+}
+
+export interface SystemHealthData {
+  service: string;
+  version: string;
+  timestamp: string;
+  connectivity: {
+    database: 'connected' | 'disconnected';
+    pingMs: number;
+    storageMounted: boolean;
+    status: 'healthy' | 'degraded';
+  };
+  systemTelemetry: {
+    uptimeSeconds: number;
+    memoryUsageMb: string;
+    nodeVersion: string;
+    platform: string;
+    freeMemMb: string;
+    totalMemMb: string;
+  };
+  storage: {
+    uploadDir: string;
+    fileCount: number;
+    storageSizeBytes: number;
+    storageSizeDisplay: string;
+    maxCapacityMb: number;
+    usagePercentage: string;
+  };
+  backupStatus: {
+    totalBackupsCount: number;
+    latestBackup: {
+      filename: string;
+      sizeBytes: number;
+      sizeDisplay: string;
+      createdAt: string;
+    } | null;
+  };
+  metrics: {
+    documents: {
+      total: number;
+      published: number;
+      draft: number;
+      review: number;
+      archived: number;
+    };
+    regulation46: {
+      total: number;
+      active?: number;
+      verified: number;
+      pendingEvidence: number;
+      underReview: number;
+      notApplicable: number;
+      complianceScore: number;
+    };
+    enquiries: {
+      total: number;
+      grievances: number;
+      genuineGrievances?: number;
+      genuineEnquiries?: number;
+      testAuditRuns?: number;
+      pendingNew: number;
+      inProgress: number;
+      resolved: number;
+    };
+    users: {
+      total: number;
+      active: number;
+    };
+  };
+}
+
+export interface DatabaseBackupItem {
+  filename: string;
+  sizeBytes: number;
+  sizeDisplay: string;
+  createdAt: string;
+  status: 'available';
+}
+
+export type AdminViewId = 
+  // Overview
+  | 'dashboard'
+  | 'website_health'
+  // Investor Relations
+  | 'financial_results'
+  | 'annual_reports'
+  | 'shareholding_pattern'
+  | 'bse_disclosures'
+  | 'agm_egm_notices'
+  | 'statutory_filings'
+  | 'newspaper_publications'
+  // Governance & Compliance
+  | 'reg46_checklist'
+  | 'directors'
+  | 'committees'
+  | 'kmp'
+  | 'corporate_governance'
+  | 'policies'
+  // Website Content
+  | 'pages'
+  | 'announcements'
+  | 'contact_details'
+  | 'document_library'
+  | 'seo_metadata'
+  // Investor Support
+  | 'grievances'
+  | 'enquiries'
+  | 'rta_contact'
+  // Administration
+  | 'users'
+  | 'audit'
+  | 'notifications'
+  | 'system_health'
+  | 'backups'
+  | 'settings';
+
 

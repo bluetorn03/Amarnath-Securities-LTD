@@ -12,15 +12,32 @@ import { InvestorRelationsPage } from './pages/InvestorRelationsPage';
 import { InsightsPage } from './pages/InsightsPage';
 import { ArticleDetailPage } from './pages/ArticleDetailPage';
 import { ContactPage } from './pages/ContactPage';
+import { AdminCmsPage } from './pages/AdminCmsPage';
 import { AnimatePresence, motion } from 'motion/react';
+
+function getOrCreateVisitorId(): string {
+  if (typeof window === 'undefined') return '';
+  let id = localStorage.getItem('asl_visitor_uuid');
+  if (!id) {
+    id = 'v_' + Math.random().toString(36).substring(2, 11) + '_' + Date.now().toString(36);
+    localStorage.setItem('asl_visitor_uuid', id);
+  }
+  return id;
+}
 
 const getInitialRoute = (): PageRoute => {
   if (typeof window !== 'undefined') {
     const hash = window.location.hash.replace(/^#\/?/, '').trim();
+    if (hash.startsWith('admin')) {
+      return 'admin';
+    }
     if (hash) {
       return hash as PageRoute;
     }
     const path = window.location.pathname.replace(/^\//, '').replace(/\/$/, '').trim();
+    if (path.startsWith('admin')) {
+      return 'admin';
+    }
     if (path) {
       return path as PageRoute;
     }
@@ -43,6 +60,31 @@ export default function App() {
     const handleRouteChange = () => {
       const hash = window.location.hash.replace(/^#\/?/, '').trim();
       const path = window.location.pathname.replace(/^\//, '').replace(/\/$/, '').trim();
+
+      // If user is currently in admin and pressing browser back tries to leave admin to public
+      if (currentRoute === 'admin' && !hash.startsWith('admin')) {
+        const token = localStorage.getItem('asl_admin_token');
+        if (token) {
+          const confirmLeave = window.confirm(
+            'Exit Administration Console?\n\nAre you sure you want to leave the management workstation and return to the public website?'
+          );
+          if (!confirmLeave) {
+            // Cancel exit, preserve admin hash
+            window.location.hash = '#admin';
+            return;
+          }
+        }
+      }
+
+      // If hash is inside admin (e.g. #admin/pages or #admin), keep currentRoute as 'admin'
+      if (hash.startsWith('admin')) {
+        if (currentRoute !== 'admin') {
+          setCurrentRoute('admin');
+          window.scrollTo(0, 0);
+        }
+        return;
+      }
+
       const resolved = (hash || path || 'home') as PageRoute;
       if (resolved !== currentRoute) {
         setCurrentRoute(resolved);
@@ -63,10 +105,33 @@ export default function App() {
       if (window.location.hash) {
         history.replaceState(null, '', window.location.pathname);
       }
+    } else if (currentRoute === 'admin') {
+      // Don't overwrite sub-admin hashes like #admin/pages
+      if (!window.location.hash.startsWith('#admin')) {
+        window.location.hash = 'admin';
+      }
     } else {
       const targetHash = `#${currentRoute}`;
       if (window.location.hash !== targetHash) {
         window.location.hash = currentRoute;
+      }
+    }
+  }, [currentRoute]);
+
+  // Track dynamic page visits in real database (increments +1 ONLY for new unique visitors per page)
+  useEffect(() => {
+    if (currentRoute && !currentRoute.startsWith('admin')) {
+      try {
+        const visitorId = getOrCreateVisitorId();
+        fetch('/api/analytics/visit', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ route: currentRoute, visitorId })
+        }).catch(() => {
+          // Graceful fallback if network is unreachable
+        });
+      } catch {
+        // Non-blocking telemetry
       }
     }
   }, [currentRoute]);
@@ -113,6 +178,10 @@ export default function App() {
       return <ContactPage onNavigate={handleNavigate} />;
     }
 
+    if (currentRoute === 'admin') {
+      return <AdminCmsPage onNavigate={handleNavigate} />;
+    }
+
     return (
       <HomePage
         onNavigate={handleNavigate}
@@ -121,16 +190,18 @@ export default function App() {
     );
   };
 
+  const isAdminRoute = currentRoute === 'admin';
+
   return (
     <div className="min-h-screen bg-[#FAFBFD] text-[#0A1128] flex flex-col selection:bg-[#0D9488]/20 selection:text-[#0A1128]">
       {/* Site-wide Scroll Progress Indicator */}
-      <ScrollProgress />
+      {!isAdminRoute && <ScrollProgress />}
 
       {/* Top Main Navigation Bar */}
-      <Navbar currentRoute={currentRoute} onNavigate={handleNavigate} />
+      {!isAdminRoute && <Navbar currentRoute={currentRoute} onNavigate={handleNavigate} />}
 
       {/* Breadcrumbs for non-home pages */}
-      {currentRoute !== 'home' && (
+      {!isAdminRoute && currentRoute !== 'home' && (
         <div className="bg-white/85 border-b border-slate-200/80 py-2.5 backdrop-blur-xs">
           <Breadcrumbs currentRoute={currentRoute} onNavigate={handleNavigate} />
         </div>
@@ -152,7 +223,7 @@ export default function App() {
       </main>
 
       {/* Institutional Statutory Footer */}
-      <Footer onNavigate={handleNavigate} />
+      {!isAdminRoute && <Footer onNavigate={handleNavigate} />}
 
       {/* Interactive Modal for viewing and downloading statutory documents */}
       <DocumentModal

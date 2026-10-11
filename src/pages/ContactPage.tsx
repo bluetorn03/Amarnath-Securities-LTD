@@ -46,13 +46,32 @@ export const ContactPage: React.FC<ContactPageProps> = ({ onNavigate: _onNavigat
     queryText: ''
   });
 
-  const handleBusinessSubmit = (e: React.FormEvent) => {
+  const [submitError, setSubmitError] = useState<string | null>(null);
+
+  const handleBusinessSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
-    setTimeout(() => {
-      setIsSubmitting(false);
-      const ref = `ASL-CORP-${Math.floor(100000 + Math.random() * 900000)}`;
-      setSubmittedRef(ref);
+    setSubmitError(null);
+    try {
+      const response = await fetch('/api/enquiries', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          type: 'business',
+          name: businessForm.contactPerson,
+          email: businessForm.email,
+          phone: businessForm.phone,
+          companyName: businessForm.companyName,
+          serviceInterest: businessForm.serviceInterest,
+          estimatedCapital: businessForm.estimatedCapital,
+          details: businessForm.details || `Corporate engagement request for ${businessForm.serviceInterest}`
+        })
+      });
+      const data = await response.json();
+      if (!response.ok || !data.success) {
+        throw new Error(data.error || 'Failed to submit enquiry. Please try again.');
+      }
+      setSubmittedRef(data.referenceNo);
       setBusinessForm({
         companyName: '',
         contactPerson: '',
@@ -62,16 +81,36 @@ export const ContactPage: React.FC<ContactPageProps> = ({ onNavigate: _onNavigat
         estimatedCapital: '₹10 Cr - ₹50 Cr',
         details: ''
       });
-    }, 800);
+    } catch (err: any) {
+      setSubmitError(err.message || 'Unable to submit enquiry. Please try again or email compliance@amarnathsecuritiesltd.com.');
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
-  const handleInvestorSubmit = (e: React.FormEvent) => {
+  const handleInvestorSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
-    setTimeout(() => {
-      setIsSubmitting(false);
-      const ref = `ASL-INV-${Math.floor(100000 + Math.random() * 900000)}`;
-      setSubmittedRef(ref);
+    setSubmitError(null);
+    try {
+      const response = await fetch('/api/enquiries', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          type: 'investor',
+          name: investorForm.shareholderName,
+          email: investorForm.email,
+          phone: investorForm.phone,
+          folioOrDpId: investorForm.folioOrDpId,
+          grievanceCategory: investorForm.category,
+          details: investorForm.queryText || `Grievance filing: ${investorForm.category}`
+        })
+      });
+      const data = await response.json();
+      if (!response.ok || !data.success) {
+        throw new Error(data.error || 'Failed to submit grievance. Please try again.');
+      }
+      setSubmittedRef(data.referenceNo);
       setInvestorForm({
         shareholderName: '',
         email: '',
@@ -80,7 +119,11 @@ export const ContactPage: React.FC<ContactPageProps> = ({ onNavigate: _onNavigat
         category: 'Non-receipt of Annual Report / Financial Statements',
         queryText: ''
       });
-    }, 800);
+    } catch (err: any) {
+      setSubmitError(err.message || 'Unable to submit grievance. Please contact RTA directly at support@purvashare.com.');
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -103,7 +146,7 @@ export const ContactPage: React.FC<ContactPageProps> = ({ onNavigate: _onNavigat
         {/* Main Grid: Forms on Left (Sticky), Corporate Coordinates on Right */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 items-start">
           {/* Form Container: Sticky on desktop below sticky navbar (top-24), stops when parent grid ends */}
-          <div className="lg:col-span-7 p-6 sm:p-10 rounded-2xl bg-white border border-slate-200 shadow-2xs space-y-8 lg:sticky lg:top-24 lg:self-start lg:max-h-[calc(100vh-7rem)] lg:overflow-y-auto xl:overflow-y-visible scrollbar-thin z-10">
+          <div className="lg:col-span-7 p-6 sm:p-10 rounded-2xl bg-white border border-slate-200 shadow-2xs space-y-8 lg:sticky lg:top-24 lg:self-start lg:max-h-[calc(100vh-7rem)] lg:overflow-y-auto scrollbar-thin z-10">
             {/* Form Toggle Tabs */}
             <div className="flex items-center gap-3 border-b border-slate-100 pb-4">
                 <button
@@ -158,6 +201,13 @@ export const ContactPage: React.FC<ContactPageProps> = ({ onNavigate: _onNavigat
                     Submit another communication
                   </button>
                 </motion.div>
+              )}
+
+              {submitError && (
+                <div className="p-4 rounded-xl bg-rose-50 border border-rose-200 text-rose-800 text-xs">
+                  <p className="font-semibold">Submission Notice</p>
+                  <p>{submitError}</p>
+                </div>
               )}
 
               {/* BUSINESS ENQUIRY FORM */}

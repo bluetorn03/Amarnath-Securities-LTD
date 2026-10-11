@@ -480,12 +480,12 @@ export const DIRECTORS_REGISTRY: DirectorProfile[] = [
   {
     id: 'dir-chetan-patel',
     name: 'Mr. Chetan Balubhai Patel',
-    designation: 'Whole-Time Director',
+    designation: 'Whole-Time Director & CFO',
     category: 'Executive Director',
     din: '03556088',
-    appointmentDate: 'Approved by BSE / MCA',
-    term: 'Key Executive Directorship',
-    bio: 'Brings extensive experience in securities administration, corporate governance, balance sheet oversight and execution of corporate initiatives for listed entities.',
+    appointmentDate: 'Approved by BSE / MCA (CFO w.e.f. July 28, 2025)',
+    term: 'Key Executive Directorship & KMP (CFO)',
+    bio: 'Brings extensive experience in securities administration, corporate governance, balance sheet oversight and execution of corporate initiatives for listed entities. Appointed Chief Financial Officer (CFO) effective July 28, 2025.',
     otherDirectorships: ['Body Corporates registered in India (subject to annual secretarial disclosure)'],
     committeeMemberships: [
       { committeeName: 'Stakeholders Relationship Committee', role: 'Member' },
@@ -497,19 +497,19 @@ export const DIRECTORS_REGISTRY: DirectorProfile[] = [
   {
     id: 'dir-amit-pandya',
     name: 'Mr. Amit Priyakant Pandya',
-    designation: 'Whole-Time Director',
+    designation: 'Former Whole-Time Director (Cessation Filed)',
     category: 'Executive Director',
     din: '00676479',
     appointmentDate: 'Approved by BSE / MCA',
-    term: 'Key Executive Directorship',
-    bio: 'Experienced corporate professional overseeing statutory operations, exchange coordination with BSE Limited, compliance liaisons, and strategic corporate development.',
+    term: 'Cessation filed on BSE (September 23, 2025)',
+    bio: 'Experienced corporate professional overseeing statutory operations and exchange coordination. Regulatory filings on BSE indicate cessation of directorship took effect on September 23, 2025.',
     otherDirectorships: ['Corporate entities in financial services / commerce sectors'],
     committeeMemberships: [
-      { committeeName: 'Audit Committee', role: 'Member' },
-      { committeeName: 'Risk Management Committee', role: 'Chairperson' }
+      { committeeName: 'Audit Committee (Subject to Reconstitution)', role: 'Member' },
+      { committeeName: 'Risk Management Committee (Subject to Reconstitution)', role: 'Chairperson' }
     ],
-    verified: true,
-    approvalStatus: 'Verified against MCA / BSE Records'
+    verified: false,
+    approvalStatus: 'Cessation Filed on BSE (Sep 23, 2025) - Company / CS Confirmation Required'
   },
   {
     id: 'dir-sanjay-rajkumar',
@@ -594,7 +594,7 @@ export const BOARD_COMMITTEES_REGISTRY: BoardCommittee[] = [
       },
       {
         name: 'Mr. Amit Priyakant Pandya',
-        designation: 'Whole-Time Director',
+        designation: 'Whole-Time Director (Cessation filed Sep 23, 2025; Reconstitution pending CS confirmation)',
         role: 'Member',
         category: 'Executive'
       }
@@ -688,14 +688,14 @@ export const BOARD_COMMITTEES_REGISTRY: BoardCommittee[] = [
     statutoryReference: 'Regulation 21 of SEBI (LODR) Regulations, 2015 & Good Corporate Governance Practices',
     chairperson: {
       name: 'Mr. Amit Priyakant Pandya',
-      designation: 'Whole-Time Director',
+      designation: 'Whole-Time Director (Cessation filed Sep 23, 2025; Chairmanship pending CS confirmation)',
       role: 'Chairperson',
       category: 'Executive'
     },
     members: [
       {
         name: 'Mr. Chetan Balubhai Patel',
-        designation: 'Whole-Time Director',
+        designation: 'Whole-Time Director & CFO',
         role: 'Member',
         category: 'Executive'
       },

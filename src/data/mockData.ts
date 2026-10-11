@@ -173,7 +173,7 @@ export const MARKET_TICKER_DATA: MarketTickerData = {
   week52High: 24.60,
   week52Low: 11.20,
   volume: '48,250',
-  marketCap: '₹55.35 Cr',
+  marketCap: '₹5.54 Cr',
   faceValue: 10.00,
   industry: 'Public Listed Entity / Corporate Development'
 };

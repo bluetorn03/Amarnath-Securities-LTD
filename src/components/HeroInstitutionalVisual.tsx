@@ -327,7 +327,7 @@ export const HeroInstitutionalVisual: React.FC<HeroInstitutionalVisualProps> = (
                       Market Cap
                     </div>
                     <div className="font-display font-bold text-base sm:text-lg text-[#9A7B38] mt-0.5">
-                      ₹55.35 Cr
+                      ₹5.54 Cr
                     </div>
                     <div className="text-[9px] font-mono text-slate-500 mt-0.5">
                       BSE Scrip 538465
@@ -365,7 +365,7 @@ export const HeroInstitutionalVisual: React.FC<HeroInstitutionalVisualProps> = (
                 <div className="flex items-center justify-between text-[11px] font-mono text-slate-600 bg-slate-50 px-3 py-2 rounded-lg border border-slate-200/60">
                   <span className="flex items-center gap-1.5 text-slate-700">
                     <CheckCircle2 className="w-3.5 h-3.5 text-[#0D9488]" />
-                    Promoter Holding: 100% Dematerialized
+                    Dematerialized Equity: 100% Settled
                   </span>
                   <span className="text-slate-400">Electronic Transfer Active</span>
                 </div>
