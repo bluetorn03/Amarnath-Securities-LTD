@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { PageRoute } from '../types';
-import { COMPANY_DETAILS, MARKET_TICKER_DATA } from '../data/mockData';
+import { COMPANY_DETAILS } from '../data/mockData';
 import { AmarnathLogo } from './AmarnathLogo';
 import { 
   Menu, 
@@ -54,7 +54,7 @@ export const Navbar: React.FC<NavbarProps> = ({ currentRoute, onNavigate }) => {
   };
 
   return (
-    <header className="sticky top-0 z-40 w-full transition-all duration-300">
+    <>
       {/* Top Institutional Ticker & Trust Bar (Light Slate) */}
       <div className="bg-slate-50 border-b border-slate-200/80 text-[11px] sm:text-xs text-slate-600 py-1.5 px-4 sm:px-8">
         <div className="max-w-7xl mx-auto flex items-center justify-between gap-4">
@@ -63,13 +63,6 @@ export const Navbar: React.FC<NavbarProps> = ({ currentRoute, onNavigate }) => {
             <div className="flex items-center gap-2 shrink-0">
               <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
               <span className="font-semibold text-slate-900 tracking-wider">BSE: 538465</span>
-              <span className="text-slate-300 hidden sm:inline">|</span>
-              <span className="text-[#0D9488] font-mono font-medium hidden sm:inline">
-                ₹{MARKET_TICKER_DATA.lastPrice.toFixed(2)}
-              </span>
-              <span className="text-emerald-700 font-mono text-[10px] hidden md:inline">
-                +{MARKET_TICKER_DATA.changePercent}%
-              </span>
             </div>
 
             <div className="hidden lg:flex items-center gap-3 text-slate-500 border-l border-slate-200 pl-3">
@@ -102,7 +95,8 @@ export const Navbar: React.FC<NavbarProps> = ({ currentRoute, onNavigate }) => {
       </div>
 
       {/* Main Sticky Navbar (Light Surface with Subtle Backdrop Blur) */}
-      <nav 
+      <header className="sticky top-0 z-40 w-full transition-all duration-300">
+        <nav 
         className={`w-full transition-all duration-300 ${
           isScrolled 
             ? 'bg-white/95 backdrop-blur-md border-b border-slate-200/90 shadow-[0_4px_20px_-4px_rgba(15,23,42,0.06)] py-3' 
@@ -688,5 +682,6 @@ export const Navbar: React.FC<NavbarProps> = ({ currentRoute, onNavigate }) => {
         )}
       </AnimatePresence>
     </header>
+  </>
   );
 };
