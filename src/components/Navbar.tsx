@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { PageRoute } from '../types';
-import { COMPANY_DETAILS } from '../data/mockData';
+import { useCompanyProfile } from '../context/CompanyProfileContext';
 import { AmarnathLogo } from './AmarnathLogo';
 import { 
   Menu, 
@@ -25,6 +25,7 @@ interface NavbarProps {
 }
 
 export const Navbar: React.FC<NavbarProps> = ({ currentRoute, onNavigate }) => {
+  const { profile: companyDetails } = useCompanyProfile();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
   const [isScrolled, setIsScrolled] = useState(false);
@@ -62,13 +63,13 @@ export const Navbar: React.FC<NavbarProps> = ({ currentRoute, onNavigate }) => {
           <div className="flex items-center gap-3 overflow-hidden">
             <div className="flex items-center gap-2 shrink-0">
               <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
-              <span className="font-semibold text-slate-900 tracking-wider">BSE: 538465</span>
+              <span className="font-semibold text-slate-900 tracking-wider">BSE: {companyDetails.bseScripCode || '538465'}</span>
             </div>
 
             <div className="hidden lg:flex items-center gap-3 text-slate-500 border-l border-slate-200 pl-3">
-              <span>ISIN: <span className="text-slate-800 font-mono">{COMPANY_DETAILS.isin}</span></span>
+              <span>ISIN: <span className="text-slate-800 font-mono">{companyDetails.isin}</span></span>
               <span>•</span>
-              <span>CIN: <span className="text-slate-700 font-mono">{COMPANY_DETAILS.cin}</span></span>
+              <span>CIN: <span className="text-slate-700 font-mono">{companyDetails.cin}</span></span>
             </div>
           </div>
 
@@ -83,11 +84,11 @@ export const Navbar: React.FC<NavbarProps> = ({ currentRoute, onNavigate }) => {
             </button>
             <span className="text-slate-300 hidden sm:inline">|</span>
             <a 
-              href={`tel:${COMPANY_DETAILS.phone.replace(/\s+/g, '')}`}
+              href={`tel:${(companyDetails.phone || '').replace(/\s+/g, '')}`}
               className="hover:text-[#9A7B38] transition-colors flex items-center gap-1 font-mono text-[11px]"
             >
               <Phone className="w-3 h-3 text-[#9A7B38]" />
-              <span className="hidden sm:inline">{COMPANY_DETAILS.phone}</span>
+              <span className="hidden sm:inline">{companyDetails.phone}</span>
               <span className="sm:hidden">Call</span>
             </a>
           </div>

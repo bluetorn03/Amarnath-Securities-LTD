@@ -221,6 +221,26 @@ export async function updateSetting(req, res, next) {
       return res.status(400).json({ success: false, error: 'Setting value must be a valid JSON object.' });
     }
 
+    // Retrieve prior setting state to record precise audit diff
+    const existingRows = await query('SELECT setting_value FROM system_settings WHERE setting_key = ?', [key]);
+    const oldValue = existingRows && existingRows.length > 0
+      ? (typeof existingRows[0].setting_value === 'string' ? JSON.parse(existingRows[0].setting_value) : existingRows[0].setting_value)
+      : {};
+
+    const changes = {};
+    const allKeys = new Set([...Object.keys(oldValue || {}), ...Object.keys(value || {})]);
+    for (const field of allKeys) {
+      const prev = oldValue ? oldValue[field] : undefined;
+      const curr = value ? value[field] : undefined;
+      if (JSON.stringify(prev) !== JSON.stringify(curr)) {
+        changes[field] = {
+          from: prev !== undefined ? prev : null,
+          to: curr !== undefined ? curr : null
+        };
+      }
+    }
+    const changedFieldNames = Object.keys(changes);
+
     const valueStr = JSON.stringify(value);
     await query(
       `UPDATE system_settings SET 
@@ -232,7 +252,7 @@ export async function updateSetting(req, res, next) {
       [valueStr, description || null, req.user.id, key]
     );
 
-    // If company_profile is updated, keep the legacy company_profile table in sync
+    // If company_profile is updated, keep the statutory company_profile table in sync
     if (key === 'company_profile') {
       await query(
         `UPDATE company_profile SET
@@ -260,12 +280,60 @@ export async function updateSetting(req, res, next) {
       );
     }
 
+    // If investor_relations is updated, keep RTA and compliance contact details in sync
+    if (key === 'investor_relations') {
+      await query(
+        `UPDATE company_profile SET
+          compliance_officer = COALESCE(?, compliance_officer),
+          compliance_email = COALESCE(?, compliance_email),
+          compliance_phone = COALESCE(?, compliance_phone),
+          rta_name = COALESCE(?, rta_name),
+          rta_address = COALESCE(?, rta_address),
+          rta_email = COALESCE(?, rta_email),
+          rta_phone = COALESCE(?, rta_phone),
+          rta_website = COALESCE(?, rta_website),
+          sebi_scores_url = COALESCE(?, sebi_scores_url),
+          sebi_smart_odr_url = COALESCE(?, sebi_smart_odr_url),
+          bse_portal_url = COALESCE(?, bse_portal_url),
+          updated_by = ?
+         WHERE id = 1`,
+        [
+          value.compliance_officer,
+          value.compliance_email,
+          value.compliance_phone,
+          value.rta_name,
+          value.rta_address,
+          value.rta_email,
+          value.rta_phone,
+          value.rta_website,
+          value.sebi_scores_url,
+          value.sebi_smart_odr_url,
+          value.bse_portal_url,
+          req.user.id
+        ]
+      );
+    }
+
+    // Determine descriptive action name for audit trail
+    let actionName = 'UPDATE_SYSTEM_SETTINGS';
+    if (key === 'company_profile') actionName = 'UPDATE_COMPANY_PROFILE';
+    else if (key === 'investor_relations') actionName = 'UPDATE_INVESTOR_RELATIONS';
+    else if (key === 'security_policy') actionName = 'UPDATE_SECURITY_POLICY';
+    else if (key === 'compliance_workflow') actionName = 'UPDATE_COMPLIANCE_WORKFLOW';
+
     await logAudit({
       userId: req.user.id,
-      action: 'UPDATE_SYSTEM_SETTINGS',
-      entityType: 'system_settings',
+      action: actionName,
+      entityType: key,
       entityId: key,
-      details: { settingKey: key, updatedFields: Object.keys(value) },
+      details: {
+        settingKey: key,
+        summary: `Updated ${key.replace(/_/g, ' ')} (${changedFieldNames.length} field(s) changed)`,
+        changedFields: changedFieldNames,
+        changes: changedFieldNames.length > 0 ? changes : 'No values modified',
+        newValues: value,
+        previousValues: oldValue
+      },
       req
     });
 

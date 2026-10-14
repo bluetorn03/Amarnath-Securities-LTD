@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { PageRoute, InvestorDocument } from '../types';
 import {
-  COMPANY_DETAILS,
   CAPABILITIES,
   INVESTOR_DOCUMENTS,
   MARKET_TICKER_DATA,

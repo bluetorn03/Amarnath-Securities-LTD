@@ -1,6 +1,5 @@
 import React from 'react';
 import { InvestorDocument } from '../types';
-import { COMPANY_DETAILS } from '../data/mockData';
 import { 
   X, 
   Download, 

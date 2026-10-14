@@ -2,15 +2,95 @@ import { query, transaction } from '../config/db.js';
 import { logAudit } from '../utils/auditLogger.js';
 
 // -------------------------------------------------------------
-// 1. COMPANY PROFILE
+// 1. COMPANY PROFILE (Dynamic institutional settings sync)
 // -------------------------------------------------------------
 export async function getCompanyProfile(req, res, next) {
   try {
     const rows = await query('SELECT * FROM company_profile WHERE status = "published" LIMIT 1');
-    if (rows.length === 0) {
-      return res.status(404).json({ success: false, error: 'Company profile not found.' });
+    const legacy = rows.length > 0 ? rows[0] : {};
+
+    // Retrieve live configuration from system_settings
+    const settingsRows = await query(
+      "SELECT setting_key, setting_value FROM system_settings WHERE setting_key IN ('company_profile', 'investor_relations', 'website_seo')"
+    );
+    const settingsMap = {};
+    for (const row of settingsRows) {
+      settingsMap[row.setting_key] = typeof row.setting_value === 'string'
+        ? JSON.parse(row.setting_value)
+        : row.setting_value;
     }
-    res.json({ success: true, data: rows[0] });
+
+    const cp = settingsMap['company_profile'] || {};
+    const ir = settingsMap['investor_relations'] || {};
+    const seo = settingsMap['website_seo'] || {};
+
+    // Combine legacy record and system settings with priority to explicit admin settings
+    const combined = {
+      // Identity & Statutory
+      name: cp.company_name || legacy.company_name || 'Amarnath Securities Limited',
+      company_name: cp.company_name || legacy.company_name || 'Amarnath Securities Limited',
+      shortName: legacy.short_name || 'Amarnath Securities',
+      short_name: legacy.short_name || 'Amarnath Securities',
+      cin: cp.cin || legacy.cin || 'L67120GJ1994PLC023254',
+      bseScripCode: cp.bse_scrip_code || legacy.bse_scrip_code || '538465',
+      bse_scrip_code: cp.bse_scrip_code || legacy.bse_scrip_code || '538465',
+      isin: cp.isin || legacy.isin || 'INE745P01010',
+      tagline: legacy.tagline || 'Capital. Strategy. Opportunity.',
+      trustLine: legacy.trust_line || 'BSE Listed • Since 1994 • Scrip Code 538465',
+      trust_line: legacy.trust_line || 'BSE Listed • Since 1994 • Scrip Code 538465',
+      corePositioning: legacy.core_positioning || 'Corporate Evolution, Strategic Opportunities & Sustainable Growth',
+      core_positioning: legacy.core_positioning || 'Corporate Evolution, Strategic Opportunities & Sustainable Growth',
+      foundedYear: legacy.founded_year || '1994',
+      founded_year: legacy.founded_year || '1994',
+
+      // Direct Contact
+      email: cp.email || legacy.email || 'compliance@amarnathsecuritiesltd.com',
+      phone: cp.phone || legacy.phone || '+91 99309 82815',
+      website: cp.website || legacy.website || 'https://www.amarnathsecuritiesltd.com',
+
+      // Physical Coordinates
+      regOffice: cp.reg_office || legacy.reg_office || '1/104, Sarthik Complex, Nr. Fun Republic, Satellite Road, Ahmedabad, Gujarat - 380015',
+      reg_office: cp.reg_office || legacy.reg_office || '1/104, Sarthik Complex, Nr. Fun Republic, Satellite Road, Ahmedabad, Gujarat - 380015',
+      corpOffice: cp.corp_office || legacy.corp_office || 'Office A9, Ground Floor, Ellora Park, Near Damani Zapa, Killa Pardi, Valsad, Pardi, Gujarat - 396125',
+      corp_office: cp.corp_office || legacy.corp_office || 'Office A9, Ground Floor, Ellora Park, Near Damani Zapa, Killa Pardi, Valsad, Pardi, Gujarat - 396125',
+
+      // Compliance Officer
+      complianceOfficer: ir.compliance_officer || legacy.compliance_officer || 'Company Secretary & Compliance Officer',
+      compliance_officer: ir.compliance_officer || legacy.compliance_officer || 'Company Secretary & Compliance Officer',
+      complianceDesignation: legacy.compliance_designation || 'Company Secretary & Compliance Officer',
+      compliance_designation: legacy.compliance_designation || 'Company Secretary & Compliance Officer',
+      complianceEmail: ir.compliance_email || legacy.compliance_email || 'compliance@amarnathsecuritiesltd.com',
+      compliance_email: ir.compliance_email || legacy.compliance_email || 'compliance@amarnathsecuritiesltd.com',
+      compliancePhone: ir.compliance_phone || legacy.compliance_phone || '+91 22 2523 0048',
+      compliance_phone: ir.compliance_phone || legacy.compliance_phone || '+91 22 2523 0048',
+
+      // Registrar and Share Transfer Agent (RTA)
+      rtaName: ir.rta_name || legacy.rta_name || 'Bigshare Services Pvt. Ltd.',
+      rta_name: ir.rta_name || legacy.rta_name || 'Bigshare Services Pvt. Ltd.',
+      rtaHistoricalLiaison: legacy.rta_historical_liaison || 'Purva Sharegistry (India) Pvt. Ltd.',
+      rta_historical_liaison: legacy.rta_historical_liaison || 'Purva Sharegistry (India) Pvt. Ltd.',
+      rtaAddress: ir.rta_address || legacy.rta_address || 'Office No S6-2, 6th Floor, Pinnacle Business Park, Next to Ahura Centre, Mahakali Caves Road, Andheri (East), Mumbai - 400 093, Maharashtra',
+      rta_address: ir.rta_address || legacy.rta_address || 'Office No S6-2, 6th Floor, Pinnacle Business Park, Next to Ahura Centre, Mahakali Caves Road, Andheri (East), Mumbai - 400 093, Maharashtra',
+      rtaEmail: ir.rta_email || legacy.rta_email || 'investor@bigshareonline.com',
+      rta_email: ir.rta_email || legacy.rta_email || 'investor@bigshareonline.com',
+      rtaPhone: ir.rta_phone || legacy.rta_phone || '+91 22 6263 8200',
+      rta_phone: ir.rta_phone || legacy.rta_phone || '+91 22 6263 8200',
+      rtaWebsite: ir.rta_website || legacy.rta_website || 'https://www.bigshareonline.com',
+      rta_website: ir.rta_website || legacy.rta_website || 'https://www.bigshareonline.com',
+
+      // Regulatory Portals
+      sebiScoresUrl: ir.sebi_scores_url || legacy.sebi_scores_url || 'https://scores.sebi.gov.in',
+      sebi_scores_url: ir.sebi_scores_url || legacy.sebi_scores_url || 'https://scores.sebi.gov.in',
+      sebiSmartOdrUrl: ir.sebi_smart_odr_url || legacy.sebi_smart_odr_url || 'https://smartodr.in',
+      sebi_smart_odr_url: ir.sebi_smart_odr_url || legacy.sebi_smart_odr_url || 'https://smartodr.in',
+      bsePortalUrl: ir.bse_portal_url || legacy.bse_portal_url || 'https://www.bseindia.com/stock-share-price/amarnath-securities-ltd/amarnath/538465/',
+      bse_portal_url: ir.bse_portal_url || legacy.bse_portal_url || 'https://www.bseindia.com/stock-share-price/amarnath-securities-ltd/amarnath/538465/',
+
+      // Metadata
+      updated_at: legacy.updated_at || new Date().toISOString()
+    };
+
+    res.json({ success: true, data: combined });
   } catch (err) {
     next(err);
   }
@@ -19,6 +99,10 @@ export async function getCompanyProfile(req, res, next) {
 export async function updateCompanyProfile(req, res, next) {
   try {
     const p = req.body;
+
+    const existingRows = await query('SELECT * FROM company_profile WHERE id = 1');
+    const oldProfile = existingRows.length > 0 ? existingRows[0] : {};
+
     await query(
       `UPDATE company_profile SET
         cin = COALESCE(?, cin),
@@ -53,12 +137,45 @@ export async function updateCompanyProfile(req, res, next) {
       ]
     );
 
+    // Keep system_settings company_profile in sync
+    const [sysRows] = await query("SELECT setting_value FROM system_settings WHERE setting_key = 'company_profile'");
+    const currentSys = sysRows.length > 0 ? JSON.parse(sysRows[0].setting_value) : {};
+    const updatedSys = {
+      ...currentSys,
+      ...(p.company_name && { company_name: p.company_name }),
+      ...(p.cin && { cin: p.cin }),
+      ...(p.bse_scrip_code && { bse_scrip_code: p.bse_scrip_code }),
+      ...(p.isin && { isin: p.isin }),
+      ...(p.reg_office && { reg_office: p.reg_office }),
+      ...(p.corp_office && { corp_office: p.corp_office }),
+      ...(p.email && { email: p.email }),
+      ...(p.phone && { phone: p.phone })
+    };
+    await query(
+      "UPDATE system_settings SET setting_value = ?, updated_by = ?, updated_at = NOW() WHERE setting_key = 'company_profile'",
+      [JSON.stringify(updatedSys), req.user.id]
+    );
+
+    // Compute diff for audit log
+    const changes = {};
+    for (const key of Object.keys(p)) {
+      if (oldProfile[key] !== undefined && String(oldProfile[key]) !== String(p[key])) {
+        changes[key] = { from: oldProfile[key], to: p[key] };
+      }
+    }
+
     await logAudit({
       userId: req.user.id,
       action: 'UPDATE_COMPANY_PROFILE',
       entityType: 'company_profile',
       entityId: '1',
-      details: p,
+      details: {
+        summary: `Updated Company Profile (${Object.keys(changes).length} field(s) modified)`,
+        changedFields: Object.keys(changes),
+        changes: Object.keys(changes).length > 0 ? changes : 'No fields modified',
+        newValues: p,
+        previousValues: oldProfile
+      },
       req
     });
 

@@ -1,6 +1,7 @@
 import React from 'react';
 import { PageRoute } from '../types';
-import { COMPANY_DETAILS, DIRECTORS_REGISTRY, BOARD_COMMITTEES_REGISTRY } from '../data/mockData';
+import { DIRECTORS_REGISTRY, BOARD_COMMITTEES_REGISTRY } from '../data/mockData';
+import { useCompanyProfile } from '../context/CompanyProfileContext';
 import { AmarnathLogo } from '../components/AmarnathLogo';
 import { AnimatedCounter } from '../components/AnimatedCounter';
 import { TextReveal } from '../components/TextReveal';
@@ -24,6 +25,7 @@ interface AboutPageProps {
 }
 
 export const AboutPage: React.FC<AboutPageProps> = ({ currentRoute, onNavigate }) => {
+  const { profile: COMPANY_DETAILS } = useCompanyProfile();
   // Determine active tab from route
   const getSubTab = () => {
     if (currentRoute === 'about/leadership') return 'leadership';

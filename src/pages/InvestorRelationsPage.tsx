@@ -2,7 +2,6 @@ import React, { useState, useMemo, useEffect } from 'react';
 import { PageRoute, InvestorDocument, Reg46Category } from '../types';
 import { 
   INVESTOR_DOCUMENTS, 
-  COMPANY_DETAILS, 
   MARKET_TICKER_DATA, 
   SHAREHOLDING_BREAKDOWN, 
   REGULATION_46_MASTER_INDEX,
@@ -13,6 +12,7 @@ import {
   NEWSPAPER_PUBLICATIONS_REGISTRY,
   DISCLOSURES_POLICIES_OVERVIEW 
 } from '../data/mockData';
+import { useCompanyProfile } from '../context/CompanyProfileContext';
 import { TextReveal } from '../components/TextReveal';
 import { 
   Search, 
@@ -52,6 +52,7 @@ export const InvestorRelationsPage: React.FC<InvestorRelationsPageProps> = ({
   onNavigate,
   onOpenDocument,
 }) => {
+  const { profile: COMPANY_DETAILS } = useCompanyProfile();
   // Map incoming route to active category tab
   const getInitialTab = (route: PageRoute): string => {
     switch (route) {

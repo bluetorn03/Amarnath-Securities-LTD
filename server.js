@@ -7,6 +7,7 @@ import { config } from './server/config/env.js';
 import apiRouter from './server/routes/index.js';
 import { apiLimiter } from './server/middleware/rateLimiter.js';
 import { errorHandler } from './server/middleware/errorHandler.js';
+import { startAuditRetentionScheduler } from './server/utils/auditLogger.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -72,6 +73,7 @@ app.use(errorHandler);
 
 app.listen(PORT, '0.0.0.0', () => {
   console.log(`Amarnath Securities production server running on port ${PORT} [Env: ${config.nodeEnv}]`);
+  startAuditRetentionScheduler();
 });
 
 export default app;

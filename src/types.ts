@@ -287,6 +287,7 @@ export interface AuditLogItem {
   entity_id: string | null;
   ip_address: string;
   created_at: string;
+  formatted_ist?: string;
   details: any;
 }
 

@@ -2,6 +2,7 @@ import {StrictMode} from 'react';
 import {createRoot} from 'react-dom/client';
 import App from './App.tsx';
 import './index.css';
+import { CompanyProfileProvider } from './context/CompanyProfileContext';
 
 // Production recovery strategy for stale deployment chunks
 if (typeof window !== 'undefined') {
@@ -36,6 +37,8 @@ if (typeof window !== 'undefined') {
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
-    <App />
+    <CompanyProfileProvider>
+      <App />
+    </CompanyProfileProvider>
   </StrictMode>,
 );

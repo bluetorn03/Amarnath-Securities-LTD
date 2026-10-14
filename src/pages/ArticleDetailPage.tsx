@@ -1,6 +1,7 @@
 import React, { useEffect, useMemo } from 'react';
 import { PageRoute } from '../types';
-import { INSIGHTS, COMPANY_DETAILS } from '../data/mockData';
+import { INSIGHTS } from '../data/mockData';
+import { useCompanyProfile } from '../context/CompanyProfileContext';
 import { ArticleSidebar } from '../components/ArticleSidebar';
 import { ArticleNotFound } from '../components/ArticleNotFound';
 import { TextReveal } from '../components/TextReveal';
@@ -25,6 +26,7 @@ interface ArticleDetailPageProps {
 const RELATED_ARTICLE_LIMIT = 2;
 
 export const ArticleDetailPage: React.FC<ArticleDetailPageProps> = ({ articleId, onNavigate }) => {
+  const { profile: COMPANY_DETAILS } = useCompanyProfile();
   const article = INSIGHTS.find((candidate) => candidate.id === articleId);
   const articleIndex = article ? INSIGHTS.indexOf(article) : -1;
 

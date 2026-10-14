@@ -123,6 +123,7 @@ export const AdminSettings: React.FC<AdminSettingsProps> = ({
         throw new Error(data.error || 'Failed to update settings.');
       }
       onNotify('success', `Settings category '${key.replace('_', ' ')}' persisted successfully.`);
+      window.dispatchEvent(new CustomEvent('company_profile_updated'));
       fetchSettings();
     } catch (err: any) {
       onNotify('error', err.message || 'Error saving settings.');

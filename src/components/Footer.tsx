@@ -1,6 +1,7 @@
 import React from 'react';
 import { PageRoute } from '../types';
-import { COMPANY_DETAILS, MARKET_TICKER_DATA } from '../data/mockData';
+import { MARKET_TICKER_DATA } from '../data/mockData';
+import { useCompanyProfile } from '../context/CompanyProfileContext';
 import { AmarnathLogo } from './AmarnathLogo';
 import { 
   ShieldCheck, 
@@ -18,6 +19,7 @@ interface FooterProps {
 }
 
 export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
+  const { profile: COMPANY_DETAILS } = useCompanyProfile();
   return (
     <footer className="bg-[#040711] border-t border-white/10 text-slate-400 text-xs font-sans mt-auto">
       {/* Top Banner: Statutory Identity Ribbon */}

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { PageRoute } from '../types';
-import { COMPANY_DETAILS } from '../data/mockData';
+import { useCompanyProfile } from '../context/CompanyProfileContext';
 import { TextReveal } from '../components/TextReveal';
 import { ScrollReveal } from '../components/ScrollReveal';
 import { AmarnathLogo } from '../components/AmarnathLogo';
@@ -21,6 +21,7 @@ interface ContactPageProps {
 }
 
 export const ContactPage: React.FC<ContactPageProps> = ({ onNavigate: _onNavigate }) => {
+  const { profile: COMPANY_DETAILS } = useCompanyProfile();
   const [formType, setFormType] = useState<'business' | 'investor'>('business');
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submittedRef, setSubmittedRef] = useState<string | null>(null);

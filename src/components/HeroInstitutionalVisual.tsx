@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { COMPANY_DETAILS, MARKET_TICKER_DATA } from '../data/mockData';
+import { MARKET_TICKER_DATA } from '../data/mockData';
+import { useCompanyProfile } from '../context/CompanyProfileContext';
 import { PageRoute } from '../types';
 import { 
   Building2, 
@@ -25,6 +26,7 @@ interface HeroInstitutionalVisualProps {
 type TabType = 'strategy' | 'capital' | 'governance';
 
 export const HeroInstitutionalVisual: React.FC<HeroInstitutionalVisualProps> = ({ onNavigate }) => {
+  const { profile: COMPANY_DETAILS } = useCompanyProfile();
   const [activeTab, setActiveTab] = useState<TabType>('strategy');
   const [currentTime, setCurrentTime] = useState<string>('');
   const [isMarketOpen, setIsMarketOpen] = useState<boolean>(false);
