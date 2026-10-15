@@ -31,7 +31,7 @@ export async function runSeeds() {
       );
       console.log(`[SEED] Created default super_admin: ${config.initialAdmin.email}`);
       if (!config.initialAdmin.password) {
-        console.log(`[SECURITY] Generated one-time initial admin password: ${rawPassword}`);
+        console.log('[SECURITY] Generated secure one-time initial admin password and stored hash.');
       }
     } else {
       adminId = existingUsers[0].id;

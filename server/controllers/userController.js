@@ -59,11 +59,11 @@ export async function createUser(req, res, next) {
       return res.status(409).json({ success: false, error: 'A user with this email address already exists.' });
     }
 
-    if (password.length < 8) {
-      return res.status(400).json({ success: false, error: 'Password must be at least 8 characters long.' });
+    if (password.length < 10) {
+      return res.status(400).json({ success: false, error: 'Password must be at least 10 characters long.' });
     }
 
-    const salt = await bcrypt.genSalt(10);
+    const salt = await bcrypt.genSalt(12);
     const passwordHash = await bcrypt.hash(password, salt);
     const id = crypto.randomUUID();
 
@@ -165,10 +165,10 @@ export async function resetUserPassword(req, res, next) {
     const { id } = req.params;
     const { newPassword } = req.body;
 
-    if (!newPassword || newPassword.length < 8) {
+    if (!newPassword || newPassword.length < 10) {
       return res.status(400).json({
         success: false,
-        error: 'New password must be at least 8 characters long.'
+        error: 'New password must be at least 10 characters long.'
       });
     }
 
@@ -177,7 +177,7 @@ export async function resetUserPassword(req, res, next) {
       return res.status(404).json({ success: false, error: 'User record not found.' });
     }
 
-    const salt = await bcrypt.genSalt(10);
+    const salt = await bcrypt.genSalt(12);
     const passwordHash = await bcrypt.hash(newPassword, salt);
 
     await query(

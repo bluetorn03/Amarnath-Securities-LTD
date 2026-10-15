@@ -5,7 +5,13 @@ import os from 'os';
 import { query, checkConnection } from '../config/db.js';
 import { config } from '../config/env.js';
 import { logAudit } from '../utils/auditLogger.js';
-import { createBackup, restoreBackup } from '../database/backupRestore.js';
+import { 
+  createBackup, 
+  restoreBackup, 
+  checkOffsiteReplicationStatus,
+  replicateBackupOffsite,
+  testCloudBackupAndRestoreStaging
+} from '../database/backupRestore.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -48,13 +54,21 @@ export async function getSystemHealth(req, res, next) {
     let latestBackup = null;
     let totalBackupsCount = 0;
     if (fs.existsSync(BACKUPS_DIR)) {
-      const backupFiles = fs.readdirSync(BACKUPS_DIR).filter((f) => f.endsWith('.sql'));
+      const backupFiles = fs.readdirSync(BACKUPS_DIR).filter((f) => f.endsWith('.sql') || f.endsWith('.sql.enc'));
       totalBackupsCount = backupFiles.length;
       if (backupFiles.length > 0) {
         const sorted = backupFiles
           .map((f) => {
             const stat = fs.statSync(path.join(BACKUPS_DIR, f));
-            return { filename: f, sizeBytes: stat.size, sizeDisplay: formatBytes(stat.size), createdAt: stat.mtime };
+            const isEncrypted = f.endsWith('.enc');
+            return {
+              filename: f,
+              sizeBytes: stat.size,
+              sizeDisplay: formatBytes(stat.size),
+              createdAt: stat.mtime,
+              encrypted: isEncrypted,
+              encryptionType: isEncrypted ? 'AES-256-GCM' : 'none'
+            };
           })
           .sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime());
         latestBackup = sorted[0];
@@ -132,7 +146,8 @@ export async function getSystemHealth(req, res, next) {
       backupStatus: {
         totalBackupsCount,
         latestBackup,
-        storagePath: BACKUPS_DIR
+        storagePath: BACKUPS_DIR,
+        offsiteReplication: await checkOffsiteReplicationStatus()
       },
       metrics: {
         documents: {
@@ -352,38 +367,49 @@ export async function getBackups(req, res, next) {
       fs.mkdirSync(BACKUPS_DIR, { recursive: true });
     }
 
-    const files = fs.readdirSync(BACKUPS_DIR).filter((f) => f.endsWith('.sql'));
+    const files = fs.readdirSync(BACKUPS_DIR).filter((f) => f.endsWith('.sql') || f.endsWith('.sql.enc'));
     const backups = files.map((file) => {
       const stats = fs.statSync(path.join(BACKUPS_DIR, file));
+      const isEncrypted = file.endsWith('.enc');
       return {
         filename: file,
         sizeBytes: stats.size,
         sizeDisplay: formatBytes(stats.size),
         createdAt: stats.mtime.toISOString(),
+        encrypted: isEncrypted,
+        encryptionType: isEncrypted ? 'AES-256-GCM' : 'none',
         status: 'available'
       };
     }).sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
 
-    res.json({ success: true, count: backups.length, data: backups });
+    const offsiteStatus = await checkOffsiteReplicationStatus();
+
+    res.json({
+      success: true,
+      count: backups.length,
+      data: backups,
+      offsiteReplication: offsiteStatus
+    });
   } catch (err) {
     next(err);
   }
 }
 
 /**
- * Create a new database backup snapshot
+ * Create a new database backup snapshot (AES-256-GCM Encrypted)
  */
 export async function triggerBackup(req, res, next) {
   try {
-    const backupFilePath = await createBackup();
+    const backupFilePath = await createBackup({ encrypt: true });
     const filename = path.basename(backupFilePath);
     const stat = fs.statSync(backupFilePath);
+    const isEncrypted = filename.endsWith('.enc');
 
     // Record in system_backups table
     await query(
       `INSERT INTO system_backups (filename, file_size_bytes, file_size_display, backup_type, status, created_by)
-       VALUES (?, ?, ?, 'manual', 'completed', ?)`,
-      [filename, stat.size, formatBytes(stat.size), req.user.id]
+       VALUES (?, ?, ?, ?, 'completed', ?)`,
+      [filename, stat.size, formatBytes(stat.size), isEncrypted ? 'aes256_gcm' : 'manual', req.user.id]
     );
 
     await logAudit({
@@ -391,19 +417,73 @@ export async function triggerBackup(req, res, next) {
       action: 'DATABASE_BACKUP_CREATED',
       entityType: 'database_backup',
       entityId: filename,
-      details: { filename, size: formatBytes(stat.size) },
+      details: {
+        filename,
+        size: formatBytes(stat.size),
+        encrypted: isEncrypted,
+        encryptionType: isEncrypted ? 'AES-256-GCM' : 'none'
+      },
+      req
+    });
+
+    let replicationResult = null;
+    if (config.backup?.offsiteEnabled) {
+      try {
+        replicationResult = await replicateBackupOffsite(backupFilePath);
+      } catch (err) {
+        console.error('[OFFSITE REPLICATION WARNING]', err.message);
+      }
+    }
+
+    const offsiteStatus = await checkOffsiteReplicationStatus();
+
+    res.json({
+      success: true,
+      message: `Database backup snapshot created successfully (${isEncrypted ? 'AES-256-GCM Encrypted' : 'Plaintext'}).`,
+      data: {
+        filename,
+        sizeBytes: stat.size,
+        sizeDisplay: formatBytes(stat.size),
+        encrypted: isEncrypted,
+        encryptionType: isEncrypted ? 'AES-256-GCM' : 'none',
+        createdAt: new Date().toISOString()
+      },
+      offsiteReplication: {
+        ...offsiteStatus,
+        lastReplication: replicationResult ? replicationResult.manifest : null
+      }
+    });
+  } catch (err) {
+    next(err);
+  }
+}
+
+/**
+ * Execute Cloud Backup & Isolated Staging Database Restore Test (Super Admin only)
+ * Safely validates end-to-end backup, offsite replication, and restore without touching production.
+ */
+export async function executeStagingTest(req, res, next) {
+  try {
+    const testResult = await testCloudBackupAndRestoreStaging();
+
+    await logAudit({
+      userId: req.user.id,
+      action: 'DATABASE_STAGING_RESTORE_TESTED',
+      entityType: 'database_staging_test',
+      entityId: testResult.replicationManifest?.filename || 'staging_test',
+      details: {
+        status: testResult.status,
+        isolatedStagingRestore: testResult.isolatedStagingRestore,
+        verifiedCounts: testResult.verifiedCounts,
+        offsiteChecksum: testResult.replicationManifest?.sha256
+      },
       req
     });
 
     res.json({
       success: true,
-      message: 'Database backup snapshot created successfully.',
-      data: {
-        filename,
-        sizeBytes: stat.size,
-        sizeDisplay: formatBytes(stat.size),
-        createdAt: new Date().toISOString()
-      }
+      message: 'Cloud backup and isolated staging restore test completed successfully with zero production impact.',
+      data: testResult
     });
   } catch (err) {
     next(err);
@@ -429,8 +509,9 @@ export async function executeRestore(req, res, next) {
       });
     }
 
-    // Prevent path traversal
-    if (filename.includes('..') || filename.includes('/') || filename.includes('\\') || !filename.endsWith('.sql')) {
+    // Prevent path traversal and validate extensions (.sql or .sql.enc)
+    const isValidExt = filename.endsWith('.sql') || filename.endsWith('.sql.enc');
+    if (filename.includes('..') || filename.includes('/') || filename.includes('\\') || !isValidExt) {
       return res.status(400).json({ success: false, error: 'Invalid backup file selection.' });
     }
 
@@ -439,20 +520,25 @@ export async function executeRestore(req, res, next) {
       return res.status(404).json({ success: false, error: 'Selected backup file does not exist on disk.' });
     }
 
-    await restoreBackup(backupFilePath);
+    const restoreResult = await restoreBackup(backupFilePath);
 
     await logAudit({
       userId: req.user.id,
       action: 'DATABASE_RESTORE_EXECUTED',
       entityType: 'database_restore',
       entityId: filename,
-      details: { filename, restoredAt: new Date().toISOString() },
+      details: {
+        filename,
+        restoredAt: new Date().toISOString(),
+        verifiedCounts: restoreResult?.verifiedCounts || null
+      },
       req
     });
 
     res.json({
       success: true,
-      message: `Database successfully restored from backup snapshot '${filename}'.`
+      message: `Database successfully restored from backup snapshot '${filename}'.`,
+      verifiedCounts: restoreResult?.verifiedCounts || null
     });
   } catch (err) {
     next(err);

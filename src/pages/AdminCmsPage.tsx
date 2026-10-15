@@ -378,7 +378,9 @@ export const AdminCmsPage: React.FC<AdminCmsPageProps> = ({ onNavigate }) => {
 
     // 8. Page Visits (Live Analytics from Database)
     setVisitsLoading(true);
-    fetch('/api/analytics/visits')
+    fetch('/api/analytics/visits', {
+      headers: { Authorization: `Bearer ${token}` }
+    })
       .then((r) => r.json())
       .then((d) => {
         if (d.success) setPageVisitsData(d);
@@ -716,6 +718,21 @@ export const AdminCmsPage: React.FC<AdminCmsPageProps> = ({ onNavigate }) => {
     if (!res.ok || !d.success) throw new Error(d.error || 'Restore failed.');
     triggerNotification('success', `Database restored from '${filename}'.`);
     fetchAllData();
+  };
+
+  const handleTestStagingRestore = async () => {
+    try {
+      const res = await fetch('/api/system/backups/test-staging', {
+        method: 'POST',
+        headers: { Authorization: `Bearer ${token}` }
+      });
+      const d = await res.json();
+      if (!res.ok || !d.success) throw new Error(d.error || 'Staging recovery test failed.');
+      triggerNotification('success', 'Staging restore verification succeeded. Production database remained 100% untouched.');
+      fetchAllData();
+    } catch (err: any) {
+      triggerNotification('error', err.message || 'Error executing staging test.');
+    }
   };
 
   // -------------------------------------------------------------
@@ -1395,6 +1412,18 @@ export const AdminCmsPage: React.FC<AdminCmsPageProps> = ({ onNavigate }) => {
             logs={auditLogs}
             loading={auditLoading}
             onRefresh={fetchAllData}
+          />
+        )}
+
+        {activeView === 'backups' && (
+          <AdminBackups
+            backups={backups}
+            loading={backupsLoading}
+            currentUser={currentUser}
+            onRefresh={fetchAllData}
+            onCreateBackup={handleTriggerBackup}
+            onRestoreBackup={handleRestoreBackup}
+            onTestStaging={handleTestStagingRestore}
           />
         )}
 

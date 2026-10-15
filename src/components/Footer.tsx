@@ -1,8 +1,9 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { PageRoute } from '../types';
 import { MARKET_TICKER_DATA } from '../data/mockData';
 import { useCompanyProfile } from '../context/CompanyProfileContext';
 import { AmarnathLogo } from './AmarnathLogo';
+import { PrivacyModal } from './PrivacyModal';
 import { 
   ShieldCheck, 
   ExternalLink, 
@@ -20,6 +21,7 @@ interface FooterProps {
 
 export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
   const { profile: COMPANY_DETAILS } = useCompanyProfile();
+  const [isPrivacyOpen, setIsPrivacyOpen] = useState(false);
   return (
     <footer className="bg-[#040711] border-t border-white/10 text-slate-400 text-xs font-sans mt-auto">
       {/* Top Banner: Statutory Identity Ribbon */}
@@ -337,8 +339,15 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
           </p>
 
           <div className="flex flex-col sm:flex-row items-center justify-between gap-3 pt-2 border-t border-white/5 text-slate-400">
-            <div>
-              © 1994 - 2026 Amarnath Securities Limited. All Rights Reserved.
+            <div className="flex flex-wrap items-center gap-3">
+              <span>© 1994 - 2026 Amarnath Securities Limited. All Rights Reserved.</span>
+              <span>•</span>
+              <button
+                onClick={() => setIsPrivacyOpen(true)}
+                className="text-slate-400 hover:text-teal-400 underline transition-colors cursor-pointer"
+              >
+                Privacy Notice & Data Rights
+              </button>
             </div>
             <div className="flex items-center gap-4">
               <span>CIN: {COMPANY_DETAILS.cin}</span>
@@ -350,6 +359,8 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
           </div>
         </div>
       </div>
+
+      <PrivacyModal isOpen={isPrivacyOpen} onClose={() => setIsPrivacyOpen(false)} />
     </footer>
   );
 };

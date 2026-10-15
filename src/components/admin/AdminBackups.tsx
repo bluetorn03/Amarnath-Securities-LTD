@@ -11,7 +11,9 @@ import {
   AlertTriangle, 
   X,
   FileCode,
-  HardDrive
+  HardDrive,
+  ShieldCheck,
+  Lock
 } from 'lucide-react';
 
 interface AdminBackupsProps {
@@ -21,6 +23,7 @@ interface AdminBackupsProps {
   onRefresh: () => void;
   onCreateBackup: () => Promise<void>;
   onRestoreBackup: (filename: string, confirmation: string) => Promise<void>;
+  onTestStaging?: () => Promise<void>;
 }
 
 export const AdminBackups: React.FC<AdminBackupsProps> = ({
@@ -29,9 +32,11 @@ export const AdminBackups: React.FC<AdminBackupsProps> = ({
   currentUser,
   onRefresh,
   onCreateBackup,
-  onRestoreBackup
+  onRestoreBackup,
+  onTestStaging
 }) => {
   const [isCreating, setIsCreating] = useState<boolean>(false);
+  const [isTestingStaging, setIsTestingStaging] = useState<boolean>(false);
   const [restoreFile, setRestoreFile] = useState<DatabaseBackupItem | null>(null);
   const [confirmText, setConfirmText] = useState<string>('');
   const [isRestoring, setIsRestoring] = useState<boolean>(false);
@@ -45,6 +50,16 @@ export const AdminBackups: React.FC<AdminBackupsProps> = ({
       await onCreateBackup();
     } finally {
       setIsCreating(false);
+    }
+  };
+
+  const handleStagingTest = async () => {
+    if (!onTestStaging) return;
+    setIsTestingStaging(true);
+    try {
+      await onTestStaging();
+    } finally {
+      setIsTestingStaging(false);
     }
   };
 
@@ -86,14 +101,27 @@ export const AdminBackups: React.FC<AdminBackupsProps> = ({
 
         <div className="flex items-center gap-2">
           {isSuperAdmin && (
-            <button
-              onClick={handleCreate}
-              disabled={isCreating}
-              className="px-3.5 py-1.5 text-xs font-semibold text-white bg-[#0A1128] hover:bg-[#121c3b] rounded-lg transition-colors flex items-center gap-1.5 shadow-2xs disabled:opacity-50"
-            >
-              <Plus className="w-4 h-4 text-[#C5A059]" />
-              <span>{isCreating ? 'Dumping SQL...' : 'Create Snapshot'}</span>
-            </button>
+            <>
+              {onTestStaging && (
+                <button
+                  onClick={handleStagingTest}
+                  disabled={isTestingStaging || isCreating}
+                  className="px-3.5 py-1.5 text-xs font-semibold text-emerald-800 bg-emerald-50 hover:bg-emerald-100 rounded-lg border border-emerald-300 transition-colors flex items-center gap-1.5 shadow-2xs disabled:opacity-50"
+                  title="Test encrypted cloud backup and restore strictly in an isolated staging database without touching production"
+                >
+                  <ShieldCheck className="w-4 h-4 text-emerald-600" />
+                  <span>{isTestingStaging ? 'Testing in Staging...' : 'Verify Staging Restore'}</span>
+                </button>
+              )}
+              <button
+                onClick={handleCreate}
+                disabled={isCreating || isTestingStaging}
+                className="px-3.5 py-1.5 text-xs font-semibold text-white bg-[#0A1128] hover:bg-[#121c3b] rounded-lg transition-colors flex items-center gap-1.5 shadow-2xs disabled:opacity-50"
+              >
+                <Plus className="w-4 h-4 text-[#C5A059]" />
+                <span>{isCreating ? 'Dumping SQL...' : 'Create Snapshot'}</span>
+              </button>
+            </>
           )}
           <button
             onClick={onRefresh}
@@ -142,43 +170,58 @@ export const AdminBackups: React.FC<AdminBackupsProps> = ({
                   </td>
                 </tr>
               ) : (
-                backups.map((b) => (
-                  <tr key={b.filename} className="hover:bg-slate-50/70 transition-colors">
-                    <td className="py-3 px-4 font-bold text-[#0A1128] flex items-center gap-2">
-                      <FileCode className="w-4 h-4 text-[#C5A059] shrink-0" />
-                      <span>{b.filename}</span>
-                    </td>
-
-                    <td className="py-3 px-3 whitespace-nowrap text-slate-600 font-sans text-xs">
-                      {b.sizeDisplay}
-                    </td>
-
-                    <td className="py-3 px-3 whitespace-nowrap text-slate-500 font-sans text-xs">
-                      {new Date(b.createdAt).toLocaleString('en-IN', { timeZone: 'Asia/Kolkata' })}
-                    </td>
-
-                    <td className="py-3 px-3 whitespace-nowrap font-sans">
-                      <span className="inline-flex items-center gap-1 text-[10px] font-bold text-emerald-800 bg-emerald-50 px-2 py-0.5 rounded-full border border-emerald-300">
-                        <CheckCircle2 className="w-3 h-3 text-emerald-600" />
-                        <span>Available on Disk</span>
-                      </span>
-                    </td>
-
-                    <td className="py-3 px-4 text-right whitespace-nowrap font-sans">
-                      {isSuperAdmin && (
-                        <div className="flex items-center justify-end gap-1.5">
-                          <button
-                            onClick={() => { setRestoreFile(b); setConfirmText(''); setRestoreError(null); }}
-                            className="px-2.5 py-1 text-xs font-semibold text-rose-700 bg-rose-50 hover:bg-rose-100 rounded-lg border border-rose-200 transition-colors inline-flex items-center gap-1"
-                          >
-                            <RotateCcw className="w-3 h-3 text-rose-600" />
-                            <span>Restore</span>
-                          </button>
+                backups.map((b) => {
+                  const isEnc = b.encrypted || b.filename.endsWith('.enc');
+                  return (
+                    <tr key={b.filename} className="hover:bg-slate-50/70 transition-colors">
+                      <td className="py-3 px-4 font-bold text-[#0A1128]">
+                        <div className="flex items-center gap-2">
+                          {isEnc ? (
+                            <Lock className="w-4 h-4 text-[#0D9488] shrink-0" />
+                          ) : (
+                            <FileCode className="w-4 h-4 text-[#C5A059] shrink-0" />
+                          )}
+                          <span className="font-mono text-xs">{b.filename}</span>
                         </div>
-                      )}
-                    </td>
-                  </tr>
-                ))
+                      </td>
+
+                      <td className="py-3 px-3 whitespace-nowrap text-slate-600 font-sans text-xs">
+                        {b.sizeDisplay}
+                      </td>
+
+                      <td className="py-3 px-3 whitespace-nowrap text-slate-500 font-sans text-xs">
+                        {new Date(b.createdAt).toLocaleString('en-IN', { timeZone: 'Asia/Kolkata' })}
+                      </td>
+
+                      <td className="py-3 px-3 whitespace-nowrap font-sans">
+                        {isEnc ? (
+                          <span className="inline-flex items-center gap-1 text-[10px] font-bold text-emerald-800 bg-emerald-50 px-2 py-0.5 rounded-full border border-emerald-300">
+                            <ShieldCheck className="w-3 h-3 text-emerald-600" />
+                            <span>AES-256-GCM Encrypted</span>
+                          </span>
+                        ) : (
+                          <span className="inline-flex items-center gap-1 text-[10px] font-bold text-slate-700 bg-slate-100 px-2 py-0.5 rounded-full border border-slate-300">
+                            <CheckCircle2 className="w-3 h-3 text-slate-500" />
+                            <span>Plaintext SQL</span>
+                          </span>
+                        )}
+                      </td>
+                      <td className="py-3 px-4 text-right whitespace-nowrap font-sans">
+                        {isSuperAdmin && (
+                          <div className="flex items-center justify-end gap-1.5">
+                            <button
+                              onClick={() => { setRestoreFile(b); setConfirmText(''); setRestoreError(null); }}
+                              className="px-2.5 py-1 text-xs font-semibold text-rose-700 bg-rose-50 hover:bg-rose-100 rounded-lg border border-rose-200 transition-colors inline-flex items-center gap-1"
+                            >
+                              <RotateCcw className="w-3 h-3 text-rose-600" />
+                              <span>Restore</span>
+                            </button>
+                          </div>
+                        )}
+                      </td>
+                    </tr>
+                  );
+                })
               )}
             </tbody>
           </table>

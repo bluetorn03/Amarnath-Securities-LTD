@@ -4,6 +4,7 @@ import { useCompanyProfile } from '../context/CompanyProfileContext';
 import { TextReveal } from '../components/TextReveal';
 import { ScrollReveal } from '../components/ScrollReveal';
 import { AmarnathLogo } from '../components/AmarnathLogo';
+import { PrivacyModal } from '../components/PrivacyModal';
 import { 
   Building2, 
   MapPin, 
@@ -25,6 +26,9 @@ export const ContactPage: React.FC<ContactPageProps> = ({ onNavigate: _onNavigat
   const [formType, setFormType] = useState<'business' | 'investor'>('business');
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submittedRef, setSubmittedRef] = useState<string | null>(null);
+  const [isPrivacyOpen, setIsPrivacyOpen] = useState(false);
+  const [businessConsent, setBusinessConsent] = useState(false);
+  const [investorConsent, setInvestorConsent] = useState(false);
 
   // Business form state
   const [businessForm, setBusinessForm] = useState({
@@ -51,6 +55,10 @@ export const ContactPage: React.FC<ContactPageProps> = ({ onNavigate: _onNavigat
 
   const handleBusinessSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (!businessConsent) {
+      setSubmitError('Please acknowledge the Privacy Notice and provide processing consent prior to transmitting this corporate mandate.');
+      return;
+    }
     setIsSubmitting(true);
     setSubmitError(null);
     try {
@@ -73,6 +81,7 @@ export const ContactPage: React.FC<ContactPageProps> = ({ onNavigate: _onNavigat
         throw new Error(data.error || 'Failed to submit enquiry. Please try again.');
       }
       setSubmittedRef(data.referenceNo);
+      setBusinessConsent(false);
       setBusinessForm({
         companyName: '',
         contactPerson: '',
@@ -91,6 +100,10 @@ export const ContactPage: React.FC<ContactPageProps> = ({ onNavigate: _onNavigat
 
   const handleInvestorSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (!investorConsent) {
+      setSubmitError('Please acknowledge the Privacy Notice and provide processing consent prior to filing this grievance.');
+      return;
+    }
     setIsSubmitting(true);
     setSubmitError(null);
     try {
@@ -112,6 +125,7 @@ export const ContactPage: React.FC<ContactPageProps> = ({ onNavigate: _onNavigat
         throw new Error(data.error || 'Failed to submit grievance. Please try again.');
       }
       setSubmittedRef(data.referenceNo);
+      setInvestorConsent(false);
       setInvestorForm({
         shareholderName: '',
         email: '',
@@ -309,11 +323,39 @@ export const ContactPage: React.FC<ContactPageProps> = ({ onNavigate: _onNavigat
                     />
                   </div>
 
+                  {/* Privacy & Consent Notice */}
+                  <div className="p-3.5 rounded-xl bg-slate-50 border border-slate-200 space-y-2 text-slate-700">
+                    <div className="flex items-start gap-2.5">
+                      <input
+                        type="checkbox"
+                        id="business-privacy-consent"
+                        required
+                        checked={businessConsent}
+                        onChange={(e) => setBusinessConsent(e.target.checked)}
+                        className="mt-0.5 rounded border-slate-300 text-[#0D9488] focus:ring-[#0D9488] cursor-pointer"
+                      />
+                      <label htmlFor="business-privacy-consent" className="text-[11px] text-slate-600 leading-snug cursor-pointer">
+                        I consent to Amarnath Securities Limited collecting and processing the corporate details provided above solely for communicating regarding this advisory mandate, in accordance with the{' '}
+                        <button
+                          type="button"
+                          onClick={() => setIsPrivacyOpen(true)}
+                          className="text-[#0D9488] font-semibold underline hover:text-[#0A1128] cursor-pointer"
+                        >
+                          Privacy Notice
+                        </button>.
+                      </label>
+                    </div>
+                  </div>
+
                   <div className="pt-2">
                     <button
                       type="submit"
-                      disabled={isSubmitting}
-                      className="w-full py-3 rounded-xl text-sm font-semibold bg-[#0A1128] hover:bg-[#0D9488] text-white transition-all shadow-xs flex items-center justify-center gap-2 cursor-pointer"
+                      disabled={isSubmitting || !businessConsent}
+                      className={`w-full py-3 rounded-xl text-sm font-semibold transition-all shadow-xs flex items-center justify-center gap-2 ${
+                        isSubmitting || !businessConsent
+                          ? 'bg-slate-300 text-slate-500 cursor-not-allowed'
+                          : 'bg-[#0A1128] hover:bg-[#0D9488] text-white cursor-pointer'
+                      }`}
                     >
                       {isSubmitting ? (
                         <span>Transmitting Mandate...</span>
@@ -416,11 +458,39 @@ export const ContactPage: React.FC<ContactPageProps> = ({ onNavigate: _onNavigat
                     />
                   </div>
 
+                  {/* Privacy & Consent Notice */}
+                  <div className="p-3.5 rounded-xl bg-slate-50 border border-slate-200 space-y-2 text-slate-700">
+                    <div className="flex items-start gap-2.5">
+                      <input
+                        type="checkbox"
+                        id="investor-privacy-consent"
+                        required
+                        checked={investorConsent}
+                        onChange={(e) => setInvestorConsent(e.target.checked)}
+                        className="mt-0.5 rounded border-slate-300 text-[#9A7B38] focus:ring-[#9A7B38] cursor-pointer"
+                      />
+                      <label htmlFor="investor-privacy-consent" className="text-[11px] text-slate-600 leading-snug cursor-pointer">
+                        I consent to Amarnath Securities Limited and its Registrar & Share Transfer Agent processing my folio and contact data solely for investigating and resolving this statutory shareholder grievance, pursuant to the{' '}
+                        <button
+                          type="button"
+                          onClick={() => setIsPrivacyOpen(true)}
+                          className="text-[#9A7B38] font-semibold underline hover:text-[#0A1128] cursor-pointer"
+                        >
+                          Privacy Notice
+                        </button>.
+                      </label>
+                    </div>
+                  </div>
+
                   <div className="pt-2">
                     <button
                       type="submit"
-                      disabled={isSubmitting}
-                      className="w-full py-3 rounded-xl text-sm font-semibold bg-[#9A7B38] hover:bg-[#B38F46] text-white transition-all shadow-xs flex items-center justify-center gap-2 cursor-pointer"
+                      disabled={isSubmitting || !investorConsent}
+                      className={`w-full py-3 rounded-xl text-sm font-semibold transition-all shadow-xs flex items-center justify-center gap-2 ${
+                        isSubmitting || !investorConsent
+                          ? 'bg-slate-300 text-slate-500 cursor-not-allowed'
+                          : 'bg-[#9A7B38] hover:bg-[#B38F46] text-white cursor-pointer'
+                      }`}
                     >
                       {isSubmitting ? (
                         <span>Filing with Compliance Desk...</span>
@@ -609,6 +679,8 @@ export const ContactPage: React.FC<ContactPageProps> = ({ onNavigate: _onNavigat
             </div>
           </div>
         </div>
+
+        <PrivacyModal isOpen={isPrivacyOpen} onClose={() => setIsPrivacyOpen(false)} />
     </div>
   );
 };

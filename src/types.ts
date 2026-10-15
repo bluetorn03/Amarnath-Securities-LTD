@@ -397,6 +397,8 @@ export interface DatabaseBackupItem {
   sizeBytes: number;
   sizeDisplay: string;
   createdAt: string;
+  encrypted?: boolean;
+  encryptionType?: string;
   status: 'available';
 }
 

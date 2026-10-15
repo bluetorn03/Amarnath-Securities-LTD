@@ -1,5 +1,6 @@
 import React from 'react';
 import { InvestorDocument } from '../types';
+import { useCompanyProfile } from '../context/CompanyProfileContext';
 import { 
   X, 
   Download, 
@@ -20,6 +21,7 @@ interface DocumentModalProps {
 }
 
 export const DocumentModal: React.FC<DocumentModalProps> = ({ document, onClose }) => {
+  const { profile: COMPANY_DETAILS } = useCompanyProfile();
   if (!document) return null;
 
   const resolvedSourceType = document.sourceType || 'upload';

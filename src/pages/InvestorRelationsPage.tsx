@@ -183,7 +183,7 @@ export const InvestorRelationsPage: React.FC<InvestorRelationsPageProps> = ({
 
       return true;
     });
-  }, [activeTab, documentCategoryFilter, selectedYear, selectedQuarter, searchQuery]);
+  }, [liveDocuments, activeTab, documentCategoryFilter, selectedYear, selectedQuarter, searchQuery]);
 
   // Filtered Regulation 46 Master Clauses
   const filteredReg46Clauses = useMemo(() => {

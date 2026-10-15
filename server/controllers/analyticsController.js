@@ -1,3 +1,4 @@
+import crypto from 'crypto';
 import { query } from '../config/db.js';
 
 const SUPPORTED_PAGES = {
@@ -8,6 +9,38 @@ const SUPPORTED_PAGES = {
   capabilities: 'Capabilities & Advisory',
   insights: 'Insights & Research',
 };
+
+/**
+ * Anonymize client IP address for privacy protection (mask host octet)
+ */
+function anonymizeIp(rawIp) {
+  if (!rawIp) return '0.0.0.0';
+  const ipStr = String(rawIp).split(',')[0].trim();
+  if (ipStr === '::1' || ipStr === '::ffff:127.0.0.1' || ipStr === '127.0.0.1') {
+    return '127.0.0.1';
+  }
+  // IPv4: mask last octet to .0
+  if (ipStr.includes('.')) {
+    const parts = ipStr.split('.');
+    if (parts.length === 4) {
+      return `${parts[0]}.${parts[1]}.${parts[2]}.0`;
+    }
+  }
+  // IPv6: truncate host identifier
+  if (ipStr.includes(':')) {
+    const parts = ipStr.split(':');
+    return `${parts.slice(0, 3).join(':')}::0`;
+  }
+  return '0.0.0.0';
+}
+
+function generateVisitorHash(rawIp, userAgent) {
+  return crypto
+    .createHash('sha256')
+    .update(`${rawIp}_${userAgent}_asl_privacy_salt_2026`)
+    .digest('hex')
+    .slice(0, 32);
+}
 
 /**
  * Normalize incoming route path to top-level tracked section
@@ -42,17 +75,15 @@ export async function recordPageVisit(req, res, next) {
 
     const pageName = SUPPORTED_PAGES[route] || 'Portal Page';
 
-    // Client IP and user agent
-    const ip = req.ip || req.headers['x-forwarded-for'] || req.socket?.remoteAddress || '127.0.0.1';
-    const userAgent = req.headers['user-agent'] || 'Unknown Browser';
+    // Privacy-Preserving Telemetry: Anonymize client IP and user agent
+    const rawIp = req.headers['x-forwarded-for'] || req.socket?.remoteAddress || req.ip || '127.0.0.1';
+    const ip = anonymizeIp(rawIp);
+    const userAgent = (req.headers['user-agent'] || 'Unknown Browser').slice(0, 250);
 
-    // Fallback visitor identifier if client didn't supply one
-    const visitorId = String(rawVisitorId || `${ip}_${userAgent}`.slice(0, 64)).trim();
+    // Fallback pseudonymized visitor hash if client didn't supply one
+    const visitorId = String(rawVisitorId || generateVisitorHash(rawIp, userAgent)).trim().slice(0, 64);
 
     // Check & Insert into unique visitors table
-    // In MySQL, INSERT with ON DUPLICATE KEY UPDATE:
-    // affectedRows === 1 means new insert (NEW UNIQUE VISITOR FOR THIS PAGE)
-    // affectedRows === 2 means existing duplicate updated (REPEATED VISIT)
     const result = await query(
       `INSERT INTO page_unique_visitors (visitor_id, route, ip_address, user_agent)
        VALUES (?, ?, ?, ?)

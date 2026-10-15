@@ -311,6 +311,183 @@ async function runTests() {
     }).then((r) => r.json());
     assert(updateReg46Res.success && updateReg46Res.data?.review_status === 'Verified', '26. Regulation 46 Review Status Transition & Audit Justification');
 
+    // 27. Security: Strict CORS policy rejects unauthorized origins
+    const untrustedCorsRes = await fetch(`${BASE_URL}/health`, {
+      headers: { Origin: 'https://malicious-attacker.com' }
+    });
+    const allowOriginHeader = untrustedCorsRes.headers.get('access-control-allow-origin');
+    assert(
+      untrustedCorsRes.status === 403 || allowOriginHeader !== 'https://malicious-attacker.com',
+      '27. Security: Strict CORS Whitelist blocks unauthorized origin reflection'
+    );
+
+    // 28. Security: Hardened HTTP Headers (CSP & Anti-Clickjacking)
+    const headersRes = await fetch(`${BASE_URL}/health`);
+    const csp = headersRes.headers.get('content-security-policy');
+    const xFrame = headersRes.headers.get('x-frame-options');
+    const nosniff = headersRes.headers.get('x-content-type-options');
+    assert(
+      Boolean(csp?.includes("default-src 'self'")) && (xFrame === 'DENY' || Boolean(csp?.includes("frame-ancestors 'none'"))) && nosniff === 'nosniff',
+      '28. Security: Content-Security-Policy, X-Frame-Options (DENY), and X-Content-Type-Options (nosniff) Enforced'
+    );
+
+    // 29. RBAC: Unauthenticated /api/analytics/visits rejection
+    const unauthVisitsStatus = await fetch(`${BASE_URL}/analytics/visits`).then((r) => r.status);
+    assert(unauthVisitsStatus === 401, '29. RBAC: Unauthenticated /api/analytics/visits rejected with 401');
+
+    // 30. Authenticated /api/analytics/visits retrieval
+    const authVisitsRes = await fetch(`${BASE_URL}/analytics/visits`, {
+      headers: { Authorization: `Bearer ${token}` }
+    }).then((r) => r.json());
+    assert(authVisitsRes.success && Array.isArray(authVisitsRes.data), '30. Authenticated Analytics Telemetry Retrieval');
+
+    // 31. Privacy: Route visit telemetry anonymizes visitor IP
+    await fetch(`${BASE_URL}/analytics/visit`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'X-Forwarded-For': '198.51.100.42'
+      },
+      body: JSON.stringify({ route: 'home' })
+    });
+    const pool = (await import('../config/db.js')).getPool();
+    const [latestVisits] = await pool.query('SELECT ip_address FROM page_unique_visitors WHERE ip_address LIKE "198.51.100.%" ORDER BY id DESC LIMIT 1');
+    assert(
+      latestVisits.length > 0 && latestVisits[0].ip_address === '198.51.100.0',
+      '31. Privacy: Telemetry masks client IP host bits (198.51.100.42 -> 198.51.100.0)'
+    );
+
+    // 32. Security: Document /uploads protection for unpublished draft
+    const unpubUploadDocId = `test-unpub-${Date.now()}`;
+    const testConfidentialFile = `asl_confidential_${Date.now()}.pdf`;
+    const fullTestFilePath = path.join(config.uploadDir, testConfidentialFile);
+    fs.writeFileSync(fullTestFilePath, '%PDF-1.4 Mock Confidential Document', 'utf8');
+
+    await fetch(`${BASE_URL}/documents`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`
+      },
+      body: JSON.stringify({
+        id: unpubUploadDocId,
+        title: 'Confidential Unpublished Board Minutes',
+        category: 'Statutory Disclosures',
+        financialYear: 'FY 2025-26',
+        quarter: 'Q3',
+        filingDate: '2026-03-01',
+        bseAckNumber: 'TEST-CONFIDENTIAL',
+        description: 'Internal document',
+        sourceType: 'file_url',
+        fileUrl: `/uploads/${testConfidentialFile}`,
+        isAvailable: false,
+        status: 'draft'
+      })
+    });
+    const unauthDirectUpload = await fetch(`http://127.0.0.1:5000/uploads/${testConfidentialFile}`);
+    assert(
+      unauthDirectUpload.status === 403,
+      '32. Security: Unpublished regulatory files protected from unauthorized direct download with 403 Forbidden'
+    );
+    // Cleanup test draft doc and file
+    try { fs.unlinkSync(fullTestFilePath); } catch {}
+    await fetch(`${BASE_URL}/documents/${unpubUploadDocId}`, {
+      method: 'DELETE',
+      headers: { Authorization: `Bearer ${token}` }
+    });
+
+    // 33. Security: Password length policy enforcement (< 10 chars rejected)
+    const weakPassRes = await fetch(`${BASE_URL}/users`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`
+      },
+      body: JSON.stringify({
+        email: `shortpass-${Date.now()}@amarnathsecuritiesltd.com`,
+        name: 'Short Password Test',
+        password: 'Pass8!',
+        role: 'editor'
+      })
+    });
+    const weakPassData = await weakPassRes.json();
+    assert(
+      weakPassRes.status === 400 && weakPassData.error?.includes('10 characters'),
+      '33. Security: Strict password policy enforcement (rejects passwords under 10 chars)'
+    );
+
+    // 34. Security: Audit log immutability (no DELETE endpoint permitted)
+    const deleteAuditStatus = await fetch(`${BASE_URL}/audit`, {
+      method: 'DELETE',
+      headers: { Authorization: `Bearer ${token}` }
+    }).then((r) => r.status);
+    assert(deleteAuditStatus === 404, '34. Security: Immutable Audit Logs (DELETE /api/audit rejected with 404)');
+
+    // 35. Backups: AES-256-GCM Encrypted Snapshot Creation & Inventory
+    const backupRes = await fetch(`${BASE_URL}/system/backups`, {
+      method: 'POST',
+      headers: { Authorization: `Bearer ${token}` }
+    });
+    const backupData = await backupRes.json();
+    assert(
+      backupRes.status === 200 &&
+      backupData.success === true &&
+      backupData.data?.filename?.endsWith('.sql.enc') &&
+      backupData.data?.encrypted === true &&
+      ['CONFIGURED', 'PENDING'].includes(backupData.offsiteReplication?.status) &&
+      backupData.offsiteReplication?.keySeparated === true,
+      '35. Backups: AES-256-GCM Encrypted Snapshot Creation & Offsite Status Tracking'
+    );
+
+    // 36. Backups: Controlled Restore Safety Guards (Confirmation Token & Path Traversal Rejection)
+    const badTokenRestore = await fetch(`${BASE_URL}/system/backups/restore`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`
+      },
+      body: JSON.stringify({
+        filename: backupData.data.filename,
+        confirmationText: 'INVALID_TOKEN'
+      })
+    });
+    const badTraversalRestore = await fetch(`${BASE_URL}/system/backups/restore`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`
+      },
+      body: JSON.stringify({
+        filename: `../../etc/passwd`,
+        confirmationText: 'RESTORE_DATABASE_CONFIRM'
+      })
+    });
+    assert(
+      badTokenRestore.status === 400 && badTraversalRestore.status === 400,
+      '36. Backups: Controlled Restore Safety Guards (Confirmation Token & Path Traversal Rejection)'
+    );
+
+    // Clean up created test backup snapshot file
+    const createdEncPath = path.join(process.cwd(), 'server', 'database', 'backups', backupData.data.filename);
+    try {
+      if (fs.existsSync(createdEncPath)) fs.unlinkSync(createdEncPath);
+    } catch {}
+
+    // 37. Backups: Cloud Offsite Backup & Isolated Staging Database Restore Test (Zero Prod Overwrite)
+    const stagingTestRes = await fetch(`${BASE_URL}/system/backups/test-staging`, {
+      method: 'POST',
+      headers: { Authorization: `Bearer ${token}` }
+    });
+    const stagingTestData = await stagingTestRes.json();
+    assert(
+      stagingTestRes.status === 200 &&
+      stagingTestData.success === true &&
+      stagingTestData.data?.status === 'PASS' &&
+      stagingTestData.data?.keySeparation?.includes('PASS') &&
+      stagingTestData.data?.isolatedStagingRestore?.includes('amarnath_securities_staging'),
+      '37. Backups: Cloud Offsite Backup & Isolated Staging Database Restore Test (Zero Prod Overwrite)'
+    );
+
     console.log('\n----------------------------------------------------');
     console.log(`SUMMARY: ${passed} PASSED, ${failed} FAILED`);
     console.log('----------------------------------------------------');

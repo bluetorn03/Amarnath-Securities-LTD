@@ -29,7 +29,14 @@ export const config = {
 
   // JWT Auth
   jwt: {
-    secret: process.env.JWT_SECRET || 'amarnath_securities_sec_jwt_key_2026_production_grade_token_signature',
+    secret: (() => {
+      const s = process.env.JWT_SECRET;
+      const isKnownDefault = s === 'amarnath_securities_sec_jwt_key_2026_production_grade_token_signature';
+      if (process.env.NODE_ENV === 'production' && (!s || isKnownDefault)) {
+        throw new Error('CRITICAL SECURITY CONFIGURATION ERROR: A custom, cryptographically secure JWT_SECRET must be defined in production. Fallback keys are prohibited.');
+      }
+      return s || 'amarnath_securities_sec_jwt_key_2026_dev_fallback_secret_only';
+    })(),
     expiresIn: process.env.JWT_EXPIRES_IN || '8h',
   },
 
@@ -50,4 +57,26 @@ export const config = {
   },
 
   uploadDir: path.resolve(__dirname, '../uploads'),
+  
+  // Encrypted Backup & Offsite Storage (Separated from JWT_SECRET)
+  backup: {
+    dir: path.resolve(__dirname, '../database/backups'),
+    offsiteVaultDir: path.resolve(__dirname, '../database/offsite_vault'),
+    // Dedicated primary key (strictly separated from JWT_SECRET)
+    encryptionKey: process.env.BACKUP_ENCRYPTION_KEY || null,
+    // Candidate fallback keys to guarantee legacy backups remain accessible
+    legacyFallbackKeys: [
+      process.env.BACKUP_ENCRYPTION_KEY_FALLBACK,
+      process.env.JWT_SECRET,
+      'asl_secure_backup_key_fallback_salt'
+    ].filter(Boolean),
+    offsiteEnabled: process.env.BACKUP_OFFSITE_ENABLED === 'true' || Boolean(process.env.BACKUP_S3_BUCKET),
+    s3Bucket: process.env.BACKUP_S3_BUCKET || null,
+    s3Region: process.env.BACKUP_S3_REGION || 'ap-south-1',
+    s3Endpoint: process.env.BACKUP_S3_ENDPOINT || null,
+    s3AccessKeyId: process.env.BACKUP_S3_ACCESS_KEY_ID || null,
+    s3SecretAccessKey: process.env.BACKUP_S3_SECRET_ACCESS_KEY || null,
+    retentionDays: parseInt(process.env.BACKUP_RETENTION_DAYS || '90', 10),
+    stagingDatabase: process.env.DB_STAGING_NAME || 'amarnath_securities_staging',
+  },
 };

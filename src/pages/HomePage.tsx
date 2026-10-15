@@ -57,10 +57,27 @@ const HERO_TYPEWRITER_PHRASES = [
 export const HomePage: React.FC<HomePageProps> = ({ onNavigate, onOpenDocument }) => {
   const [selectedNeedTab, setSelectedNeedTab] = useState<'business-dev' | 'ma-transactions' | 'strategic-opps' | 'responsible-growth'>('business-dev');
 
+  const [homeDocs, setHomeDocs] = useState<InvestorDocument[]>(INVESTOR_DOCUMENTS);
+
+  useEffect(() => {
+    let active = true;
+    fetch('/api/documents')
+      .then(r => r.json())
+      .then(d => {
+        if (active && d.success && Array.isArray(d.data) && d.data.length > 0) {
+          setHomeDocs(d.data);
+        }
+      })
+      .catch(() => {});
+    return () => { active = false; };
+  }, []);
+
   // Filter latest 4 corporate disclosures
-  const latestDisclosures = INVESTOR_DOCUMENTS.filter(
-    d => d.category === 'BSE Disclosures' || d.category === 'Financial Results'
-  ).slice(0, 4);
+  const latestDisclosures = useMemo(() => {
+    return homeDocs.filter(
+      d => d.category === 'BSE Disclosures' || d.category === 'Financial Results'
+    ).slice(0, 4);
+  }, [homeDocs]);
 
   // Stacked cards data for sticky storytelling in Business & Activities
   const stackItems: StackCardItem[] = [

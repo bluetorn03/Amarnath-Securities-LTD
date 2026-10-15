@@ -34,13 +34,25 @@ export function errorHandler(err, req, res, next) {
     });
   }
 
+  // CORS blocked error
+  if (err.message && err.message.startsWith('CORS blocked:')) {
+    return res.status(403).json({
+      success: false,
+      error: err.message
+    });
+  }
+
   // Default server error - NEVER leak sensitive database or stack trace details in response
   const isDev = config.nodeEnv === 'development';
   console.error('[SERVER ERROR]', err);
 
+  const safeErrorMessage = (err.status && err.status < 500)
+    ? err.message
+    : 'An internal server error occurred. Please contact the system administrator.';
+
   res.status(err.status || 500).json({
     success: false,
-    error: err.status ? err.message : 'An internal server error occurred. Please contact the system administrator.',
+    error: safeErrorMessage,
     ...(isDev && !err.status ? { debug: err.message } : {})
   });
 }

@@ -8,6 +8,14 @@ coverage/
 !.env.example
 uploads/
 server/database/backups/*.sql
+server/database/backups/*.enc
 server/database/backups/*.json
+server/database/backups/*.bak
+server/database/backups/*.gz
+server/database/offsite_vault/
 .*secret*
 *.pem
+*.key
+*.crt
+*.sql.bak
+.vscode/
