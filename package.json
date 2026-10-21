@@ -15,7 +15,8 @@
     "seed": "tsx server/database/seeds/seed.js",
     "db:backup": "node server/database/backupRestore.js",
     "db:restore": "node server/database/backupRestore.js --restore",
-    "test:integration": "node server/tests/integration.test.js"
+    "test:integration": "node server/tests/integration.test.js",
+    "test:investor-support": "node server/tests/investor_support.test.js"
   },
   "dependencies": {
     "@google/genai": "^2.4.0",

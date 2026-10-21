@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { PageRoute } from '../types';
 import { DIRECTORS_REGISTRY, BOARD_COMMITTEES_REGISTRY } from '../data/mockData';
 import { useCompanyProfile } from '../context/CompanyProfileContext';
@@ -26,6 +26,21 @@ interface AboutPageProps {
 
 export const AboutPage: React.FC<AboutPageProps> = ({ currentRoute, onNavigate }) => {
   const { profile: COMPANY_DETAILS } = useCompanyProfile();
+  const [liveDirectors, setLiveDirectors] = useState<any[]>(DIRECTORS_REGISTRY);
+
+  useEffect(() => {
+    let active = true;
+    fetch('/api/content/directors')
+      .then((res) => res.json())
+      .then((data) => {
+        if (active && data.success && Array.isArray(data.data) && data.data.length > 0) {
+          setLiveDirectors(data.data);
+        }
+      })
+      .catch((err) => console.warn('API directors fetch fallback:', err));
+    return () => { active = false; };
+  }, []);
+
   // Determine active tab from route
   const getSubTab = () => {
     if (currentRoute === 'about/leadership') return 'leadership';
@@ -223,43 +238,55 @@ export const AboutPage: React.FC<AboutPageProps> = ({ currentRoute, onNavigate }
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              {DIRECTORS_REGISTRY.map((director) => (
-                <div
-                  key={director.id}
-                  className="p-6 rounded-2xl bg-white border border-slate-200/80 space-y-4 shadow-2xs flex flex-col justify-between"
-                >
-                  <div className="space-y-3">
-                    <div className="flex items-center justify-between">
-                      <span className="text-[10px] font-mono uppercase px-2.5 py-1 rounded bg-teal-50 text-[#0D9488] border border-teal-200/60 font-semibold">
-                        {director.category}
-                      </span>
-                      <span className="text-xs font-mono text-slate-500 font-medium">DIN: {director.din}</span>
-                    </div>
+              {liveDirectors.map((director) => {
+                const committeeMemberships = Array.isArray(director.committeeMemberships)
+                  ? director.committeeMemberships
+                  : Array.isArray(director.committee_memberships)
+                  ? director.committee_memberships
+                  : [];
 
-                    <h3 className="font-display font-bold text-xl text-[#0A1128]">
-                      {director.name}
-                    </h3>
-                    <div className="text-xs text-[#9A7B38] font-semibold tracking-wide">
-                      {director.designation}
-                    </div>
-
-                    <p className="text-xs sm:text-sm text-slate-600 leading-relaxed pt-2">
-                      {director.bio}
-                    </p>
-                  </div>
-
-                  <div className="pt-4 border-t border-slate-100 space-y-2">
-                    <span className="text-[10px] font-mono uppercase text-slate-400 font-semibold block">Board Committees</span>
-                    <div className="flex flex-wrap gap-1.5">
-                      {director.committeeMemberships.map((com, cIdx) => (
-                        <span key={cIdx} className="text-xs bg-slate-50 px-2.5 py-1 rounded border border-slate-200 text-slate-700">
-                          {com.committeeName} ({com.role})
+                return (
+                  <div
+                    key={director.id}
+                    className="p-6 rounded-2xl bg-white border border-slate-200/80 space-y-4 shadow-2xs flex flex-col justify-between"
+                  >
+                    <div className="space-y-3">
+                      <div className="flex items-center justify-between">
+                        <span className="text-[10px] font-mono uppercase px-2.5 py-1 rounded bg-teal-50 text-[#0D9488] border border-teal-200/60 font-semibold">
+                          {director.category}
                         </span>
-                      ))}
+                        <span className="text-xs font-mono text-slate-500 font-medium">DIN: {director.din}</span>
+                      </div>
+
+                      <h3 className="font-display font-bold text-xl text-[#0A1128]">
+                        {director.name}
+                      </h3>
+                      <div className="text-xs text-[#9A7B38] font-semibold tracking-wide">
+                        {director.designation}
+                      </div>
+
+                      <p className="text-xs sm:text-sm text-slate-600 leading-relaxed pt-2">
+                        {director.bio}
+                      </p>
+                    </div>
+
+                    <div className="pt-4 border-t border-slate-100 space-y-2">
+                      <span className="text-[10px] font-mono uppercase text-slate-400 font-semibold block">Board Committees</span>
+                      <div className="flex flex-wrap gap-1.5">
+                        {committeeMemberships.length > 0 ? (
+                          committeeMemberships.map((com: any, cIdx: number) => (
+                            <span key={cIdx} className="text-xs bg-slate-50 px-2.5 py-1 rounded border border-slate-200 text-slate-700">
+                              {com.committeeName || com.committee_name || com.name} ({com.role || com.member_role || 'Member'})
+                            </span>
+                          ))
+                        ) : (
+                          <span className="text-xs text-slate-400 font-mono italic">None</span>
+                        )}
+                      </div>
                     </div>
                   </div>
-                </div>
-              ))}
+                );
+              })}
             </div>
 
             {/* Note on Regulatory Balance */}

@@ -599,6 +599,40 @@ export const AdminCmsPage: React.FC<AdminCmsPageProps> = ({ onNavigate }) => {
     fetchAllData();
   };
 
+  const handleArchiveDirector = async (id: string) => {
+    const res = await fetch(`/api/content/directors/${id}/archive`, {
+      method: 'POST',
+      headers: { Authorization: `Bearer ${token}` }
+    });
+    const d = await res.json();
+    if (!res.ok || !d.success) throw new Error(d.error || 'Failed to archive director.');
+    triggerNotification('success', 'Director archived from public view.');
+    fetchAllData();
+  };
+
+  const handleRestoreDirector = async (id: string) => {
+    const res = await fetch(`/api/content/directors/${id}/restore`, {
+      method: 'POST',
+      headers: { Authorization: `Bearer ${token}` }
+    });
+    const d = await res.json();
+    if (!res.ok || !d.success) throw new Error(d.error || 'Failed to restore director.');
+    triggerNotification('success', 'Director restored to published status.');
+    fetchAllData();
+  };
+
+  const handleCreateCommittee = async (data: any) => {
+    const res = await fetch('/api/content/committees', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
+      body: JSON.stringify(data)
+    });
+    const d = await res.json();
+    if (!res.ok || !d.success) throw new Error(d.error || 'Committee creation failed.');
+    triggerNotification('success', 'Board committee created.');
+    fetchAllData();
+  };
+
   const handleUpdateCommittee = async (id: string, data: any) => {
     const res = await fetch(`/api/content/committees/${id}`, {
       method: 'PUT',
@@ -608,6 +642,51 @@ export const AdminCmsPage: React.FC<AdminCmsPageProps> = ({ onNavigate }) => {
     const d = await res.json();
     if (!res.ok || !d.success) throw new Error(d.error || 'Committee update failed.');
     triggerNotification('success', 'Committee mandate updated.');
+    fetchAllData();
+  };
+
+  const handleArchiveCommittee = async (id: string) => {
+    const res = await fetch(`/api/content/committees/${id}/archive`, {
+      method: 'POST',
+      headers: { Authorization: `Bearer ${token}` }
+    });
+    const d = await res.json();
+    if (!res.ok || !d.success) throw new Error(d.error || 'Failed to archive committee.');
+    triggerNotification('success', 'Committee archived from public view.');
+    fetchAllData();
+  };
+
+  const handleRestoreCommittee = async (id: string) => {
+    const res = await fetch(`/api/content/committees/${id}/restore`, {
+      method: 'POST',
+      headers: { Authorization: `Bearer ${token}` }
+    });
+    const d = await res.json();
+    if (!res.ok || !d.success) throw new Error(d.error || 'Failed to restore committee.');
+    triggerNotification('success', 'Committee restored to published status.');
+    fetchAllData();
+  };
+
+  const handleDeleteCommittee = async (id: string) => {
+    const res = await fetch(`/api/content/committees/${id}`, {
+      method: 'DELETE',
+      headers: { Authorization: `Bearer ${token}` }
+    });
+    const d = await res.json();
+    if (!res.ok || !d.success) throw new Error(d.error || 'Committee delete failed.');
+    triggerNotification('success', 'Committee removed.');
+    fetchAllData();
+  };
+
+  const handleCreateKmp = async (data: any) => {
+    const res = await fetch('/api/content/kmp', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
+      body: JSON.stringify(data)
+    });
+    const d = await res.json();
+    if (!res.ok || !d.success) throw new Error(d.error || 'KMP creation failed.');
+    triggerNotification('success', 'KMP contact created.');
     fetchAllData();
   };
 
@@ -623,19 +702,52 @@ export const AdminCmsPage: React.FC<AdminCmsPageProps> = ({ onNavigate }) => {
     fetchAllData();
   };
 
+  const handleArchiveKmp = async (id: string) => {
+    const res = await fetch(`/api/content/kmp/${id}/archive`, {
+      method: 'POST',
+      headers: { Authorization: `Bearer ${token}` }
+    });
+    const d = await res.json();
+    if (!res.ok || !d.success) throw new Error(d.error || 'Failed to archive KMP.');
+    triggerNotification('success', 'KMP archived from public view.');
+    fetchAllData();
+  };
+
+  const handleRestoreKmp = async (id: string) => {
+    const res = await fetch(`/api/content/kmp/${id}/restore`, {
+      method: 'POST',
+      headers: { Authorization: `Bearer ${token}` }
+    });
+    const d = await res.json();
+    if (!res.ok || !d.success) throw new Error(d.error || 'Failed to restore KMP.');
+    triggerNotification('success', 'KMP restored to published status.');
+    fetchAllData();
+  };
+
+  const handleDeleteKmp = async (id: string) => {
+    const res = await fetch(`/api/content/kmp/${id}`, {
+      method: 'DELETE',
+      headers: { Authorization: `Bearer ${token}` }
+    });
+    const d = await res.json();
+    if (!res.ok || !d.success) throw new Error(d.error || 'KMP delete failed.');
+    triggerNotification('success', 'KMP contact removed.');
+    fetchAllData();
+  };
+
   // Enquiry Status Update
-  const handleUpdateEnquiryStatus = async (id: string, status: any, notes?: string) => {
+  const handleUpdateEnquiryStatus = async (id: string, status: any, notes?: string, followUpDate?: string) => {
     const res = await fetch(`/api/enquiries/${id}/status`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
         Authorization: `Bearer ${token}`
       },
-      body: JSON.stringify({ status, resolutionNotes: notes })
+      body: JSON.stringify({ status, resolutionNotes: notes, followUpDate })
     });
     const d = await res.json();
     if (!res.ok || !d.success) throw new Error(d.error || 'Status update failed.');
-    triggerNotification('success', 'Enquiry status updated.');
+    triggerNotification('success', d.message || 'Enquiry status updated.');
     fetchAllData();
   };
 
@@ -887,7 +999,7 @@ export const AdminCmsPage: React.FC<AdminCmsPageProps> = ({ onNavigate }) => {
         metrics={{
           publishedDocs: systemHealth?.metrics.documents.published || documents.length,
           draftDocs: systemHealth?.metrics.documents.draft,
-          pendingGrievances: enquiries.filter(e => e.status === 'new').length,
+          pendingGrievances: enquiries.filter(e => e.type === 'investor' && !e.is_test && !e.is_archived && e.status === 'new').length,
           reg46Pending: regClauses.filter(c => c.review_status === 'Pending Evidence').length
         }}
       />
@@ -907,7 +1019,7 @@ export const AdminCmsPage: React.FC<AdminCmsPageProps> = ({ onNavigate }) => {
               onNavigatePublic={() => handleRequestExit('home')}
               metrics={{
                 publishedDocs: documents.length,
-                pendingGrievances: enquiries.filter(e => e.status === 'new').length
+                pendingGrievances: enquiries.filter(e => e.type === 'investor' && !e.is_test && !e.is_archived && e.status === 'new').length
               }}
             />
           </div>
@@ -1104,88 +1216,43 @@ export const AdminCmsPage: React.FC<AdminCmsPageProps> = ({ onNavigate }) => {
           />
         )}
 
-        {activeView === 'directors' && (
+        {(activeView === 'directors' ||
+          activeView === 'committees' ||
+          activeView === 'kmp' ||
+          activeView === 'corporate_governance' ||
+          activeView === 'policies') && (
           <AdminGovernance
-            initialSubTab="directors"
+            initialSubTab={activeView}
             currentUser={currentUser}
             directors={directors}
             committees={committees}
             kmpContacts={kmpContacts}
+            documents={documents}
             loading={govLoading}
             onRefresh={fetchAllData}
             onUpdateDirector={handleUpdateDirector}
             onCreateDirector={handleCreateDirector}
+            onArchiveDirector={handleArchiveDirector}
+            onRestoreDirector={handleRestoreDirector}
             onDeleteDirector={handleDeleteDirector}
             onUpdateCommittee={handleUpdateCommittee}
+            onCreateCommittee={handleCreateCommittee}
+            onArchiveCommittee={handleArchiveCommittee}
+            onRestoreCommittee={handleRestoreCommittee}
+            onDeleteCommittee={handleDeleteCommittee}
             onUpdateKmp={handleUpdateKmp}
-          />
-        )}
-
-        {activeView === 'committees' && (
-          <AdminGovernance
-            initialSubTab="committees"
-            currentUser={currentUser}
-            directors={directors}
-            committees={committees}
-            kmpContacts={kmpContacts}
-            loading={govLoading}
-            onRefresh={fetchAllData}
-            onUpdateDirector={handleUpdateDirector}
-            onCreateDirector={handleCreateDirector}
-            onDeleteDirector={handleDeleteDirector}
-            onUpdateCommittee={handleUpdateCommittee}
-            onUpdateKmp={handleUpdateKmp}
-          />
-        )}
-
-        {activeView === 'kmp' && (
-          <AdminGovernance
-            initialSubTab="kmp"
-            currentUser={currentUser}
-            directors={directors}
-            committees={committees}
-            kmpContacts={kmpContacts}
-            loading={govLoading}
-            onRefresh={fetchAllData}
-            onUpdateDirector={handleUpdateDirector}
-            onCreateDirector={handleCreateDirector}
-            onDeleteDirector={handleDeleteDirector}
-            onUpdateCommittee={handleUpdateCommittee}
-            onUpdateKmp={handleUpdateKmp}
-          />
-        )}
-
-        {activeView === 'corporate_governance' && (
-          <AdminGovernance
-            initialSubTab="corporate_governance"
-            currentUser={currentUser}
-            directors={directors}
-            committees={committees}
-            kmpContacts={kmpContacts}
-            loading={govLoading}
-            onRefresh={fetchAllData}
-            onUpdateDirector={handleUpdateDirector}
-            onCreateDirector={handleCreateDirector}
-            onDeleteDirector={handleDeleteDirector}
-            onUpdateCommittee={handleUpdateCommittee}
-            onUpdateKmp={handleUpdateKmp}
-          />
-        )}
-
-        {activeView === 'policies' && (
-          <AdminGovernance
-            initialSubTab="policies"
-            currentUser={currentUser}
-            directors={directors}
-            committees={committees}
-            kmpContacts={kmpContacts}
-            loading={govLoading}
-            onRefresh={fetchAllData}
-            onUpdateDirector={handleUpdateDirector}
-            onCreateDirector={handleCreateDirector}
-            onDeleteDirector={handleDeleteDirector}
-            onUpdateCommittee={handleUpdateCommittee}
-            onUpdateKmp={handleUpdateKmp}
+            onCreateKmp={handleCreateKmp}
+            onArchiveKmp={handleArchiveKmp}
+            onRestoreKmp={handleRestoreKmp}
+            onDeleteKmp={handleDeleteKmp}
+            onOpenDocument={(doc) => {
+              if (doc.fileUrl || doc.file_url) {
+                window.open(doc.fileUrl || doc.file_url, '_blank');
+              } else {
+                handleSelectView('document_library');
+              }
+            }}
+            onNavigateView={(v) => handleSelectView(v as any)}
           />
         )}
 
@@ -1368,6 +1435,7 @@ export const AdminCmsPage: React.FC<AdminCmsPageProps> = ({ onNavigate }) => {
             currentUser={currentUser}
             onRefresh={fetchAllData}
             onUpdateStatus={handleUpdateEnquiryStatus}
+            onNotify={triggerNotification}
           />
         )}
 
@@ -1379,6 +1447,7 @@ export const AdminCmsPage: React.FC<AdminCmsPageProps> = ({ onNavigate }) => {
             currentUser={currentUser}
             onRefresh={fetchAllData}
             onUpdateStatus={handleUpdateEnquiryStatus}
+            onNotify={triggerNotification}
           />
         )}
 
@@ -1390,6 +1459,7 @@ export const AdminCmsPage: React.FC<AdminCmsPageProps> = ({ onNavigate }) => {
             currentUser={currentUser}
             onRefresh={fetchAllData}
             onUpdateStatus={handleUpdateEnquiryStatus}
+            onNotify={triggerNotification}
           />
         )}
 

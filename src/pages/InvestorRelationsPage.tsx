@@ -124,26 +124,71 @@ export const InvestorRelationsPage: React.FC<InvestorRelationsPageProps> = ({
 
   const quarters = ['All', 'Q1', 'Q2', 'Q3', 'Q4', 'Annual'];
 
-  // Live documents state initialized with verified repository baseline
+  // Live states initialized with verified repository baseline
   const [liveDocuments, setLiveDocuments] = useState<InvestorDocument[]>(INVESTOR_DOCUMENTS);
+  const [liveDirectors, setLiveDirectors] = useState<any[]>(DIRECTORS_REGISTRY);
+  const [liveCommittees, setLiveCommittees] = useState<any[]>(BOARD_COMMITTEES_REGISTRY);
+  const [liveKmp, setLiveKmp] = useState<any[]>(KMP_CONTACTS_REGISTRY);
+  const [liveReg46, setLiveReg46] = useState<any[]>(REGULATION_46_MASTER_INDEX);
   const [isLoadingDocs, setIsLoadingDocs] = useState<boolean>(false);
 
   useEffect(() => {
     let active = true;
     setIsLoadingDocs(true);
-    fetch('/api/documents')
+
+    // 1. Live Documents
+    fetch('/api/documents', { cache: 'no-store' })
       .then((res) => res.json())
       .then((data) => {
         if (active && data.success && Array.isArray(data.data) && data.data.length > 0) {
           setLiveDocuments(data.data);
         }
       })
-      .catch((err) => {
-        console.warn('API document fetch fallback to statutory baseline:', err);
-      })
+      .catch((err) => console.warn('API document fetch fallback:', err))
       .finally(() => {
         if (active) setIsLoadingDocs(false);
       });
+
+    // 2. Live Directors
+    fetch('/api/content/directors', { cache: 'no-store' })
+      .then((res) => res.json())
+      .then((data) => {
+        if (active && data.success && Array.isArray(data.data) && data.data.length > 0) {
+          setLiveDirectors(data.data);
+        }
+      })
+      .catch((err) => console.warn('API directors fetch fallback:', err));
+
+    // 3. Live Committees
+    fetch('/api/content/committees', { cache: 'no-store' })
+      .then((res) => res.json())
+      .then((data) => {
+        if (active && data.success && Array.isArray(data.data) && data.data.length > 0) {
+          setLiveCommittees(data.data);
+        }
+      })
+      .catch((err) => console.warn('API committees fetch fallback:', err));
+
+    // 4. Live KMP Contacts
+    fetch('/api/content/kmp', { cache: 'no-store' })
+      .then((res) => res.json())
+      .then((data) => {
+        if (active && data.success && Array.isArray(data.data) && data.data.length > 0) {
+          setLiveKmp(data.data);
+        }
+      })
+      .catch((err) => console.warn('API KMP fetch fallback:', err));
+
+    // 5. Live Regulation 46 Clauses
+    fetch('/api/content/regulation-46', { cache: 'no-store' })
+      .then((res) => res.json())
+      .then((data) => {
+        if (active && data.success && Array.isArray(data.data) && data.data.length > 0) {
+          setLiveReg46(data.data);
+        }
+      })
+      .catch((err) => console.warn('API Regulation 46 fetch fallback:', err));
+
     return () => { active = false; };
   }, []);
 
@@ -158,6 +203,7 @@ export const InvestorRelationsPage: React.FC<InvestorRelationsPageProps> = ({
       if (activeTab === 'Newspaper Publications' && doc.category !== 'Newspaper Publications') return false;
       if (activeTab === 'Annual Return (MGT-7)' && doc.category !== 'Annual Return (MGT-7)') return false;
       if (activeTab === 'Secretarial Compliance' && doc.category !== 'Secretarial Compliance Report') return false;
+      if (activeTab === 'Corporate Governance' && doc.category !== 'Corporate Governance') return false;
       if (activeTab === 'Policies & Charters' && (doc.category !== 'Company Policies' && doc.category !== 'MOA & AOA' && doc.category !== 'Disclosures & Policies')) return false;
 
       // Dropdown filter within 'All Filings'
@@ -187,24 +233,24 @@ export const InvestorRelationsPage: React.FC<InvestorRelationsPageProps> = ({
 
   // Filtered Regulation 46 Master Clauses
   const filteredReg46Clauses = useMemo(() => {
-    return REGULATION_46_MASTER_INDEX.filter((clause) => {
+    return liveReg46.filter((clause) => {
       if (reg46CategoryFilter !== 'All' && clause.category !== reg46CategoryFilter) {
         return false;
       }
       if (reg46SearchQuery.trim() !== '') {
         const q = reg46SearchQuery.toLowerCase();
-        const matchClause = clause.clause.toLowerCase().includes(q);
-        const matchTitle = clause.title.toLowerCase().includes(q);
-        const matchReq = clause.requirement.toLowerCase().includes(q);
-        const matchLoc = clause.websiteLocation.toLowerCase().includes(q);
-        const matchCit = clause.legalCitation.toLowerCase().includes(q);
+        const matchClause = (clause.clause || '').toLowerCase().includes(q);
+        const matchTitle = (clause.title || '').toLowerCase().includes(q);
+        const matchReq = (clause.requirement || '').toLowerCase().includes(q);
+        const matchLoc = (clause.websiteLocation || clause.website_location || '').toLowerCase().includes(q);
+        const matchCit = (clause.legalCitation || clause.legal_citation || '').toLowerCase().includes(q);
         if (!matchClause && !matchTitle && !matchReq && !matchLoc && !matchCit) {
           return false;
         }
       }
       return true;
     });
-  }, [reg46CategoryFilter, reg46SearchQuery]);
+  }, [liveReg46, reg46CategoryFilter, reg46SearchQuery]);
 
   const handleTabChange = (cat: typeof categories[0]) => {
     setActiveTab(cat.id);
@@ -336,7 +382,7 @@ export const InvestorRelationsPage: React.FC<InvestorRelationsPageProps> = ({
                 {/* Audit Capsule Badges */}
                 <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 shrink-0 font-mono text-xs">
                   <div className="p-3 rounded-xl bg-slate-50 border border-slate-200 text-center">
-                    <div className="text-lg font-bold text-[#0A1128]">{REGULATION_46_MASTER_INDEX.length}</div>
+                    <div className="text-lg font-bold text-[#0A1128]">{liveReg46.length}</div>
                     <div className="text-[10px] text-slate-500 uppercase">Clauses Audited</div>
                   </div>
                   <div className="p-3 rounded-xl bg-emerald-50 border border-emerald-200 text-center">
@@ -381,7 +427,7 @@ export const InvestorRelationsPage: React.FC<InvestorRelationsPageProps> = ({
                   className="bg-slate-50 border border-slate-200 rounded-lg px-2.5 py-1.5 text-xs text-[#0A1128] focus:outline-none focus:border-[#0D9488]"
                   id="reg46-category-select"
                 >
-                  <option value="All">All Categories ({REGULATION_46_MASTER_INDEX.length})</option>
+                  <option value="All">All Categories ({liveReg46.length})</option>
                   <option value="General Business">General Business</option>
                   <option value="Charter & Incorporation">Charter & Incorporation</option>
                   <option value="Board & Governance">Board & Governance</option>
@@ -431,9 +477,14 @@ export const InvestorRelationsPage: React.FC<InvestorRelationsPageProps> = ({
                       </tr>
                     ) : (
                       filteredReg46Clauses.map((item, idx) => {
-                        const isComplied = item.status.includes('Complied') || item.status.includes('Continuous');
-                        const isLibrary = item.status.includes('Library') || item.status.includes('Active');
-                        const isConditional = item.status.includes('Nil') || item.status.includes('Confirmation');
+                        const isVerified = item.review_status === 'Verified' || item.reviewStatus === 'Verified';
+                        const isComplied = isVerified || (item.status && (item.status.includes('Complied') || item.status.includes('Verified') || item.status.includes('Continuous')));
+                        const isLibrary = item.status && (item.status.includes('Library') || item.status.includes('Active'));
+                        const isConditional = !isComplied && !isLibrary;
+
+                        const displayStatus = isVerified
+                          ? (item.status && (item.status.includes('Continuous') || item.status.includes('Complied') || item.status.includes('Verified')) ? item.status : 'Complied & Verified')
+                          : (item.status || 'Company/CS Confirmation Required');
 
                         return (
                           <tr key={idx} className="hover:bg-slate-50/80 transition-colors group">
@@ -481,7 +532,7 @@ export const InvestorRelationsPage: React.FC<InvestorRelationsPageProps> = ({
                                 ) : (
                                   <HelpCircle className="w-3.5 h-3.5 text-[#9A7B38] shrink-0" />
                                 )}
-                                <span>{item.status}</span>
+                                <span>{displayStatus}</span>
                               </span>
                             </td>
 
@@ -539,82 +590,104 @@ export const InvestorRelationsPage: React.FC<InvestorRelationsPageProps> = ({
 
             {/* Directors Card Grid */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              {DIRECTORS_REGISTRY.map((director) => (
-                <div
-                  key={director.id}
-                  className="p-6 rounded-2xl bg-white border border-slate-200 hover:border-[#0D9488]/50 shadow-2xs transition-all space-y-4 flex flex-col justify-between"
-                >
-                  <div className="space-y-3">
-                    <div className="flex items-center justify-between">
-                      <span className="text-[10px] font-mono uppercase px-2.5 py-1 rounded bg-teal-50 text-[#0D9488] border border-teal-200 font-semibold">
-                        {director.category}
-                      </span>
-                      <span className="text-xs font-mono text-slate-500 font-medium">
-                        DIN: <strong className="text-slate-800">{director.din}</strong>
-                      </span>
-                    </div>
+              {liveDirectors.map((director) => {
+                const committeeMemberships = Array.isArray(director.committeeMemberships)
+                  ? director.committeeMemberships
+                  : Array.isArray(director.committee_memberships)
+                  ? director.committee_memberships
+                  : [];
+                const otherDirectorships = Array.isArray(director.otherDirectorships)
+                  ? director.otherDirectorships
+                  : Array.isArray(director.other_directorships)
+                  ? director.other_directorships
+                  : [];
+                const appointmentDate = director.appointmentDate || director.appointment_date || 'N/A';
 
-                    <div>
-                      <h3 className="font-display font-bold text-xl text-[#0A1128]">
-                        {director.name}
-                      </h3>
-                      <div className="text-xs text-[#9A7B38] font-semibold tracking-wide mt-0.5">
-                        {director.designation}
+                return (
+                  <div
+                    key={director.id}
+                    className="p-6 rounded-2xl bg-white border border-slate-200 hover:border-[#0D9488]/50 shadow-2xs transition-all space-y-4 flex flex-col justify-between"
+                  >
+                    <div className="space-y-3">
+                      <div className="flex items-center justify-between">
+                        <span className="text-[10px] font-mono uppercase px-2.5 py-1 rounded bg-teal-50 text-[#0D9488] border border-teal-200 font-semibold">
+                          {director.category}
+                        </span>
+                        <span className="text-xs font-mono text-slate-500 font-medium">
+                          DIN: <strong className="text-slate-800">{director.din}</strong>
+                        </span>
+                      </div>
+
+                      <div>
+                        <h3 className="font-display font-bold text-xl text-[#0A1128]">
+                          {director.name}
+                        </h3>
+                        <div className="text-xs text-[#9A7B38] font-semibold tracking-wide mt-0.5">
+                          {director.designation}
+                        </div>
+                      </div>
+
+                      <p className="text-xs sm:text-sm text-slate-600 leading-relaxed pt-1">
+                        {director.bio}
+                      </p>
+
+                      {/* Appointment & Term Details */}
+                      <div className="grid grid-cols-2 gap-2 pt-2 text-xs font-mono bg-slate-50 p-3 rounded-xl border border-slate-100">
+                        <div>
+                          <span className="text-[10px] text-slate-400 block uppercase">Appointment</span>
+                          <span className="text-slate-700 font-medium">{appointmentDate}</span>
+                        </div>
+                        <div>
+                          <span className="text-[10px] text-slate-400 block uppercase">Tenure</span>
+                          <span className="text-slate-700 font-medium">{director.term}</span>
+                        </div>
                       </div>
                     </div>
 
-                    <p className="text-xs sm:text-sm text-slate-600 leading-relaxed pt-1">
-                      {director.bio}
-                    </p>
-
-                    {/* Appointment & Term Details */}
-                    <div className="grid grid-cols-2 gap-2 pt-2 text-xs font-mono bg-slate-50 p-3 rounded-xl border border-slate-100">
+                    {/* Committees & Directorships */}
+                    <div className="pt-4 border-t border-slate-100 space-y-3">
                       <div>
-                        <span className="text-[10px] text-slate-400 block uppercase">Appointment</span>
-                        <span className="text-slate-700 font-medium">{director.appointmentDate}</span>
+                        <span className="text-[10px] font-mono uppercase text-slate-400 font-semibold block mb-1.5">
+                          Committee Memberships
+                        </span>
+                        <div className="flex flex-wrap gap-1.5">
+                          {committeeMemberships.length > 0 ? (
+                            committeeMemberships.map((com: any, cIdx: number) => (
+                              <span
+                                key={cIdx}
+                                className={`text-xs px-2.5 py-0.5 rounded-lg border font-mono ${
+                                  (com.role || com.member_role) === 'Chairperson'
+                                    ? 'bg-amber-50 text-[#9A7B38] border-amber-200 font-semibold'
+                                    : 'bg-slate-50 text-slate-700 border-slate-200'
+                                }`}
+                              >
+                                {com.committeeName || com.committee_name || com.name} ({com.role || com.member_role || 'Member'})
+                              </span>
+                            ))
+                          ) : (
+                            <span className="text-xs text-slate-400 font-mono italic">None</span>
+                          )}
+                        </div>
                       </div>
+
                       <div>
-                        <span className="text-[10px] text-slate-400 block uppercase">Tenure</span>
-                        <span className="text-slate-700 font-medium">{director.term}</span>
+                        <span className="text-[10px] font-mono uppercase text-slate-400 font-semibold block mb-1">
+                          Other Directorships / Positions
+                        </span>
+                        {otherDirectorships.length > 0 ? (
+                          <ul className="text-xs text-slate-600 list-disc list-inside space-y-0.5">
+                            {otherDirectorships.map((od: string, odIdx: number) => (
+                              <li key={odIdx}>{od}</li>
+                            ))}
+                          </ul>
+                        ) : (
+                          <span className="text-xs text-slate-400 font-mono italic">Nil</span>
+                        )}
                       </div>
                     </div>
                   </div>
-
-                  {/* Committees & Directorships */}
-                  <div className="pt-4 border-t border-slate-100 space-y-3">
-                    <div>
-                      <span className="text-[10px] font-mono uppercase text-slate-400 font-semibold block mb-1.5">
-                        Committee Memberships
-                      </span>
-                      <div className="flex flex-wrap gap-1.5">
-                        {director.committeeMemberships.map((com, cIdx) => (
-                          <span
-                            key={cIdx}
-                            className={`text-xs px-2.5 py-0.5 rounded-lg border font-mono ${
-                              com.role === 'Chairperson'
-                                ? 'bg-amber-50 text-[#9A7B38] border-amber-200 font-semibold'
-                                : 'bg-slate-50 text-slate-700 border-slate-200'
-                            }`}
-                          >
-                            {com.committeeName} ({com.role})
-                          </span>
-                        ))}
-                      </div>
-                    </div>
-
-                    <div>
-                      <span className="text-[10px] font-mono uppercase text-slate-400 font-semibold block mb-1">
-                        Other Directorships / Positions
-                      </span>
-                      <ul className="text-xs text-slate-600 list-disc list-inside space-y-0.5">
-                        {director.otherDirectorships.map((od, odIdx) => (
-                          <li key={odIdx}>{od}</li>
-                        ))}
-                      </ul>
-                    </div>
-                  </div>
-                </div>
-              ))}
+                );
+              })}
             </div>
           </div>
         )}
@@ -639,88 +712,115 @@ export const InvestorRelationsPage: React.FC<InvestorRelationsPageProps> = ({
 
             {/* Committees Grid */}
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-              {BOARD_COMMITTEES_REGISTRY.map((committee) => (
-                <div
-                  key={committee.id}
-                  className="p-6 sm:p-8 rounded-2xl bg-white border border-slate-200 shadow-2xs space-y-6 flex flex-col justify-between"
-                >
-                  <div className="space-y-4">
-                    <div className="flex items-center justify-between pb-3 border-b border-slate-100">
-                      <h3 className="font-display font-bold text-xl text-[#0A1128]">
-                        {committee.name}
-                      </h3>
-                      <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-teal-50 text-[#0D9488] border border-teal-200 font-semibold">
-                        Statutory Mandate
-                      </span>
-                    </div>
+              {liveCommittees.map((committee) => {
+                const chairperson = committee.chairperson || {
+                  name: committee.chairperson_name || 'Designated Chairperson',
+                  designation: committee.chairperson_designation || 'Chairperson',
+                  role: committee.chairperson_role || 'Chairperson',
+                  category: committee.chairperson_category || 'Independent Director'
+                };
+                const members = Array.isArray(committee.members) ? committee.members : [];
+                const keyResponsibilities = Array.isArray(committee.keyResponsibilities)
+                  ? committee.keyResponsibilities
+                  : Array.isArray(committee.key_responsibilities)
+                  ? committee.key_responsibilities
+                  : [];
+                const statutoryRef = committee.statutoryReference || committee.statutory_reference || 'Regulation 18-21 SEBI (LODR)';
+                const meetingFreq = committee.meetingsFrequency || committee.meetings_frequency || 'Quarterly / Need basis';
 
-                    <div className="text-xs text-slate-600 font-mono">
-                      <strong>Legal Citation:</strong> {committee.statutoryReference}
-                    </div>
-
-                    <p className="text-xs sm:text-sm text-slate-700 leading-relaxed">
-                      {committee.mandate}
-                    </p>
-
-                    {/* Chairperson Card */}
-                    <div className="p-4 rounded-xl bg-amber-50/70 border border-amber-200/80 space-y-1">
-                      <span className="text-[10px] font-mono uppercase tracking-wider text-[#9A7B38] font-bold">
-                        Committee Chairperson
-                      </span>
-                      <div className="font-display font-semibold text-sm text-[#0A1128]">
-                        {committee.chairperson.name}
+                return (
+                  <div
+                    key={committee.id}
+                    className="p-6 sm:p-8 rounded-2xl bg-white border border-slate-200 shadow-2xs space-y-6 flex flex-col justify-between"
+                  >
+                    <div className="space-y-4">
+                      <div className="flex items-center justify-between pb-3 border-b border-slate-100">
+                        <h3 className="font-display font-bold text-xl text-[#0A1128]">
+                          {committee.name}
+                        </h3>
+                        <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-teal-50 text-[#0D9488] border border-teal-200 font-semibold">
+                          Statutory Mandate
+                        </span>
                       </div>
-                      <div className="text-xs text-slate-600">
-                        {committee.chairperson.designation} ({committee.chairperson.category})
-                      </div>
-                    </div>
 
-                    {/* Members List */}
-                    <div className="space-y-2">
-                      <span className="text-xs font-mono uppercase text-slate-400 font-semibold block">
-                        Committee Members
-                      </span>
-                      <div className="space-y-2 font-sans text-xs">
-                        {committee.members.map((member, mIdx) => (
-                          <div
-                            key={mIdx}
-                            className="p-3 rounded-xl bg-slate-50 border border-slate-200 flex items-center justify-between"
-                          >
-                            <div>
-                              <span className="font-semibold text-[#0A1128] block">{member.name}</span>
-                              <span className="text-slate-500 text-[11px]">{member.designation}</span>
+                      <div className="text-xs text-slate-600 font-mono">
+                        <strong>Legal Citation:</strong> {statutoryRef}
+                      </div>
+
+                      <p className="text-xs sm:text-sm text-slate-700 leading-relaxed">
+                        {committee.mandate}
+                      </p>
+
+                      {/* Chairperson Card */}
+                      <div className="p-4 rounded-xl bg-amber-50/70 border border-amber-200/80 space-y-1">
+                        <span className="text-[10px] font-mono uppercase tracking-wider text-[#9A7B38] font-bold">
+                          Committee Chairperson
+                        </span>
+                        <div className="font-display font-semibold text-sm text-[#0A1128]">
+                          {chairperson.name}
+                        </div>
+                        <div className="text-xs text-slate-600">
+                          {chairperson.designation} ({chairperson.category})
+                        </div>
+                      </div>
+
+                      {/* Members List */}
+                      <div className="space-y-2">
+                        <span className="text-xs font-mono uppercase text-slate-400 font-semibold block">
+                          Committee Members
+                        </span>
+                        <div className="space-y-2 font-sans text-xs">
+                          {members.length > 0 ? (
+                            members.map((member: any, mIdx: number) => (
+                              <div
+                                key={mIdx}
+                                className="p-3 rounded-xl bg-slate-50 border border-slate-200 flex items-center justify-between"
+                              >
+                                <div>
+                                  <span className="font-semibold text-[#0A1128] block">{member.name}</span>
+                                  <span className="text-slate-500 text-[11px]">{member.designation}</span>
+                                </div>
+                                <span className="text-[11px] font-mono px-2 py-0.5 rounded bg-white border border-slate-200 text-slate-700">
+                                  {member.role} • {member.category}
+                                </span>
+                              </div>
+                            ))
+                          ) : (
+                            <div className="p-3 rounded-xl bg-slate-50 border border-slate-200 text-slate-400 font-mono text-xs italic">
+                              No additional members registered
                             </div>
-                            <span className="text-[11px] font-mono px-2 py-0.5 rounded bg-white border border-slate-200 text-slate-700">
-                              {member.role} • {member.category}
-                            </span>
-                          </div>
-                        ))}
+                          )}
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Responsibilities & Meeting Rhythm */}
+                    <div className="pt-4 border-t border-slate-100 space-y-3 text-xs">
+                      <div>
+                        <span className="text-[10px] font-mono uppercase text-slate-400 font-semibold block mb-1">
+                          Meeting Frequency
+                        </span>
+                        <span className="text-slate-700 font-medium">{meetingFreq}</span>
+                      </div>
+
+                      <div>
+                        <span className="text-[10px] font-mono uppercase text-slate-400 font-semibold block mb-1.5">
+                          Key Responsibilities
+                        </span>
+                        {keyResponsibilities.length > 0 ? (
+                          <ul className="list-disc list-inside text-slate-600 space-y-1">
+                            {keyResponsibilities.map((resp: string, rIdx: number) => (
+                              <li key={rIdx}>{resp}</li>
+                            ))}
+                          </ul>
+                        ) : (
+                          <span className="text-slate-400 font-mono italic">Mandated under board charter</span>
+                        )}
                       </div>
                     </div>
                   </div>
-
-                  {/* Responsibilities & Meeting Rhythm */}
-                  <div className="pt-4 border-t border-slate-100 space-y-3 text-xs">
-                    <div>
-                      <span className="text-[10px] font-mono uppercase text-slate-400 font-semibold block mb-1">
-                        Meeting Frequency
-                      </span>
-                      <span className="text-slate-700 font-medium">{committee.meetingsFrequency}</span>
-                    </div>
-
-                    <div>
-                      <span className="text-[10px] font-mono uppercase text-slate-400 font-semibold block mb-1.5">
-                        Key Responsibilities
-                      </span>
-                      <ul className="list-disc list-inside text-slate-600 space-y-1">
-                        {committee.keyResponsibilities.map((resp, rIdx) => (
-                          <li key={rIdx}>{resp}</li>
-                        ))}
-                      </ul>
-                    </div>
-                  </div>
-                </div>
-              ))}
+                );
+              })}
             </div>
           </div>
         )}
@@ -959,50 +1059,56 @@ export const InvestorRelationsPage: React.FC<InvestorRelationsPageProps> = ({
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              {KMP_CONTACTS_REGISTRY.map((kmp) => (
-                <div
-                  key={kmp.id}
-                  className="p-6 sm:p-8 rounded-2xl bg-white border border-slate-200 shadow-2xs space-y-4 flex flex-col justify-between"
-                >
-                  <div className="space-y-3">
-                    <span className="text-[10px] font-mono uppercase px-2.5 py-1 rounded bg-slate-100 text-[#9A7B38] font-semibold border border-slate-200">
-                      {kmp.role}
-                    </span>
+              {liveKmp.map((kmp) => {
+                const role = kmp.role || kmp.role_title || 'Authorized KMP';
+                const authorityScope = kmp.authorityScope || kmp.authority_scope || 'Determination of Materiality under Regulation 30(5)';
+                const statutoryRef = kmp.statutoryReference || kmp.statutory_reference || 'Regulation 30(5) SEBI (LODR) Regulations, 2015';
 
-                    <h3 className="font-display font-bold text-lg text-[#0A1128]">
-                      {kmp.name}
-                    </h3>
+                return (
+                  <div
+                    key={kmp.id}
+                    className="p-6 sm:p-8 rounded-2xl bg-white border border-slate-200 shadow-2xs space-y-4 flex flex-col justify-between"
+                  >
+                    <div className="space-y-3">
+                      <span className="text-[10px] font-mono uppercase px-2.5 py-1 rounded bg-slate-100 text-[#9A7B38] font-semibold border border-slate-200">
+                        {role}
+                      </span>
 
-                    <div className="text-xs text-[#0D9488] font-semibold font-mono">
-                      {kmp.designation}
-                    </div>
+                      <h3 className="font-display font-bold text-lg text-[#0A1128]">
+                        {kmp.name}
+                      </h3>
 
-                    <p className="text-xs text-slate-600 leading-relaxed">
-                      {kmp.authorityScope}
-                    </p>
-
-                    <div className="p-4 rounded-xl bg-slate-50 border border-slate-200 space-y-2 font-mono text-xs">
-                      <div className="flex items-center gap-2">
-                        <Mail className="w-3.5 h-3.5 text-[#0D9488]" />
-                        <span>Email: <a href={`mailto:${kmp.email}`} className="text-[#0D9488] font-semibold hover:underline">{kmp.email}</a></span>
+                      <div className="text-xs text-[#0D9488] font-semibold font-mono">
+                        {kmp.designation}
                       </div>
-                      <div className="flex items-center gap-2">
-                        <Phone className="w-3.5 h-3.5 text-[#9A7B38]" />
-                        <span>Tel: <a href={`tel:${kmp.phone.replace(/\s+/g, '')}`} className="text-slate-800 hover:underline">{kmp.phone}</a></span>
-                      </div>
-                      {kmp.address && (
-                        <div className="text-[11px] text-slate-500 pt-1 font-sans">
-                          {kmp.address}
+
+                      <p className="text-xs text-slate-600 leading-relaxed">
+                        {authorityScope}
+                      </p>
+
+                      <div className="p-4 rounded-xl bg-slate-50 border border-slate-200 space-y-2 font-mono text-xs">
+                        <div className="flex items-center gap-2">
+                          <Mail className="w-3.5 h-3.5 text-[#0D9488]" />
+                          <span>Email: <a href={`mailto:${kmp.email}`} className="text-[#0D9488] font-semibold hover:underline">{kmp.email}</a></span>
                         </div>
-                      )}
+                        <div className="flex items-center gap-2">
+                          <Phone className="w-3.5 h-3.5 text-[#9A7B38]" />
+                          <span>Tel: <a href={`tel:${(kmp.phone || '').replace(/\s+/g, '')}`} className="text-slate-800 hover:underline">{kmp.phone}</a></span>
+                        </div>
+                        {kmp.address && (
+                          <div className="text-[11px] text-slate-500 pt-1 font-sans">
+                            {kmp.address}
+                          </div>
+                        )}
+                      </div>
+                    </div>
+
+                    <div className="pt-3 border-t border-slate-100 text-[11px] font-mono text-slate-500">
+                      Mandate: {statutoryRef}
                     </div>
                   </div>
-
-                  <div className="pt-3 border-t border-slate-100 text-[11px] font-mono text-slate-500">
-                    Mandate: {kmp.statutoryReference}
-                  </div>
-                </div>
-              ))}
+                );
+              })}
             </div>
           </div>
         )}
@@ -1357,6 +1463,7 @@ export const InvestorRelationsPage: React.FC<InvestorRelationsPageProps> = ({
                         <option value="Newspaper Publications">Newspaper Publications</option>
                         <option value="Annual Return (MGT-7)">Annual Return (MGT-7)</option>
                         <option value="Secretarial Compliance Report">Secretarial Compliance Report</option>
+                        <option value="Corporate Governance">Corporate Governance</option>
                         <option value="Company Policies">Company Policies</option>
                         <option value="MOA & AOA">MOA & AOA</option>
                       </select>

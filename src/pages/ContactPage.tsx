@@ -135,7 +135,7 @@ export const ContactPage: React.FC<ContactPageProps> = ({ onNavigate: _onNavigat
         queryText: ''
       });
     } catch (err: any) {
-      setSubmitError(err.message || 'Unable to submit grievance. Please contact RTA directly at support@purvashare.com.');
+      setSubmitError(err.message || `Unable to submit grievance. Please contact RTA directly at ${COMPANY_DETAILS.rtaEmail || 'investor@bigshareonline.com'}.`);
     } finally {
       setIsSubmitting(false);
     }

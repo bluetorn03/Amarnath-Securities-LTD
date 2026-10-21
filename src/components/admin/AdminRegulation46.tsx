@@ -119,6 +119,17 @@ export const AdminRegulation46: React.FC<AdminRegulation46Props> = ({
     e.preventDefault();
     if (!activeClause) return;
 
+    if (editStatus === 'Verified') {
+      if (!editEvidenceLink.trim()) {
+        setUpdateError('Evidence link or statutory document reference is required before marking compliance as Verified.');
+        return;
+      }
+      if (!editReviewer.trim()) {
+        setUpdateError('Designated Company Secretary / authorized reviewer is required before marking compliance as Verified.');
+        return;
+      }
+    }
+
     if (!editReason.trim() && !editNotes.trim()) {
       setUpdateError('A reason/justification is required to verify or modify regulatory compliance status.');
       return;
@@ -126,9 +137,22 @@ export const AdminRegulation46: React.FC<AdminRegulation46Props> = ({
 
     setIsUpdating(true);
     setUpdateError(null);
+
+    let publicStatus = activeClause.status;
+    if (editStatus === 'Verified') {
+      publicStatus = activeClause.status?.includes('Continuous')
+        ? 'Continuous Statutory Compliance'
+        : 'Complied & Verified';
+    } else if (editStatus === 'Not Applicable') {
+      publicStatus = 'Nil / Not Applicable (Company Confirmation Required)';
+    } else if (editStatus === 'Pending Evidence' || editStatus === 'Under Review' || editStatus === 'Not Reviewed') {
+      publicStatus = 'Company/CS Confirmation Required';
+    }
+
     try {
       await onUpdateClause(activeClause.id, {
         review_status: editStatus as any,
+        status: publicStatus,
         responsible_reviewer: editReviewer,
         internal_review_date: editReviewDate,
         evidence_link: editEvidenceLink,

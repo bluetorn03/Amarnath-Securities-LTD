@@ -306,6 +306,11 @@ export interface EnquiryItem {
   details: string;
   status: 'new' | 'in_progress' | 'resolved' | 'closed';
   resolution_notes?: string | null;
+  admin_notes?: string | null;
+  follow_up_date?: string | null;
+  is_archived?: boolean | number;
+  assigned_to?: string | null;
+  updated_by?: string | null;
   is_test?: boolean | number;
   ip_address: string;
   created_at: string;
