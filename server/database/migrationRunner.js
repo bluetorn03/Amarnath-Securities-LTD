@@ -8,17 +8,24 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 async function createDatabaseIfNotExists() {
-  const rootConn = await mysql.createConnection({
-    host: config.db.host,
-    port: config.db.port,
-    user: config.db.user,
-    password: config.db.password,
-  });
   try {
-    await rootConn.query(`CREATE DATABASE IF NOT EXISTS \`${config.db.database}\` CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;`);
-    console.log(`[DB] Database '${config.db.database}' verified/created successfully.`);
-  } finally {
-    await rootConn.end();
+    const rootConn = await mysql.createConnection({
+      host: config.db.host,
+      port: config.db.port,
+      user: config.db.user,
+      password: config.db.password,
+    });
+    try {
+      await rootConn.query(`CREATE DATABASE IF NOT EXISTS \`${config.db.database}\` CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;`);
+      console.log(`[DB] Database '${config.db.database}' verified/created successfully.`);
+    } finally {
+      await rootConn.end();
+    }
+  } catch (err) {
+    // On shared/production hosting (e.g. Hostinger), the MySQL user has access only to the assigned
+    // database and cannot connect without a database specified or execute CREATE DATABASE.
+    // Since the database already exists in production, we log a notice and continue safely.
+    console.log(`[DB] Notice: Skipped root CREATE DATABASE check (${err.message}). Proceeding directly to database '${config.db.database}'.`);
   }
 }
 
