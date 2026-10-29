@@ -85,6 +85,11 @@ app.use(express.urlencoded({ extended: true, limit: '1mb' }));
 // Mount API routes with rate limiting
 app.use('/api', apiLimiter, apiRouter);
 
+// Strict JSON 404 handler for all unmatched API endpoints (prevents HTML fallback)
+app.all('/api/*', (req, res) => {
+  res.status(404).json({ success: false, error: `API endpoint '${req.method} ${req.originalUrl}' not found.` });
+});
+
 // Access-controlled document uploads serving
 app.use('/uploads', async (req, res, next) => {
   if (req.path === '/' || req.path === '') {

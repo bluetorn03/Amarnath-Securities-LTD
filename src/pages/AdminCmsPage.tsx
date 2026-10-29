@@ -192,10 +192,17 @@ export const AdminCmsPage: React.FC<AdminCmsPageProps> = ({ onNavigate }) => {
 
   // Global Modals State
   const [showPasswordModal, setShowPasswordModal] = useState<boolean>(false);
+  const [modalEmail, setModalEmail] = useState<string>('');
   const [currPass, setCurrPass] = useState<string>('');
   const [newPass, setNewPass] = useState<string>('');
   const [passError, setPassError] = useState<string | null>(null);
   const [isUpdatingPassword, setIsUpdatingPassword] = useState<boolean>(false);
+
+  useEffect(() => {
+    if (currentUser?.email) {
+      setModalEmail(currentUser.email);
+    }
+  }, [currentUser?.email]);
 
   const [showAddDocModal, setShowAddDocModal] = useState<boolean>(false);
   const [addDocData, setAddDocData] = useState({
@@ -276,33 +283,83 @@ export const AdminCmsPage: React.FC<AdminCmsPageProps> = ({ onNavigate }) => {
     }
   };
 
-  // Change Password
+  // Change Credentials / Password
   const handleChangePassword = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (newPass.length < 8) {
+    setPassError(null);
+
+    const emailTrimmed = modalEmail.trim().toLowerCase();
+    const isEmailChanged = emailTrimmed !== (currentUser?.email || '').toLowerCase();
+    const isPassProvided = Boolean(newPass);
+
+    if (!isEmailChanged && !isPassProvided) {
+      setPassError('Please enter a new email address or enter a new password to update.');
+      return;
+    }
+
+    if (!currPass) {
+      setPassError('Current password is required to verify administrator authorization.');
+      return;
+    }
+
+    if (isPassProvided && newPass.length < 8) {
       setPassError('New password must contain at least 8 characters.');
       return;
     }
+
     setIsUpdatingPassword(true);
-    setPassError(null);
     try {
-      const res = await fetch('/api/auth/change-password', {
+      const payload = {
+        currentPassword: currPass,
+        newEmail: isEmailChanged ? emailTrimmed : undefined,
+        newPassword: isPassProvided ? newPass : undefined
+      };
+
+      let res = await fetch('/api/auth/update-credentials', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
           Authorization: `Bearer ${token}`
         },
-        body: JSON.stringify({ currentPassword: currPass, newPassword: newPass })
+        body: JSON.stringify(payload)
       });
-      const data = await res.json();
+
+      if (res.status === 404) {
+        res = await fetch('/api/auth/change-password', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`
+          },
+          body: JSON.stringify(payload)
+        });
+      }
+
+      const contentType = res.headers.get('content-type') || '';
+      let data: any = {};
+      if (contentType.includes('application/json')) {
+        data = await res.json();
+      } else {
+        throw new Error(`Server returned status ${res.status}. Please restart backend server.`);
+      }
+
       if (!res.ok || !data.success) throw new Error(data.error || 'Failed to update credentials.');
 
-      triggerNotification('success', 'Administrative password updated successfully.');
+      if (data.token) {
+        localStorage.setItem('asl_admin_token', data.token);
+        setToken(data.token);
+      }
+      if (data.user) {
+        setCurrentUser(data.user);
+        setLoginEmail(data.user.email);
+      }
+
+      triggerNotification('success', data.message || 'Administrative credentials updated successfully.');
       setShowPasswordModal(false);
       setCurrPass('');
       setNewPass('');
     } catch (err: any) {
-      setPassError(err.message || 'Error updating password.');
+      setPassError(err.message || 'Error updating credentials.');
     } finally {
       setIsUpdatingPassword(false);
     }
@@ -1528,6 +1585,10 @@ export const AdminCmsPage: React.FC<AdminCmsPageProps> = ({ onNavigate }) => {
             currentUser={currentUser}
             onNavigateView={handleSelectView}
             onNotify={triggerNotification}
+            onUserUpdated={(u) => {
+              setCurrentUser(u);
+              setLoginEmail(u.email);
+            }}
           />
         )}
       </main>
@@ -1703,24 +1764,36 @@ export const AdminCmsPage: React.FC<AdminCmsPageProps> = ({ onNavigate }) => {
               )}
 
               <div>
+                <label className="block text-xs font-bold text-slate-700 mb-1">Official Administrative Email *</label>
+                <input
+                  type="email"
+                  required
+                  value={modalEmail}
+                  onChange={(e) => setModalEmail(e.target.value)}
+                  className="w-full px-3 py-1.5 text-xs bg-slate-50 border border-slate-200 rounded-lg font-mono focus:outline-none focus:ring-1 focus:ring-[#0D9488]"
+                />
+              </div>
+
+              <div>
                 <label className="block text-xs font-bold text-slate-700 mb-1">Current Password *</label>
                 <input
                   type="password"
                   required
                   value={currPass}
                   onChange={(e) => setCurrPass(e.target.value)}
-                  className="w-full px-3 py-1.5 text-xs bg-slate-50 border border-slate-200 rounded-lg"
+                  placeholder="Enter current password to verify identity"
+                  className="w-full px-3 py-1.5 text-xs bg-slate-50 border border-slate-200 rounded-lg focus:outline-none focus:ring-1 focus:ring-[#0D9488]"
                 />
               </div>
 
               <div>
-                <label className="block text-xs font-bold text-slate-700 mb-1">New Password (Min 8 Chars) *</label>
+                <label className="block text-xs font-bold text-slate-700 mb-1">New Password (Leave blank to keep unchanged)</label>
                 <input
                   type="password"
-                  required
                   value={newPass}
                   onChange={(e) => setNewPass(e.target.value)}
-                  className="w-full px-3 py-1.5 text-xs bg-slate-50 border border-slate-200 rounded-lg"
+                  placeholder="Enter new password (optional, min 8 chars)"
+                  className="w-full px-3 py-1.5 text-xs bg-slate-50 border border-slate-200 rounded-lg focus:outline-none focus:ring-1 focus:ring-[#0D9488]"
                 />
               </div>
 
@@ -1728,16 +1801,16 @@ export const AdminCmsPage: React.FC<AdminCmsPageProps> = ({ onNavigate }) => {
                 <button
                   type="button"
                   onClick={() => setShowPasswordModal(false)}
-                  className="px-3.5 py-1.5 text-xs font-semibold text-slate-600 hover:bg-slate-100 rounded-lg"
+                  className="px-3.5 py-1.5 text-xs font-semibold text-slate-600 hover:bg-slate-100 rounded-lg cursor-pointer"
                 >
                   Cancel
                 </button>
                 <button
                   type="submit"
                   disabled={isUpdatingPassword}
-                  className="px-4 py-1.5 text-xs font-semibold text-white bg-[#0A1128] hover:bg-[#121c3b] rounded-lg transition-colors disabled:opacity-50"
+                  className="px-4 py-1.5 text-xs font-semibold text-white bg-[#0A1128] hover:bg-[#121c3b] rounded-lg transition-colors disabled:opacity-50 cursor-pointer"
                 >
-                  {isUpdatingPassword ? 'Updating...' : 'Update Password'}
+                  {isUpdatingPassword ? 'Updating...' : 'Update Credentials'}
                 </button>
               </div>
             </form>

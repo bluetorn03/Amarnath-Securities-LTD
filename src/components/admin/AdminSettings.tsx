@@ -12,19 +12,23 @@ import {
   RefreshCw, 
   CheckCircle2, 
   AlertCircle,
-  Key
+  Key,
+  Mail,
+  Lock
 } from 'lucide-react';
 
 interface AdminSettingsProps {
   currentUser: AdminUser | null;
   onNavigateView: (view: AdminViewId) => void;
   onNotify: (type: 'success' | 'error', message: string) => void;
+  onUserUpdated?: (user: AdminUser) => void;
 }
 
 export const AdminSettings: React.FC<AdminSettingsProps> = ({
   currentUser,
   onNavigateView,
-  onNotify
+  onNotify,
+  onUserUpdated
 }) => {
   const [activeTab, setActiveTab] = useState<
     'company' | 'credentials' | 'investor' | 'security' | 'compliance'
@@ -35,6 +39,7 @@ export const AdminSettings: React.FC<AdminSettingsProps> = ({
   const [savingKey, setSavingKey] = useState<string | null>(null);
 
   // Administrative Credentials State
+  const [adminEmail, setAdminEmail] = useState(currentUser?.email || '');
   const [currPass, setCurrPass] = useState('');
   const [newPass, setNewPass] = useState('');
   const [confirmPass, setConfirmPass] = useState('');
@@ -42,37 +47,92 @@ export const AdminSettings: React.FC<AdminSettingsProps> = ({
   const [passError, setPassError] = useState<string | null>(null);
   const [passSuccess, setPassSuccess] = useState<string | null>(null);
 
-  const handleUpdatePassword = async (e: React.FormEvent) => {
+  useEffect(() => {
+    if (currentUser?.email) {
+      setAdminEmail(currentUser.email);
+    }
+  }, [currentUser?.email]);
+
+  const handleUpdateCredentials = async (e: React.FormEvent) => {
     e.preventDefault();
     setPassError(null);
     setPassSuccess(null);
 
-    if (newPass.length < 8) {
-      setPassError('New password must be at least 8 characters long.');
+    const emailTrimmed = adminEmail.trim().toLowerCase();
+    const isEmailChanged = emailTrimmed !== (currentUser?.email || '').toLowerCase();
+    const isPasswordProvided = Boolean(newPass);
+
+    if (!isEmailChanged && !isPasswordProvided) {
+      setPassError('Please enter a new email address or enter a new password to update.');
       return;
     }
-    if (newPass !== confirmPass) {
-      setPassError('New password and confirm password do not match.');
+
+    if (!currPass) {
+      setPassError('Current password is required to verify administrator authorization.');
       return;
+    }
+
+    if (isPasswordProvided) {
+      if (newPass.length < 8) {
+        setPassError('New password must be at least 8 characters long.');
+        return;
+      }
+      if (newPass !== confirmPass) {
+        setPassError('New password and confirm password do not match.');
+        return;
+      }
     }
 
     setPassUpdating(true);
     try {
-      const res = await fetch('/api/auth/change-password', {
+      const payload = {
+        currentPassword: currPass,
+        newEmail: isEmailChanged ? emailTrimmed : undefined,
+        newPassword: isPasswordProvided ? newPass : undefined
+      };
+
+      let res = await fetch('/api/auth/update-credentials', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
           Authorization: `Bearer ${localStorage.getItem('asl_admin_token')}`
         },
-        body: JSON.stringify({ currentPassword: currPass, newPassword: newPass })
+        body: JSON.stringify(payload)
       });
-      const data = await res.json();
+
+      // If /update-credentials returned 404 on an older instance, fallback to /change-password
+      if (res.status === 404) {
+        res = await fetch('/api/auth/change-password', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${localStorage.getItem('asl_admin_token')}`
+          },
+          body: JSON.stringify(payload)
+        });
+      }
+
+      const contentType = res.headers.get('content-type') || '';
+      let data: any = {};
+      if (contentType.includes('application/json')) {
+        data = await res.json();
+      } else {
+        throw new Error(`Server returned status ${res.status}. Please restart backend server so updates take effect.`);
+      }
+
       if (!res.ok || !data.success) {
         throw new Error(data.error || 'Failed to update administrative credentials.');
       }
 
-      setPassSuccess('Administrative credentials updated successfully.');
-      onNotify('success', 'Administrative password updated successfully.');
+      if (data.token) {
+        localStorage.setItem('asl_admin_token', data.token);
+      }
+      if (data.user && onUserUpdated) {
+        onUserUpdated(data.user);
+      }
+
+      setPassSuccess(data.message || 'Administrative credentials updated successfully.');
+      onNotify('success', data.message || 'Administrative credentials updated successfully.');
       setCurrPass('');
       setNewPass('');
       setConfirmPass('');
@@ -402,7 +462,7 @@ export const AdminSettings: React.FC<AdminSettingsProps> = ({
         {/* TAB 2: UPDATE ADMINISTRATIVE CREDENTIALS */}
         {/* ======================================================== */}
         {activeTab === 'credentials' && (
-          <form onSubmit={handleUpdatePassword} className="space-y-4">
+          <form onSubmit={handleUpdateCredentials} className="space-y-4">
             <div className="flex items-center justify-between border-b border-slate-100 pb-3">
               <div>
                 <h3 className="text-sm font-bold text-[#0A1128] flex items-center gap-2">
@@ -410,7 +470,7 @@ export const AdminSettings: React.FC<AdminSettingsProps> = ({
                   <span>Update Administrative Credentials</span>
                 </h3>
                 <p className="text-xs text-slate-500 mt-0.5">
-                  Update primary administrator login password and access security parameters
+                  Update primary administrator login email, access credentials, and security parameters
                 </p>
               </div>
             </div>
@@ -423,7 +483,7 @@ export const AdminSettings: React.FC<AdminSettingsProps> = ({
                 </div>
                 <div>
                   <div className="font-bold text-[#0A1128]">{currentUser?.name || 'Amarnath Administrator'}</div>
-                  <div className="text-[11px] text-slate-500 font-mono">{currentUser?.email || 'admin@amarnathsecurities.co.in'}</div>
+                  <div className="text-[11px] text-slate-500 font-mono">{currentUser?.email || 'admin@amarnathsecuritiesltd.com'}</div>
                 </div>
               </div>
               <div className="flex items-center gap-2">
@@ -451,55 +511,91 @@ export const AdminSettings: React.FC<AdminSettingsProps> = ({
               </div>
             )}
 
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+            {/* Core Credentials Section: Email & Current Authorization Password */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div>
-                <label className="block text-xs font-bold text-slate-700 mb-1">Current Password *</label>
+                <label className="block text-xs font-bold text-slate-700 mb-1 flex items-center gap-1.5">
+                  <Mail className="w-3.5 h-3.5 text-slate-400" />
+                  <span>Official Administrative Email *</span>
+                </label>
+                <input
+                  type="email"
+                  required
+                  value={adminEmail}
+                  onChange={(e) => setAdminEmail(e.target.value)}
+                  placeholder="admin@amarnathsecuritiesltd.com"
+                  className="w-full px-3 py-2 text-xs bg-slate-50 border border-slate-200 rounded-lg focus:outline-none focus:ring-1 focus:ring-[#0D9488] focus:bg-white transition-all font-mono"
+                />
+                <p className="text-[10px] text-slate-400 mt-1">
+                  Primary email used for workstation authentication and security dispatches.
+                </p>
+              </div>
+
+              <div>
+                <label className="block text-xs font-bold text-slate-700 mb-1 flex items-center gap-1.5">
+                  <Lock className="w-3.5 h-3.5 text-slate-400" />
+                  <span>Current Password (Required for Authorization) *</span>
+                </label>
                 <input
                   type="password"
                   required
                   value={currPass}
                   onChange={(e) => setCurrPass(e.target.value)}
-                  placeholder="Enter current password"
-                  className="w-full px-3 py-1.5 text-xs bg-slate-50 border border-slate-200 rounded-lg focus:outline-none focus:ring-1 focus:ring-[#0D9488]"
+                  placeholder="Enter current password to verify identity"
+                  className="w-full px-3 py-2 text-xs bg-slate-50 border border-slate-200 rounded-lg focus:outline-none focus:ring-1 focus:ring-[#0D9488] focus:bg-white transition-all"
                 />
-              </div>
-
-              <div>
-                <label className="block text-xs font-bold text-slate-700 mb-1">New Password (Min 8 Chars) *</label>
-                <input
-                  type="password"
-                  required
-                  value={newPass}
-                  onChange={(e) => setNewPass(e.target.value)}
-                  placeholder="Enter new password"
-                  className="w-full px-3 py-1.5 text-xs bg-slate-50 border border-slate-200 rounded-lg focus:outline-none focus:ring-1 focus:ring-[#0D9488]"
-                />
-              </div>
-
-              <div>
-                <label className="block text-xs font-bold text-slate-700 mb-1">Confirm New Password *</label>
-                <input
-                  type="password"
-                  required
-                  value={confirmPass}
-                  onChange={(e) => setConfirmPass(e.target.value)}
-                  placeholder="Re-enter new password"
-                  className="w-full px-3 py-1.5 text-xs bg-slate-50 border border-slate-200 rounded-lg focus:outline-none focus:ring-1 focus:ring-[#0D9488]"
-                />
+                <p className="text-[10px] text-slate-400 mt-1">
+                  Enter your current active password to confirm administrator identity.
+                </p>
               </div>
             </div>
 
-            <div className="flex items-center justify-between pt-2">
+            {/* Optional Password Update Subsection */}
+            <div className="pt-3 border-t border-slate-100">
+              <div className="text-xs font-bold text-slate-700 mb-2 flex items-center gap-1.5">
+                <Key className="w-3.5 h-3.5 text-[#C5A059]" />
+                <span>Change Access Password (Optional - Leave blank to keep existing password)</span>
+              </div>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-[11px] font-semibold text-slate-600 mb-1">
+                    New Password (Min 8 Chars)
+                  </label>
+                  <input
+                    type="password"
+                    value={newPass}
+                    onChange={(e) => setNewPass(e.target.value)}
+                    placeholder="Enter new password (optional)"
+                    className="w-full px-3 py-2 text-xs bg-slate-50 border border-slate-200 rounded-lg focus:outline-none focus:ring-1 focus:ring-[#0D9488] focus:bg-white transition-all"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-[11px] font-semibold text-slate-600 mb-1">
+                    Confirm New Password
+                  </label>
+                  <input
+                    type="password"
+                    value={confirmPass}
+                    onChange={(e) => setConfirmPass(e.target.value)}
+                    placeholder="Re-enter new password"
+                    className="w-full px-3 py-2 text-xs bg-slate-50 border border-slate-200 rounded-lg focus:outline-none focus:ring-1 focus:ring-[#0D9488] focus:bg-white transition-all"
+                  />
+                </div>
+              </div>
+            </div>
+
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pt-2">
               <div className="text-[11px] text-slate-400">
-                Passwords must contain minimum 8 characters. After updating, your current session stays authenticated.
+                Updated credentials take effect dynamically. Next time, log in using your updated official email and password.
               </div>
               <button
                 type="submit"
                 disabled={passUpdating}
-                className="px-4 py-2 text-xs font-semibold text-white bg-[#0A1128] hover:bg-[#121c3b] rounded-lg transition-colors flex items-center gap-1.5 shadow-2xs disabled:opacity-50 cursor-pointer"
+                className="px-4 py-2 text-xs font-semibold text-white bg-[#0A1128] hover:bg-[#121c3b] rounded-lg transition-colors flex items-center justify-center gap-1.5 shadow-2xs disabled:opacity-50 cursor-pointer shrink-0"
               >
-                <Key className="w-3.5 h-3.5 text-[#C5A059]" />
-                <span>{passUpdating ? 'Updating...' : 'Update Administrative Credentials'}</span>
+                <Save className="w-3.5 h-3.5 text-[#C5A059]" />
+                <span>{passUpdating ? 'Updating Credentials...' : 'Update Administrative Credentials'}</span>
               </button>
             </div>
           </form>

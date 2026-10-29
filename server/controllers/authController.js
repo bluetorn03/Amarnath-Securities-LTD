@@ -126,40 +126,131 @@ export async function getMe(req, res, next) {
 }
 
 export async function changePassword(req, res, next) {
+  // Delegate directly to updateCredentials for seamless unified credential updates
+  return updateCredentials(req, res, next);
+}
+
+export async function updateCredentials(req, res, next) {
   try {
-    const { currentPassword, newPassword } = req.body;
-    if (!currentPassword || !newPassword) {
-      return res.status(400).json({ success: false, error: 'Current password and new password are required.' });
+    const { currentPassword, newEmail, newPassword } = req.body;
+
+    if (!currentPassword) {
+      return res.status(400).json({ 
+        success: false, 
+        error: 'Current password is required to verify administrator authorization.' 
+      });
     }
 
-    if (newPassword.length < 10) {
-      return res.status(400).json({ success: false, error: 'New password must be at least 10 characters long.' });
+    // Must provide either newEmail or newPassword
+    if (!newEmail && !newPassword) {
+      return res.status(400).json({ 
+        success: false, 
+        error: 'Please provide an updated official email address or a new password.' 
+      });
     }
 
-    const users = await query('SELECT password_hash FROM users WHERE id = ?', [req.user.id]);
+    const users = await query('SELECT * FROM users WHERE id = ?', [req.user.id]);
     if (users.length === 0) {
-      return res.status(404).json({ success: false, error: 'User not found.' });
+      return res.status(404).json({ success: false, error: 'Administrative user record not found.' });
     }
 
-    const isMatch = await bcrypt.compare(currentPassword, users[0].password_hash);
+    const user = users[0];
+
+    // Verify current password
+    const isMatch = await bcrypt.compare(currentPassword, user.password_hash);
     if (!isMatch) {
       return res.status(400).json({ success: false, error: 'Current password does not match.' });
     }
 
-    const salt = await bcrypt.genSalt(12);
-    const newHash = await bcrypt.hash(newPassword, salt);
+    const updateFields = [];
+    const updateValues = [];
+    let updatedEmail = user.email;
+    const auditDetails = {};
 
-    await query('UPDATE users SET password_hash = ? WHERE id = ?', [newHash, req.user.id]);
+    // 1. Process Email Update if provided
+    if (newEmail) {
+      const emailClean = newEmail.toLowerCase().trim();
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (!emailRegex.test(emailClean)) {
+        return res.status(400).json({ success: false, error: 'Please enter a valid administrative email address.' });
+      }
+
+      if (emailClean !== user.email.toLowerCase()) {
+        const existing = await query('SELECT id FROM users WHERE email = ? AND id != ?', [emailClean, user.id]);
+        if (existing.length > 0) {
+          return res.status(409).json({ 
+            success: false, 
+            error: 'This email address is already in use by another administrative account.' 
+          });
+        }
+        updateFields.push('email = ?');
+        updateValues.push(emailClean);
+        auditDetails.previousEmail = user.email;
+        auditDetails.newEmail = emailClean;
+        updatedEmail = emailClean;
+      }
+    }
+
+    // 2. Process Password Update if provided
+    if (newPassword) {
+      if (newPassword.length < 8) {
+        return res.status(400).json({ 
+          success: false, 
+          error: 'New password must be at least 8 characters long.' 
+        });
+      }
+      const salt = await bcrypt.genSalt(12);
+      const newHash = await bcrypt.hash(newPassword, salt);
+      updateFields.push('password_hash = ?');
+      updateValues.push(newHash);
+      auditDetails.passwordUpdated = true;
+    }
+
+    if (updateFields.length === 0) {
+      return res.status(400).json({ 
+        success: false, 
+        error: 'No changes detected. The provided email address is the same as the current email.' 
+      });
+    }
+
+    updateFields.push('updated_at = NOW()');
+    updateValues.push(user.id);
+
+    await query(`UPDATE users SET ${updateFields.join(', ')} WHERE id = ?`, updateValues);
 
     await logAudit({
-      userId: req.user.id,
-      action: 'CHANGE_PASSWORD',
+      userId: user.id,
+      action: 'UPDATE_ADMIN_CREDENTIALS',
       entityType: 'user',
-      entityId: req.user.id,
+      entityId: user.id,
+      details: auditDetails,
       req
     });
 
-    res.json({ success: true, message: 'Password updated successfully.' });
+    // Generate new JWT signed with updated email
+    const token = jwt.sign(
+      {
+        userId: user.id,
+        email: updatedEmail,
+        role: user.role,
+        name: user.name
+      },
+      config.jwt.secret,
+      { expiresIn: config.jwt.expiresIn }
+    );
+
+    res.json({
+      success: true,
+      message: 'Administrative credentials updated successfully.',
+      token,
+      user: {
+        id: user.id,
+        email: updatedEmail,
+        name: user.name,
+        role: user.role,
+        lastLoginAt: user.last_login_at
+      }
+    });
   } catch (err) {
     next(err);
   }
