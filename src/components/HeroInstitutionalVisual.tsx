@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { MARKET_TICKER_DATA } from '../data/mockData';
 import { useCompanyProfile } from '../context/CompanyProfileContext';
 import { PageRoute } from '../types';
 import { 
@@ -337,29 +336,24 @@ export const HeroInstitutionalVisual: React.FC<HeroInstitutionalVisualProps> = (
                   </div>
                 </div>
 
-                {/* 52-Week Price Spectrum Gauge */}
+                {/* Institutional Compliance & Capital Structure Capsule */}
                 <div className="p-3.5 rounded-xl bg-gradient-to-r from-slate-50 via-white to-slate-50 border border-slate-200/80">
                   <div className="flex items-center justify-between text-xs font-mono mb-2">
-                    <span className="text-slate-500 font-semibold">52W Range Spectrum:</span>
+                    <span className="text-slate-500 font-semibold">Listing & Capital Governance:</span>
                     <span className="text-emerald-700 font-bold bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200 text-[11px]">
-                      Last: ₹{MARKET_TICKER_DATA.lastPrice.toFixed(2)} (+{MARKET_TICKER_DATA.changePercent}%)
+                      BSE Listed • 100% Demat
                     </span>
                   </div>
 
                   {/* Gradient Visual Track */}
-                  <div className="relative w-full h-2.5 bg-slate-200/80 rounded-full overflow-hidden my-2">
-                    <div className="absolute inset-0 bg-gradient-to-r from-teal-400 via-amber-400 to-emerald-500 rounded-full" />
-                    {/* Indicator Pin */}
-                    <div 
-                      className="absolute top-0 bottom-0 w-2.5 bg-[#0A1128] rounded-full shadow-md border-2 border-white"
-                      style={{ left: '54%' }}
-                    />
+                  <div className="relative w-full h-2 bg-slate-200/80 rounded-full overflow-hidden my-2">
+                    <div className="absolute inset-0 bg-gradient-to-r from-teal-500 via-amber-400 to-[#0A1128] rounded-full" />
                   </div>
 
                   <div className="flex items-center justify-between font-mono text-[10px] text-slate-500 mt-1">
-                    <span>52W Low: ₹{MARKET_TICKER_DATA.week52Low}</span>
-                    <span className="text-slate-400">• Current Trading Band •</span>
-                    <span>52W High: ₹{MARKET_TICKER_DATA.week52High}</span>
+                    <span>Scrip: 538465</span>
+                    <span className="text-slate-400">• Equity Shares of ₹10 each •</span>
+                    <span>ISIN: INE745P01010</span>
                   </div>
                 </div>
 

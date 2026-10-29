@@ -3,7 +3,7 @@ import { PageRoute, InvestorDocument } from '../types';
 import {
   CAPABILITIES,
   INVESTOR_DOCUMENTS,
-  MARKET_TICKER_DATA,
+  COMPANY_DETAILS,
   LEADERSHIP_TEAM,
   INSIGHTS,
   FINANCIAL_HIGHLIGHTS_SUMMARY
@@ -233,7 +233,7 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate, onOpenDocument }
               </button>
             </motion.div>
 
-            {/* Hero Stock Data Pill */}
+            {/* Hero Statutory Listing Pill */}
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
@@ -241,19 +241,19 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate, onOpenDocument }
               className="w-full max-w-xl p-2.5 px-4 rounded-xl bg-[#FAFBFD] border border-slate-200/90 shadow-2xs flex flex-wrap items-center justify-between gap-3 text-xs font-mono"
             >
               <div className="flex items-center gap-2">
-                <span className="text-slate-400">BSE PRICE:</span>
-                <span className="font-bold text-[#0A1128] text-sm">₹{MARKET_TICKER_DATA.lastPrice.toFixed(2)}</span>
-                <span className="text-emerald-600 font-semibold">(+{MARKET_TICKER_DATA.changePercent}%)</span>
+                <span className="text-slate-400">BSE SCRIP:</span>
+                <span className="font-bold text-[#0A1128] text-sm">{COMPANY_DETAILS.bseScripCode || '538465'}</span>
+                <span className="text-emerald-700 font-semibold text-[11px] bg-emerald-50 px-1.5 py-0.5 rounded border border-emerald-200">Active</span>
               </div>
               <div className="h-4 w-px bg-slate-200 hidden sm:block"></div>
               <div className="flex items-center gap-2">
-                <span className="text-slate-400">52W:</span>
-                <span className="text-slate-700">₹{MARKET_TICKER_DATA.week52Low} - ₹{MARKET_TICKER_DATA.week52High}</span>
+                <span className="text-slate-400">ISIN:</span>
+                <span className="text-slate-700 font-semibold">{COMPANY_DETAILS.isin}</span>
               </div>
               <div className="h-4 w-px bg-slate-200 hidden md:block"></div>
               <div className="hidden md:flex items-center gap-2">
-                <span className="text-slate-400">MCAP:</span>
-                <span className="text-[#9A7B38] font-semibold">{MARKET_TICKER_DATA.marketCap}</span>
+                <span className="text-slate-400">GOVERNANCE:</span>
+                <span className="text-[#9A7B38] font-semibold">SEBI Regulation 46</span>
               </div>
             </motion.div>
           </div>

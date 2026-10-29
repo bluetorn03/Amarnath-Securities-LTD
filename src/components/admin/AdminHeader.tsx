@@ -7,7 +7,8 @@ import {
   ExternalLink, 
   Activity, 
   CheckCircle2, 
-  AlertTriangle 
+  AlertTriangle,
+  LogOut 
 } from 'lucide-react';
 
 interface AdminHeaderProps {
@@ -19,6 +20,7 @@ interface AdminHeaderProps {
   refreshing: boolean;
   onChangePasswordClick?: () => void;
   onNavigatePublic: () => void;
+  onLogout?: () => void;
   systemConnected?: boolean;
   dbPingMs?: number;
 }
@@ -30,7 +32,8 @@ export const AdminHeader: React.FC<AdminHeaderProps> = ({
   currentUser,
   onRefresh,
   refreshing,
-  onNavigatePublic
+  onNavigatePublic,
+  onLogout
 }) => {
   // Breadcrumb mappings
   const getBreadcrumb = (view: AdminViewId) => {
@@ -98,21 +101,33 @@ export const AdminHeader: React.FC<AdminHeaderProps> = ({
 
   return (
     <header 
-      className={`h-16 fixed top-0 right-0 z-20 bg-white/95 backdrop-blur-md border-b border-slate-200/90 flex items-center justify-between px-4 sm:px-6 transition-all duration-300 ${
-        collapsed ? 'left-0 sm:left-[74px]' : 'left-0 sm:left-[280px]'
+      className={`h-16 fixed top-0 right-0 z-20 bg-white/95 backdrop-blur-md border-b border-slate-200/90 flex items-center justify-between px-3 sm:px-6 transition-all duration-300 ${
+        collapsed ? 'left-0 md:left-[74px]' : 'left-0 md:left-[280px]'
       }`}
     >
       {/* Mobile Drawer Toggle & Breadcrumbs */}
-      <div className="flex items-center gap-3">
+      <div className="flex items-center gap-2.5 sm:gap-3 min-w-0">
         <button
           onClick={onToggleMobileDrawer}
-          className="sm:hidden p-2 rounded-lg text-slate-500 hover:text-slate-800 hover:bg-slate-100"
+          className="md:hidden p-2 rounded-lg text-slate-700 bg-slate-100 hover:bg-slate-200 transition-colors cursor-pointer shrink-0"
           title="Open menu"
+          aria-label="Toggle navigation menu"
         >
-          <Menu className="w-5 h-5" />
+          <Menu className="w-5 h-5 text-slate-800" />
         </button>
 
-        <div className="flex flex-col">
+        {/* Mobile View Title */}
+        <div className="md:hidden flex flex-col min-w-0">
+          <span className="text-[10px] uppercase font-mono text-[#0D9488] font-bold tracking-wider truncate">
+            {breadcrumb.group}
+          </span>
+          <span className="text-xs font-bold text-[#0A1128] truncate tracking-tight">
+            {breadcrumb.title}
+          </span>
+        </div>
+
+        {/* Desktop Breadcrumb */}
+        <div className="hidden md:flex flex-col">
           <div className="flex items-center gap-1.5 text-[11px] font-semibold text-slate-400">
             <span>{breadcrumb.group}</span>
             <span>/</span>
@@ -125,13 +140,25 @@ export const AdminHeader: React.FC<AdminHeaderProps> = ({
       </div>
 
       {/* Header Actions */}
-      <div className="flex items-center gap-2 sm:gap-3">
+      <div className="flex items-center gap-1.5 sm:gap-3 shrink-0">
+        {/* Mobile Quick Logout */}
+        {onLogout && (
+          <button
+            onClick={onLogout}
+            title="Terminate session"
+            className="md:hidden flex items-center gap-1 px-2.5 py-1.5 text-xs font-bold text-rose-700 bg-rose-50 border border-rose-200 rounded-lg hover:bg-rose-100 transition-colors shadow-2xs cursor-pointer"
+          >
+            <LogOut className="w-3.5 h-3.5 text-rose-600" />
+            <span className="font-semibold">Logout</span>
+          </button>
+        )}
+
         {/* Refresh Button */}
         <button
           onClick={onRefresh}
           disabled={refreshing}
           title="Refresh real-time data from database"
-          className="flex items-center gap-1.5 px-2.5 py-1.5 text-xs font-semibold text-slate-600 bg-white border border-slate-200 rounded-lg hover:bg-slate-50 hover:text-[#0A1128] transition-colors shadow-2xs disabled:opacity-50"
+          className="flex items-center gap-1.5 px-2.5 py-1.5 text-xs font-semibold text-slate-600 bg-white border border-slate-200 rounded-lg hover:bg-slate-50 hover:text-[#0A1128] transition-colors shadow-2xs disabled:opacity-50 cursor-pointer"
         >
           <RefreshCw className={`w-3.5 h-3.5 ${refreshing ? 'animate-spin text-[#0D9488]' : ''}`} />
           <span className="hidden sm:inline">Refresh</span>
@@ -141,7 +168,7 @@ export const AdminHeader: React.FC<AdminHeaderProps> = ({
         <button
           onClick={onNavigatePublic}
           title="Open Public Investor Portal in view mode"
-          className="hidden sm:flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold text-white bg-[#0A1128] hover:bg-[#121c3b] rounded-lg transition-colors shadow-2xs"
+          className="hidden sm:flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold text-white bg-[#0A1128] hover:bg-[#121c3b] rounded-lg transition-colors shadow-2xs cursor-pointer"
         >
           <span>Public Portal</span>
           <ExternalLink className="w-3.5 h-3.5 text-[#C5A059]" />

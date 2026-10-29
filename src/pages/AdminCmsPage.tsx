@@ -179,7 +179,15 @@ export const AdminCmsPage: React.FC<AdminCmsPageProps> = ({ onNavigate }) => {
 
   const handleConfirmLogout = () => {
     setShowLogoutModal(false);
-    handleLogout();
+    try {
+      localStorage.removeItem('asl_admin_token');
+      sessionStorage.removeItem('asl_admin_token');
+    } catch (err) {
+      console.warn('Storage clear exception:', err);
+    }
+    setToken(null);
+    setCurrentUser(null);
+    setLoginPassword('');
   };
 
   // Global Modals State
@@ -996,6 +1004,7 @@ export const AdminCmsPage: React.FC<AdminCmsPageProps> = ({ onNavigate }) => {
         collapsed={sidebarCollapsed}
         onToggleCollapse={() => setSidebarCollapsed(!sidebarCollapsed)}
         onNavigatePublic={() => handleRequestExit('home')}
+        isMobileDrawer={false}
         metrics={{
           publishedDocs: systemHealth?.metrics.documents.published || documents.length,
           draftDocs: systemHealth?.metrics.documents.draft,
@@ -1004,22 +1013,38 @@ export const AdminCmsPage: React.FC<AdminCmsPageProps> = ({ onNavigate }) => {
         }}
       />
 
-      {/* Mobile Drawer Overlay */}
+      {/* Mobile Off-Canvas Drawer Overlay */}
       {mobileDrawerOpen && (
-        <div className="fixed inset-0 z-40 sm:hidden">
-          <div className="fixed inset-0 bg-black/50 backdrop-blur-xs" onClick={() => setMobileDrawerOpen(false)}></div>
-          <div className="fixed top-0 bottom-0 left-0 w-72 bg-white z-50 shadow-2xl">
+        <div className="fixed inset-0 z-50 md:hidden animate-fade-in">
+          {/* Backdrop */}
+          <div 
+            className="fixed inset-0 bg-black/60 backdrop-blur-xs transition-opacity" 
+            onClick={() => setMobileDrawerOpen(false)}
+            aria-label="Close menu backdrop"
+          />
+          {/* Sliding Drawer Container */}
+          <div className="fixed top-0 bottom-0 left-0 w-72 sm:w-80 max-w-[85vw] bg-white z-50 shadow-2xl flex flex-col">
             <AdminSidebar
               activeView={activeView}
               onSelectView={handleSelectView}
               currentUser={currentUser}
-              onLogout={handleRequestLogout}
+              onLogout={() => {
+                setMobileDrawerOpen(false);
+                handleRequestLogout();
+              }}
               collapsed={false}
               onToggleCollapse={() => setMobileDrawerOpen(false)}
-              onNavigatePublic={() => handleRequestExit('home')}
+              onNavigatePublic={() => {
+                setMobileDrawerOpen(false);
+                handleRequestExit('home');
+              }}
+              isMobileDrawer={true}
+              onCloseDrawer={() => setMobileDrawerOpen(false)}
               metrics={{
-                publishedDocs: documents.length,
-                pendingGrievances: enquiries.filter(e => e.type === 'investor' && !e.is_test && !e.is_archived && e.status === 'new').length
+                publishedDocs: systemHealth?.metrics.documents.published || documents.length,
+                draftDocs: systemHealth?.metrics.documents.draft,
+                pendingGrievances: enquiries.filter(e => e.type === 'investor' && !e.is_test && !e.is_archived && e.status === 'new').length,
+                reg46Pending: regClauses.filter(c => c.review_status === 'Pending Evidence').length
               }}
             />
           </div>
@@ -1036,14 +1061,15 @@ export const AdminCmsPage: React.FC<AdminCmsPageProps> = ({ onNavigate }) => {
         refreshing={healthLoading || docsLoading}
         onChangePasswordClick={() => setShowPasswordModal(true)}
         onNavigatePublic={() => handleRequestExit('home')}
+        onLogout={handleRequestLogout}
         systemConnected={systemHealth?.connectivity.database === 'connected'}
         dbPingMs={systemHealth?.connectivity.pingMs}
       />
 
       {/* Main Content Area */}
       <main 
-        className={`flex-1 transition-all duration-300 pt-20 px-4 sm:px-6 pb-12 overflow-x-hidden ${
-          sidebarCollapsed ? 'sm:ml-[74px]' : 'sm:ml-[280px]'
+        className={`flex-1 transition-all duration-300 pt-20 px-3 sm:px-6 pb-12 overflow-x-hidden ${
+          sidebarCollapsed ? 'md:ml-[74px]' : 'md:ml-[280px]'
         }`}
       >
         {/* VIEW 1: DASHBOARD */}
@@ -1782,19 +1808,28 @@ export const AdminCmsPage: React.FC<AdminCmsPageProps> = ({ onNavigate }) => {
       {showLogoutModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-xs">
           <div className="bg-white rounded-2xl shadow-2xl w-full max-w-md border border-slate-200 overflow-hidden animate-scale-up">
-            <div className="bg-rose-950 p-5 text-white flex items-center justify-between">
+            <div 
+              style={{ backgroundColor: '#4c0519', color: '#ffffff' }}
+              className="p-5 flex items-center justify-between"
+            >
               <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-xl bg-rose-500/20 text-rose-400 flex items-center justify-center border border-rose-500/30">
-                  <LogOut className="w-5 h-5 text-rose-300" />
+                <div 
+                  style={{ backgroundColor: 'rgba(244, 63, 94, 0.2)', borderColor: 'rgba(244, 63, 94, 0.35)' }}
+                  className="w-10 h-10 rounded-xl flex items-center justify-center border"
+                >
+                  <LogOut style={{ color: '#fda4af' }} className="w-5 h-5" />
                 </div>
                 <div>
-                  <h3 className="text-sm font-bold tracking-tight">Confirm Administrative Sign Out</h3>
-                  <p className="text-[11px] text-rose-200/80">Regulatory Session Termination</p>
+                  <h3 style={{ color: '#ffffff' }} className="text-sm font-bold tracking-tight">Confirm Administrative Sign Out</h3>
+                  <p style={{ color: '#fecdd3' }} className="text-[11px] opacity-90">Regulatory Session Termination</p>
                 </div>
               </div>
               <button 
+                type="button"
                 onClick={() => setShowLogoutModal(false)}
-                className="p-1.5 text-slate-300 hover:text-white rounded-lg transition-colors cursor-pointer"
+                style={{ color: '#cbd5e1' }}
+                className="p-1.5 hover:text-white rounded-lg transition-colors cursor-pointer"
+                title="Cancel and close"
               >
                 <X className="w-5 h-5" />
               </button>
@@ -1805,22 +1840,24 @@ export const AdminCmsPage: React.FC<AdminCmsPageProps> = ({ onNavigate }) => {
                 Are you sure you want to log out of your administrative workstation? Your active session token will be cleared and you will be returned to the login portal.
               </p>
 
-              <div className="bg-slate-50 border border-slate-200 rounded-xl p-3 text-[11px] text-slate-500 font-mono">
-                Operator: <strong className="text-slate-800">{currentUser?.name}</strong> ({currentUser?.role})
+              <div className="bg-slate-50 border border-slate-200 rounded-xl p-3 text-[11px] text-slate-600 font-mono">
+                Operator: <strong className="text-slate-800">{currentUser?.name || 'Administrator'}</strong> ({currentUser?.role || 'super_admin'})
               </div>
 
               <div className="flex items-center justify-end gap-3 pt-2">
                 <button
                   type="button"
                   onClick={() => setShowLogoutModal(false)}
-                  className="px-4 py-2 text-xs font-semibold text-slate-700 bg-slate-100 hover:bg-slate-200 rounded-lg transition-colors cursor-pointer"
+                  style={{ backgroundColor: '#f1f5f9', color: '#334155', borderColor: '#cbd5e1' }}
+                  className="px-4 py-2 text-xs font-semibold rounded-lg border hover:bg-slate-200 transition-colors cursor-pointer"
                 >
                   Cancel
                 </button>
                 <button
                   type="button"
                   onClick={handleConfirmLogout}
-                  className="px-4 py-2 text-xs font-bold text-white bg-rose-600 hover:bg-rose-700 rounded-lg transition-colors shadow-xs inline-flex items-center gap-1.5 cursor-pointer"
+                  style={{ backgroundColor: '#e11d48', color: '#ffffff' }}
+                  className="px-4 py-2 text-xs font-bold rounded-lg transition-colors shadow-md hover:brightness-110 inline-flex items-center gap-1.5 cursor-pointer"
                 >
                   <LogOut className="w-3.5 h-3.5" />
                   <span>Sign Out Session</span>

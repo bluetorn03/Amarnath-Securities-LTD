@@ -35,7 +35,8 @@ import {
   ChevronDown,
   LogOut,
   ExternalLink,
-  FolderOpen
+  FolderOpen,
+  X
 } from 'lucide-react';
 
 interface AdminSidebarProps {
@@ -52,6 +53,8 @@ interface AdminSidebarProps {
     pendingGrievances?: number;
     reg46Pending?: number;
   };
+  isMobileDrawer?: boolean;
+  onCloseDrawer?: () => void;
 }
 
 interface SubNavItem {
@@ -78,8 +81,16 @@ export const AdminSidebar: React.FC<AdminSidebarProps> = ({
   collapsed,
   onToggleCollapse,
   onNavigatePublic,
-  metrics = {}
+  metrics = {},
+  isMobileDrawer = false,
+  onCloseDrawer
 }) => {
+  const handleItemClick = (viewId: AdminViewId) => {
+    onSelectView(viewId);
+    if (isMobileDrawer && onCloseDrawer) {
+      onCloseDrawer();
+    }
+  };
   // Collapsible navigation groups
   const groups: NavGroup[] = [
     {
@@ -197,33 +208,47 @@ export const AdminSidebar: React.FC<AdminSidebarProps> = ({
 
   return (
     <aside 
-      className={`fixed top-0 left-0 bottom-0 z-30 flex flex-col bg-white border-r border-slate-200/90 transition-all duration-300 shadow-xs ${
-        collapsed ? 'w-[74px]' : 'w-[280px]'
-      }`}
+      className={
+        isMobileDrawer
+          ? "h-full w-full flex flex-col bg-white"
+          : `hidden md:flex fixed top-0 left-0 bottom-0 z-30 flex-col bg-white border-r border-slate-200/90 transition-all duration-300 shadow-xs ${
+              collapsed ? 'w-[74px]' : 'w-[280px]'
+            }`
+      }
     >
       {/* Brand Header */}
       <div className={`h-16 flex items-center border-b border-slate-200/80 bg-[#FAFBFD] transition-all ${
-        collapsed ? 'px-2 justify-between' : 'px-4 justify-between'
+        collapsed && !isMobileDrawer ? 'px-2 justify-between' : 'px-4 justify-between'
       }`}>
         <div className="flex items-center gap-3 overflow-hidden">
           <div className="shrink-0 flex items-center justify-center">
             <AmarnathLogo 
-              size={collapsed ? 26 : 36} 
-              showText={!collapsed} 
+              size={collapsed && !isMobileDrawer ? 26 : 36} 
+              showText={!collapsed || isMobileDrawer} 
               variant="light" 
               subtext="BSE: 538465 • LODR CMS" 
             />
           </div>
         </div>
 
-        {/* Toggle Collapse Button */}
-        <button
-          onClick={onToggleCollapse}
-          title={collapsed ? 'Expand sidebar' : 'Collapse sidebar'}
-          className="p-1.5 rounded-md text-slate-400 hover:text-slate-700 hover:bg-slate-100 transition-colors shrink-0"
-        >
-          {collapsed ? <ChevronRight className="w-4 h-4" /> : <ChevronLeft className="w-4 h-4" />}
-        </button>
+        {/* Toggle Collapse or Close Button */}
+        {isMobileDrawer ? (
+          <button
+            onClick={onCloseDrawer}
+            title="Close menu"
+            className="p-2 rounded-lg text-slate-500 hover:text-slate-800 hover:bg-slate-100 transition-colors shrink-0 cursor-pointer"
+          >
+            <X className="w-5 h-5" />
+          </button>
+        ) : (
+          <button
+            onClick={onToggleCollapse}
+            title={collapsed ? 'Expand sidebar' : 'Collapse sidebar'}
+            className="p-1.5 rounded-md text-slate-400 hover:text-slate-700 hover:bg-slate-100 transition-colors shrink-0 cursor-pointer"
+          >
+            {collapsed ? <ChevronRight className="w-4 h-4" /> : <ChevronLeft className="w-4 h-4" />}
+          </button>
+        )}
       </div>
 
       {/* Navigation Links Area */}
@@ -231,7 +256,7 @@ export const AdminSidebar: React.FC<AdminSidebarProps> = ({
         
         {/* ITEM 1: Dashboard (Top-level Standalone Link) */}
         <button
-          onClick={() => onSelectView('dashboard')}
+          onClick={() => handleItemClick('dashboard')}
           title={collapsed ? 'Dashboard' : undefined}
           className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-xs font-semibold transition-all group relative ${
             activeView === 'dashboard'
@@ -268,7 +293,7 @@ export const AdminSidebar: React.FC<AdminSidebarProps> = ({
               {group.id === 'settings_admin' && (
                 <div className="pt-1">
                   <button
-                    onClick={() => onSelectView('pages')}
+                    onClick={() => handleItemClick('pages')}
                     title={collapsed ? 'Website Content' : undefined}
                     className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-xs font-semibold transition-all group relative ${
                       activeView === 'pages'
@@ -347,7 +372,7 @@ export const AdminSidebar: React.FC<AdminSidebarProps> = ({
                     return (
                       <button
                         key={`${subItem.id}-${sIdx}`}
-                        onClick={() => onSelectView(subItem.id)}
+                        onClick={() => handleItemClick(subItem.id)}
                         className={`w-full flex items-center gap-2.5 px-2.5 py-1.5 rounded-md text-[11px] font-medium transition-all group ${
                           isSubActive
                             ? 'bg-[#0A1128] text-white font-semibold shadow-2xs'

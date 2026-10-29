@@ -2,7 +2,6 @@ import React, { useState, useMemo, useEffect } from 'react';
 import { PageRoute, InvestorDocument, Reg46Category } from '../types';
 import { 
   INVESTOR_DOCUMENTS, 
-  MARKET_TICKER_DATA, 
   SHAREHOLDING_BREAKDOWN, 
   REGULATION_46_MASTER_INDEX,
   DIRECTORS_REGISTRY,
@@ -279,19 +278,19 @@ export const InvestorRelationsPage: React.FC<InvestorRelationsPageProps> = ({
           {/* Quick BSE Stat Capsule */}
           <div className="p-4 rounded-xl bg-white border border-slate-200 flex items-center gap-4 shrink-0 font-mono text-xs shadow-2xs">
             <div className="flex flex-col">
-              <span className="text-[10px] uppercase text-slate-500 font-semibold">BSE Scrip 538465</span>
-              <span className="text-[#0A1128] font-bold text-base">₹{MARKET_TICKER_DATA.lastPrice.toFixed(2)}</span>
+              <span className="text-[10px] uppercase text-slate-500 font-semibold tracking-wider">BSE Scrip Code</span>
+              <span className="text-[#0A1128] font-bold text-base tracking-wide">{COMPANY_DETAILS.bseScripCode || '538465'}</span>
             </div>
             <div className="w-px h-8 bg-slate-200" />
             <div className="flex flex-col">
-              <span className="text-[10px] uppercase text-slate-500 font-semibold">ISIN Code</span>
-              <span className="text-[#9A7B38] font-semibold">{COMPANY_DETAILS.isin}</span>
+              <span className="text-[10px] uppercase text-slate-500 font-semibold tracking-wider">ISIN Code</span>
+              <span className="text-[#9A7B38] font-bold text-sm tracking-wide">{COMPANY_DETAILS.isin}</span>
             </div>
             <a
               href={COMPANY_DETAILS.bsePortalUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="p-2 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-600 hover:text-[#0A1128] transition-colors ml-2 cursor-pointer"
+              className="p-2 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-600 hover:text-[#0A1128] transition-colors ml-2 cursor-pointer flex items-center justify-center"
               title="Open Official BSE Portal"
             >
               <ExternalLink className="w-4 h-4 text-[#0D9488]" />

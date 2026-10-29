@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { PageRoute } from '../types';
-import { MARKET_TICKER_DATA } from '../data/mockData';
 import { useCompanyProfile } from '../context/CompanyProfileContext';
 import { AmarnathLogo } from './AmarnathLogo';
 import { PrivacyModal } from './PrivacyModal';
