@@ -337,8 +337,8 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
             <strong className="text-slate-400">Disclaimer:</strong> Amarnath Securities Limited is a public limited company listed on the BSE Limited (Scrip Code: 538465). The information provided on this portal is published in compliance with the SEBI (Listing Obligations and Disclosure Requirements) Regulations, 2015 and the Companies Act, 2013. Neither the company nor its directors shall be liable for any investment decisions made on the basis of this website. Investors are advised to consult their independent financial and legal advisors.
           </p>
 
-          <div className="flex flex-col sm:flex-row items-center justify-between gap-3 pt-2 border-t border-white/5 text-slate-400">
-            <div className="flex flex-wrap items-center gap-3">
+          <div className="flex flex-col md:flex-row items-center justify-between gap-3 pt-2 border-t border-white/5 text-slate-400">
+            <div className="flex flex-wrap items-center justify-center md:justify-start gap-3">
               <span>© 1994 - 2026 Amarnath Securities Limited. All Rights Reserved.</span>
               <span>•</span>
               <button
@@ -348,7 +348,20 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
                 Privacy Notice & Data Rights
               </button>
             </div>
-            <div className="flex items-center gap-4">
+
+            <div className="text-center">
+              <span>Designed &amp; Maintained by </span>
+              <a
+                href="https://bluetorn.com/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="font-semibold text-[#14B8A6] hover:text-[#2dd4bf] hover:underline transition-colors"
+              >
+                BLUETORN
+              </a>
+            </div>
+
+            <div className="flex flex-wrap items-center justify-center md:justify-end gap-4">
               <span>CIN: {COMPANY_DETAILS.cin}</span>
               <span>•</span>
               <span>ISIN: {COMPANY_DETAILS.isin}</span>
